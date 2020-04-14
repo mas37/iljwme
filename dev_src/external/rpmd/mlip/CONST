@@ -1,0 +1,29 @@
+CH4+CN potential energy surface; units converted to int'n units in readt
+units here are: kcal/mol; mdyn; Angstroms and radians
+indices for atoms: nnc, nnb, nnh(i),i=1,4, nnh(o)
+  2   6   3   4   5   1   7
+morse parameters for ch bonds: r0ch, d1ch, d3ch(38.834)
+  1.09397 112.17000  14.65328
+attenuation parameters for ach: a1ch, b1ch, c1ch(6.61404)
+  1.75000    .12000   5.00000
+morse parameters for oh bonds: r0hh, d1hh, d3hh and ahh(ahh ajustado)
+  1.06497 132.17000  44.63017   1.70000
+morse parameters for co bonds: r0cb, d1cb, d3cb and acb (from methanol)
+  1.72592  91.47526  88.69509   3.08688
+out-of-plane bend: a3s, b3s, aphi, bphi, cphi, rphi (b3s:-0.6)
+   .14191   -.30684    .52879    .40066   1.92099   1.09397
+out-of-plane bend: atheta, btheta, ctheta
+   .90787    .35489   1.89155
+out-of-plane bend: fch, hch3
+   .07400    .19150
+in-plane bend: fkinf, ak, bk, aa1, aa2, aa3, aa4, aa5
+   .44000    .12600  10.71320  0.273746   1.59996  3.216595  11.56998    .15263
+ h2o in-plane bend: fkh2oeq, alph2o, angh2oeq
+   .26000   3.10800 180.00000
+ additional terms for d3cb:a3cb, b3cb, rcbsp
+ 00.00000   0.90000  2.606485367
+
+  h2o in-plane bend: fkh2oeq, alph2o, angh2oeq                                 
+    .53000   1.10800 180.00000
+ morse parameters for co bonds: r0cb, d1cb, d3cb and acb (from methanol)       
+   1.71092  92.47526  88.69509   3.08688

@@ -1,0 +1,58 @@
+# ---------- Initialize Simulation --------------------- 
+clear 
+units metal 
+dimension 3 
+boundary p p p 
+atom_style atomic 
+atom_modify map array
+
+# ---------- Create Atoms --------------------- 
+lattice 	fcc 4.21
+region	box block 0 1 0 1 0 1 units lattice
+create_box	2 box
+ 
+create_atoms 1 box 
+
+set atom 1 type 2
+set atom 3 type 2
+
+replicate 2 2 2
+
+label runlabel
+variable a loop 5
+
+
+# ---------- Define Interatomic Potential --------------------- 
+pair_style mlip mlip.ini 
+pair_coeff * * 
+
+
+mass 1 107.87
+mass 2 106.42
+
+neighbor 2.0 bin 
+neigh_modify delay 10 check yes 
+ 
+# ---------- Define Settings --------------------- 
+# dump m0 all movie 10 movie.mpg type type size 800 600
+ 
+# ---------- Run --------------------- 
+ velocity all create 1600 382938
+ reset_timestep 0 
+ thermo 100
+ 
+ timestep 0.001
+
+
+fix 1 all nvt temp  1600 3600 0.2 
+
+thermo_style custom step temp pe etotal press vol
+
+run 10
+
+next a
+if "$a < 4" then "jump SELF runlabel"
+
+
+
+

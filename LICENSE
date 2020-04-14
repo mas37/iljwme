@@ -1,0 +1,19 @@
+This Code is distributed under the following terms:
+
+1) This Code or its derivative work will not be used for any purpose other than non-commercial research.
+2) This Code or its derivative work will not be published or otherwise distributed.
+3) The use of this Code should be acknowledged by citing one or more references (at the discretion of the user):
+
+Original MTP potentials:
+[1] A.V. Shapeev, Multiscale Model. Simul., volume 14, pages 1153-1173, 2016.  (doi: 10.1137/15M1054183)
+
+Active learning of MTP:
+[2] E.V. Podryabinkin, A.V. Shapeev, Active Learning of Linearly Parametrized Interatomic Potentials,
+    Computational Materials Science, volume 140, pages 171-180, 2017.  (doi: 10.1016/j.commatsci.2017.07.010)
+
+Multicomponent MTP:
+[3] Konstantin Gubaev, Evgeny V. Podryabinkin, Gus L. W. Hart, Alexander V. Shapeev, 
+    Accelerating high-throughput searches for new alloys with active learning of interatomic potentials,
+    Computational Materials Science, volume 156, pages 148-156, 2019.  (doi: 10.1016/j.commatsci.2017.08.031)
+
+The references will be updated in a newer versions of the Code.
