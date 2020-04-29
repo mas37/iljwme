@@ -62,9 +62,9 @@ public:
 	// Functions calculating gradients w.r.t. coefficients. Required by Maxvol-based selection routines
 	virtual void CalcSiteEnergyGrad(const Neighborhood& nbh, Array1D& out_se_grad);					// Must calculate gradient of site energy w.r.t. coefficients and write them in the second argument.
 	virtual void CalcEnergyGrad(Configuration &cfg, std::vector<double>& out_energy_grad);			// Calculate gradient of energy w.r.t. coefficients and write them in second argument
-	virtual void CalcForceGrad(	const Configuration& cfg,											// Must calculate gradient of the force on ind-th atom w.r.t. coefficients and write them in the third argument
-								const int ind, 
-								std::vector<Vector3>& out_frc_grad);			
+//	virtual void CalcForceGrad(	const Configuration& cfg,											// Must calculate gradient of the force on ind-th atom w.r.t. coefficients and write them in the third argument
+//								const int ind, 
+//								std::vector<Vector3>& out_frc_grad);			
 	virtual void CalcStressesGrads(const Configuration& cfg, Array3D& out_str_grad);				// Must calculate gradient of the stress tensor w.r.t. coefficients and write them in the third argument. Order of indices in out_str_grad: (i,j,k) where i,j are the stress tensor components, k indicates derivative over k-th coefficient of MLIP
 	virtual void CalcEFSGrads(	const Configuration& cfg,											// Must calculate gradients of the energy, all forces and stress tensor w.r.t. coefficients and write them in output parameters. Order of indices in out_frc_grad: (i,j,k) where i is atom index, j is force component (0,1,2), k indicates derivative over k-th coefficient of MLIP. Order of indices in out_str_grad is the same as in CalcStressesGrads(...)
 								Array1D& out_ene_grad,

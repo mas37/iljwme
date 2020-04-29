@@ -50,7 +50,7 @@ void AnyLocalMLIP::CalcSiteEnergyGrad(const Neighborhood& nbh, std::vector<doubl
 }
 
 // Calculate gradient of site energy w.r.t. coefficients and write them in second argument
-void AnyLocalMLIP::CalcForceGrad(const Configuration & cfg, const int ind, std::vector<Vector3>& out_frc_grad)
+/*void AnyLocalMLIP::CalcForceGrad(const Configuration & cfg, const int ind, std::vector<Vector3>& out_frc_grad)
 {
 	out_frc_grad.resize(CoeffCount());
 	FillWithZero(out_frc_grad);
@@ -61,7 +61,6 @@ void AnyLocalMLIP::CalcForceGrad(const Configuration & cfg, const int ind, std::
 	int dir_size = 0;
 	for (int i = 0; i < cfg.size(); i++)
 		dir_size = std::max(dir_size, nbhs[i].count);
-
 	std::vector<Vector3> dir(dir_size);
 
 	for (int i = 0; i < cfg.size(); i++) {
@@ -94,7 +93,7 @@ void AnyLocalMLIP::CalcForceGrad(const Configuration & cfg, const int ind, std::
 			}
 		}
 	}
-}
+}*/
 
 void AnyLocalMLIP::CalcStressesGrads(const Configuration & cfg, Array3D & out_str_grad)
 {
@@ -104,7 +103,10 @@ void AnyLocalMLIP::CalcStressesGrads(const Configuration & cfg, Array3D & out_st
 	// calculating EFS components
 	Neighborhoods nbhs(cfg, CutOff());
 
-	std::vector<Vector3> dir(CoeffCount());
+	int dir_size = 0;
+	for (int i = 0; i < cfg.size(); i++)
+		dir_size = std::max(dir_size, nbhs[i].count);
+	std::vector<Vector3> dir(dir_size);
 
 	for (int i = 0; i < cfg.size(); i++)
 	{
@@ -139,7 +141,10 @@ void AnyLocalMLIP::CalcEFSGrads(const Configuration & cfg,
 	// calculating EFS components
 	Neighborhoods nbhs(cfg, CutOff());
 
-	std::vector<Vector3> dir(CoeffCount());
+	int dir_size = 0;
+	for (int i = 0; i < cfg.size(); i++)
+		dir_size = std::max(dir_size, nbhs[i].count);
+	std::vector<Vector3> dir(dir_size);
 
 	for (int i = 0; i < cfg.size(); i++)
 	{
