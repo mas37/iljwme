@@ -24,3 +24,8 @@ make PREFIX=./ -C OpenBLAS install
 configure --blas=openblas --blas-root=./OpenBLAS/
 make mlp
 ```
+
+## Getting Started
+
+Have a look at `doc/manual/` first. Note that the information there may be outdated.
+For a more up-to-date information, check how `test/examples/` are done.
