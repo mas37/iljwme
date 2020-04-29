@@ -58,7 +58,11 @@ void AnyLocalMLIP::CalcForceGrad(const Configuration & cfg, const int ind, std::
 	// calculating EFS components
 	Neighborhoods nbhs(cfg, CutOff());
 
-	std::vector<Vector3> dir(CoeffCount());
+	int dir_size = 0;
+	for (int i = 0; i < cfg.size(); i++)
+		dir_size = std::max(dir_size, nbhs[i].count);
+
+	std::vector<Vector3> dir(dir_size);
 
 	for (int i = 0; i < cfg.size(); i++) {
 		const Neighborhood& nbh = nbhs[i];
