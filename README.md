@@ -16,7 +16,7 @@ See [LICENSE.md](LICENSE.md)
 For full instructions see [INSTALL.md](INSTALL.md).
 
 You might also be interested in LAMMPS-MLIP interface distributed here:
-gitlab.com/ashapeev/interface-lammps-mlip-2
+[gitlab.com/ashapeev/interface-lammps-mlip-2](gitlab.com/ashapeev/interface-lammps-mlip-2)
 
 
 ## Getting Started
