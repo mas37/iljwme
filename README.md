@@ -15,15 +15,9 @@ See [LICENSE.md](LICENSE.md)
 ## Compile
 For full instructions see [INSTALL.md](INSTALL.md).
 
-Shortcut:
-```bash
-git clone https://github.com/xianyi/OpenBLAS.git 
-make -C OpenBLAS && \
-make PREFIX=./ -C OpenBLAS install
+You might also be interested in LAMMPS-MLIP interface distributed here:
+gitlab.com/ashapeev/interface-lammps-mlip-2
 
-configure --blas=openblas --blas-root=./OpenBLAS/
-make mlp
-```
 
 ## Getting Started
 
