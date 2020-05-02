@@ -1405,9 +1405,24 @@ bool Configuration::LoadNextFromOUTCAR(std::ifstream& ifs,int maxiter)
 		if (ifs.eof())
 			ERROR((string)"Outcar-file parsing error: Can't find string \"aborting loop because EDIFF is reached\""); // remove: 3
 		//Reading number of ionic iterations
-		else if (line.substr(0, 51) == "----------------------------------------- Iteration")
+		else if (line.substr(0, 51) == "----------------------------------------- Iteration") // VASP 5.4.1
 		{
 			line.erase(0, 51);
+
+			std::stringstream stream(line);
+
+			string s = "";
+			char t=(char)0;
+
+			while (t != '(')
+				t = (char)stream.get();
+
+			stream >> iter;
+			
+		}
+		else if (line.substr(0, 49) == "--------------------------------------- Iteration") // VASP 5.4.4
+		{
+			line.erase(0, 49);
 
 			std::stringstream stream(line);
 
@@ -1865,13 +1880,13 @@ bool LoadDynamicsFromOUTCAR(std::vector<Configuration> &db, const std::string& f
 	std::vector<int> ions_per_type;
     bool is_old_vasp = false;
 
-	LoadPreambleFromOUTCAR(ifs, ions_per_type, is_old_vasp);
+	int maxiter = LoadPreambleFromOUTCAR(ifs, ions_per_type, is_old_vasp);
 	MlipException err("");
 	bool caught = false;
 	bool status = false;
     if (is_old_vasp == false) {
 	for (Configuration cfg; ; db.push_back(cfg)) {
-		try { status = cfg.LoadNextFromOUTCAR(ifs); }
+		try { status = cfg.LoadNextFromOUTCAR(ifs, maxiter); }
 		catch (const MlipException &e) {
 			err = e; caught = true;
 		}
