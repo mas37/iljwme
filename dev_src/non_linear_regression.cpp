@@ -38,7 +38,7 @@ void NonLinearRegression::AddLoss(const Configuration & orig)
 		{
 			double wgt = (wgt_rel_forces<=0.0) ?
 						 wgt_eqtn_forces :
-						 wgt_eqtn_forces*wgt_rel_forces / (cfg.force(i).NormSq() + wgt_rel_forces);
+						 wgt_eqtn_forces*wgt_rel_forces / (orig.force(i).NormSq() + wgt_rel_forces);
 
 			if (weighting == "structures")
 				wgt /= cfg.size();
@@ -103,7 +103,7 @@ void NonLinearRegression::AddLossGrad(const Configuration & orig)
 		{
 			double wgt = (wgt_rel_forces<=0.0) ?
 						 wgt_eqtn_forces :
-						 wgt_eqtn_forces*wgt_rel_forces / (cfg.force(i).NormSq() + wgt_rel_forces);
+						 wgt_eqtn_forces*wgt_rel_forces / (orig.force(i).NormSq() + wgt_rel_forces);
 
 			if (weighting == "structures")
 				wgt /= cfg.size();
