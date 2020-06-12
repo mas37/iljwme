@@ -468,16 +468,15 @@ void MTPR_trainer::Train(std::vector<Configuration>& training_set) //with Shapee
 				//cout << num_step << " " << bfgs_f << endl;
 				num_step++;
 
-				if (num_step % 100 == 0)
+				if (num_step % 50 == 1) linf = bfgs_f;
+				if (num_step % 50 == 0)
 				{
 					if ((linf - bfgs_f) / bfgs_f < linstop)
 					{
 						converge = true;
-						logstrm1 << "BFGS ended due to small decr. in 100 iterations" << endl;
+						logstrm1 << "BFGS ended due to small decr. in 50 iterations" << endl;
 						MLP_LOG("dev", logstrm1.str()); logstrm1.str("");
 					}
-
-					linf = bfgs_f;
 				}
 
 				if (num_step >= max_step_count)

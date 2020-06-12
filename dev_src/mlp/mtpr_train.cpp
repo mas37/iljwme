@@ -131,7 +131,7 @@ void Train_MTPR(std::vector<std::string>& args, std::map<std::string, std::strin
 	if (opts["trained-pot-name"] != "")
 		trained_fnm = opts["trained-pot-name"];
 
-	double bfgs_conv_tol = 1e-8;
+	double bfgs_conv_tol = 1e-3;
 	if (opts["bfgs-conv-tol"] != "")
 		bfgs_conv_tol = stod(opts["bfgs-conv-tol"]);
 
