@@ -384,7 +384,7 @@ bool DevCommands(const std::string& command, std::vector<std::string>& args, std
 
 	} END_COMMAND;
 
-	BEGIN_COMMAND("invert-stress",
+	BEGIN_UNDOCUMENTED_COMMAND("invert-stress",
 		"changes sign of stress in a configuration database",
 		"mlp invert-stress db.cfg:\n"
 		"changes sign of stress in all configurations of db.cfg"

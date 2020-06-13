@@ -90,7 +90,7 @@ bool Commands(const string& command, vector<string>& args, map<string, string>& 
 		}
 	}
 
-	BEGIN_COMMAND("run",
+	BEGIN_UNDOCUMENTED_COMMAND("run",
 		"reads configurations from a database and processes them",
 		"mlp run settings-file [options]:\n"
 		"reads configurations from a database and processes them according to settings-file.\n"
