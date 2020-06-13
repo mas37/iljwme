@@ -353,6 +353,37 @@ bool DevCommands(const std::string& command, std::vector<std::string>& args, std
 
 	} END_COMMAND;
 
+	BEGIN_COMMAND("calc-efs",
+		"calculates energies, forces, and stresses (efs) of configurations",
+		"mlp calc-efs pot.mtp in.cfg out.cfg:\n"
+		"calculates efs of configurations in in.cfg file,\n"
+		"writes configurations with efs calculated in out.cfg\n"
+		) {
+
+		if (args.size() != 3) {
+			std::cout << "\tError: 3 arguments required\n";
+			return 1;
+		}
+
+		const string mtp_filename = args[0];
+		const string input_filename = args[1];
+		const string output_filename = args[2];
+
+		MLMTPR mtpr(mtp_filename);	
+
+		ifstream ifs(input_filename, std::ios::binary);
+		ofstream ofs(output_filename, std::ios::binary);
+		Configuration cfg;
+		while (cfg.Load(ifs)) {
+			mtpr.CalcEFS(cfg);
+			cfg.Save(ofs);
+		}
+
+		ifs.close();
+		ofs.close();
+
+	} END_COMMAND;
+
 	BEGIN_COMMAND("invert-stress",
 		"changes sign of stress in a configuration database",
 		"mlp invert-stress db.cfg:\n"
