@@ -36,56 +36,57 @@ void MLIP_Wrapper::SetUpMLIP()
 #endif
 
 MLMTPR* p_mtpr = nullptr;
-
-	if (mlip_type == "mtp")
-	{
-		p_mlip = new MTP(mlip_fnm);
-		Message("Linearly parametrized MTP instantiated");
-	}
-	else if (mlip_type == "mtpr")
-	{
+//
+//	if (mlip_type == "mtp")
+//	{
+//		p_mlip = new MTP(mlip_fnm);
+//		Message("Linearly parametrized MTP instantiated");
+//	}
+//	else if (mlip_type == "mtpr")
+//	{
 		p_mlip = p_mtpr = new MLMTPR(mlip_fnm);
-		Message("Multicomponent non-linearly parametrized MTP instantiated");
-	}
-#ifdef MLIP_DEV
-	else if (mlip_type == "sw")
-	{
-		//p_mlip = p_sw = new StillingerWeberRadialBasis(mlip_fnm);
-		Message("Multicomponent Stillinger-Weber instantiated");
-		if (enable_learn)
-			ERROR("Incorrect settings. Active Learning for SW has not been implemented yet!");
-		if (enable_select) { 
-			if (slct_frc_wgt!=0 || slct_str_wgt!=0 || slct_nbh_wgt!=0) {
-				ERROR("Incorrect settings. Selection for SW has been implemented only for the \
-						case slct_ene_wgt != 0");
-			}
-		}
-	}
-#endif
-	else if (mlip_type == "void")
-	{
-		if (p_abinitio != nullptr)
-			Warning("No MLIP features activated");
-		else
-			ERROR("Incorrect settings. Neither MLIP nor ab initio model specified");
-
-		enable_EFScalc = false;
-		enable_learn = false;
-		enable_select = false;
-		monitor_errs = false;
-		cfgs_fnm.clear();
-
-		return;
-	}
-	else
-		ERROR("Improper MLIP type specified. (\"mtp\" or \"mtpr\" is required)");
+//		Message("Multicomponent non-linearly parametrized MTP instantiated");
+//	}
+//#ifdef MLIP_DEV
+//	else if (mlip_type == "sw")
+//	{
+//		//p_mlip = p_sw = new StillingerWeberRadialBasis(mlip_fnm);
+//		Message("Multicomponent Stillinger-Weber instantiated");
+//		if (enable_learn)
+//			ERROR("Incorrect settings. Active Learning for SW has not been implemented yet!");
+//		if (enable_select) { 
+//			if (slct_frc_wgt!=0 || slct_str_wgt!=0 || slct_nbh_wgt!=0) {
+//				ERROR("Incorrect settings. Selection for SW has been implemented only for the \
+//						case slct_ene_wgt != 0");
+//			}
+//		}
+//	}
+//#endif
+//	else if (mlip_type == "void")
+//	{
+//		if (p_abinitio != nullptr)
+//			ERROR("No MLIP features activated");
+//		else
+//			ERROR("Incorrect settings. Neither MLIP nor ab initio model specified");
+//
+//		enable_EFScalc = false;
+//		enable_learn = false;
+//		enable_select = false;
+//		monitor_errs = false;
+//		cfgs_fnm.clear();
+//
+//		return;
+//	}
+//	else
+//		ERROR("Improper MLIP type specified. (\"mtp\" or \"mtpr\" is required)");
 
 	if (!enable_EFScalc && !enable_learn && !enable_select) // direct ab initio calculation. No reading of MTP-file is required
 	{
-		if (p_abinitio != nullptr)
-			Warning("No MLIP activated. Ab-initio model and driver will be linked directly");
-		else
-			ERROR("Incorrect settings. Neither MLIP nor ab initio model specified");
+//		if (p_abinitio != nullptr)
+//			Warning("No MLIP activated. Ab-initio model and driver will be linked directly");
+//		else
+//			ERROR("Incorrect settings. Neither MLIP nor ab initio model specified");
+			ERROR("Incorrect settings. MTP is not activated.");
 	}
 
 
@@ -240,7 +241,7 @@ MLIP_Wrapper::MLIP_Wrapper(const Settings& settings)
 	// Initialize abinitio, temporary code
 	const string abinitio_type = settings["abinitio"];
 	if (abinitio_type == "null" || abinitio_type == "") {
-		Message("No abinitio model is set");
+//		Message("No abinitio model is set");
 		p_abinitio = nullptr;
 	}
 	else if (abinitio_type == "void" || abinitio_type == "") {

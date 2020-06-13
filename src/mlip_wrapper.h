@@ -20,9 +20,9 @@ class MLIP_Wrapper : public AnyPotential, protected InitBySettings //, public Lo
   static const char* tagname;                           // tag name of object
   private:
 	// settings	initialized by default values
-	std::string mlip_type = "void";			// MLIP type
+	std::string mlip_type = "mtpr";			// MLIP type
 	std::string mlip_fnm = "";				// file name, MLIP will be loaded from. MLIP is not required if empty
-	bool enable_EFScalc = false;			// if true MLIP will calculate EFS
+	bool enable_EFScalc = true;			// if true MLIP will calculate EFS
 	bool enable_learn = false;				// if true MLIP fitting will be performed
 	std::string mlip_fitted_fnm = "";		// filename for writing MLIP after fitting. Saving mlip is not required if empty
 	double fit_ene_wgt = 1.0;				// energy equation weight in fitting procedure
@@ -65,8 +65,7 @@ class MLIP_Wrapper : public AnyPotential, protected InitBySettings //, public Lo
     {
 		// new settings:
 		// old settings:
-        MakeSetting(mlip_type,          "mlip");                 
-        MakeSetting(mlip_fnm,           "mlip:load-from");       
+        MakeSetting(mlip_fnm,           "mtp-filename");       
         MakeSetting(enable_EFScalc,     "calculate-efs");        
         MakeSetting(enable_learn,       "fit");                  
         MakeSetting(mlip_fitted_fnm,    "fit:save");             
