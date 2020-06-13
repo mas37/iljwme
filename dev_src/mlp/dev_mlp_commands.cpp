@@ -356,8 +356,8 @@ bool DevCommands(const std::string& command, std::vector<std::string>& args, std
 	BEGIN_COMMAND("calc-efs",
 		"calculates energies, forces, and stresses (efs) of configurations",
 		"mlp calc-efs pot.mtp in.cfg out.cfg:\n"
-		"calculates efs of configurations in in.cfg file,\n"
-		"writes configurations with efs calculated in out.cfg\n"
+		"calculates energies, forces, and stresses (efs) of configurations from in.cfg and\n"
+		"writes configurations with calculated efs to out.cfg\n"
 		) {
 
 		if (args.size() != 3) {
