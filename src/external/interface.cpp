@@ -78,10 +78,10 @@ void MLIP_init(const char * settings_filename,	// settings filename
 	// TODO: fix
 	if (settings["mlip"] == "sw") mode=1;
 
-	if (mode)
-		Message("MLIP has been linked in configuration mode");
-	else
-		Message("MLIP has been linked in neighborhoods mode");
+	//if (mode)
+	//	Message("MLIP has been linked in configuration mode");
+	//else
+	//	Message("MLIP has been linked in neighborhoods mode");
 	
 	if (mode &&
 		settings["abinitio"] == "lammps")	// LAMMPS used for EFS calculation; 4 is the LAMMPS abinitio potential
@@ -276,7 +276,7 @@ void MLIP_finalize()
 	MLIP_wrp = nullptr;
 	comm_conf.destroy();
 
-	Message("MLIP link terminated\n");
+	//Message("MLIP link terminated\n");
 	
 	if (logfilestream.is_open())
 		logfilestream.close();
