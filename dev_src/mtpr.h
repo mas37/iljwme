@@ -62,11 +62,11 @@ public:
 	void CalcBasisFuncsDers(const Neighborhood& Neighborhood);		//Linear basic functions and their derivatives calculation
 	void CalcEFSComponents(Configuration& cfg);						//Calculate the components for linear regression matrix
 	void CalcEComponents(Configuration& cfg);			//Calculate the components for linear regression matrix
-	void CalcEFS(Configuration& cfg) override
-	{
-		AnyLocalMLIP::CalcEFS(cfg);
-		cfg.features["EFS_by"] = "MultiMTP" + to_string(alpha_count);
-	}
+//	void CalcEFS(Configuration& cfg) override
+//	{
+//		AnyLocalMLIP::CalcEFS(cfg);
+//		cfg.features["EFS_by"] = "MultiMTP" + to_string(alpha_count);
+//	}
 
 	void AccumulateCombinationGrad(	const Neighborhood& nbh,
 									std::vector<double>& out_grad_accumulator,
