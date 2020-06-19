@@ -109,18 +109,18 @@ public:
 	inline double epa_rmsabs() { return sqrt(epa_all.sum.dltsq / (epa_all.count + 1.0e-300)); }		// root-mean-squred deviation of energy per atom
 	inline double epa_aveabs() { return epa_all.sum.delta / (epa_all.count + 1.0e-300); }			// average deviation of energy per atom
 	inline double epa_averel() { return epa_all.sum.reltv / (epa_all.count + 1.0e-300); }			// relative deviation of energy per atom
-	inline double frc_aveabs() { return frc_all.sum.delta / (frc_all.count + 1.0e-300); }			// average absolute deviation of forces
-	inline double frc_rmsabs() { return sqrt(frc_all.sum.dltsq / (frc_all.count + 1.0e-300)); }		// root-mean-squred deviation of forces
-	inline double frc_averel() { return frc_all.sum.reltv / (frc_all.count + 1.0e-300); }			// average relative force error
+	inline double frc_aveabs() { return frc_all.sum.delta / (3*frc_all.count + 1.0e-300); }			// average absolute deviation of forces
+	inline double frc_rmsabs() { return sqrt(frc_all.sum.dltsq / (3*frc_all.count + 1.0e-300)); }		// root-mean-squred deviation of forces
+	inline double frc_averel() { return frc_all.sum.delta / (frc_all.sum.value + 1.0e-300); }			// average relative force error
 	inline double frc_rmsrel() { return sqrt(frc_all.sum.dltsq / (frc_all.sum.valsq + 1.0e-300)); }	// root-mean-squred deviation of forces divided by root-mean-squred force 
-	inline double str_rmsabs() { return sqrt(str_all.sum.dltsq / (str_all.count + 1.0e-300)); }		// root-mean-squred stress deviation
+	inline double str_rmsabs() { return sqrt(str_all.sum.dltsq / (9*str_all.count + 1.0e-300)); }		// root-mean-squred stress deviation
 	inline double str_rmsrel() { return sqrt(str_all.sum.dltsq / (str_all.sum.valsq + 1.0e-300)); }	// root-mean-squred stress deviation divided by root-mean-squred  stress 
-	inline double str_averel() { return str_all.sum.reltv / (str_all.count + 1.0e-300); }			// average relative stress 
-	inline double str_aveabs() { return str_all.sum.delta / (str_all.count + 1.0e-300); }			// average absolute stress 
-	inline double vir_rmsabs() { return sqrt(vir_all.sum.dltsq / (vir_all.count + 1.0e-300)); }		// root-mean-squred viriral stress deviation
+	inline double str_averel() { return str_all.sum.delta / (str_all.sum.value + 1.0e-300); }			// average relative stress 
+	inline double str_aveabs() { return str_all.sum.delta / (9*str_all.count + 1.0e-300); }			// average absolute stress 
+	inline double vir_rmsabs() { return sqrt(vir_all.sum.dltsq / (9*vir_all.count + 1.0e-300)); }		// root-mean-squred viriral stress deviation
 	inline double vir_rmsrel() { return sqrt(vir_all.sum.dltsq / (vir_all.sum.valsq + 1.0e-300)); }	// root-mean-squred viriral stress deviation divided by root-mean-squred  stress 
-	inline double vir_averel() { return vir_all.sum.reltv / (vir_all.count + 1.0e-300); }			// average relative viriral stress 
-	inline double vir_aveabs() { return vir_all.sum.delta / (vir_all.count + 1.0e-300); }			// average absolute viriral stress 
+	inline double vir_averel() { return vir_all.sum.delta / (vir_all.sum.value + 1.0e-300); }			// average relative viriral stress 
+	inline double vir_aveabs() { return vir_all.sum.delta / (9*vir_all.count + 1.0e-300); }			// average absolute viriral stress 
 
 	void MPI_Synchronize();
 
