@@ -1,0 +1,27 @@
+Release 2020-0?-??:
+
+1) Training errors: the force errors and stress errors are now computed
+component-wise (not vector- or tensor-wise). This means, e.g., that the
+RMS force error is sqrt(3) times smaller and MAE force error is 3 times
+smaller.
+
+2) mlip.ini file has been changed. The valid mlip.ini files look like either
+
+mtp-filename                    pot.mtp
+select                          TRUE
+  select:site-en-weight           0.0
+  select:energy-weight            1.0
+  select:force-weight             0.0
+  select:stress-weight            0.0
+  select:threshold                2.0
+  select:threshold-break          10.0
+  select:save-selected            preselected.cfg
+  select:load-state               state.als
+
+or simply
+
+mtp-filename                    pot.mtp
+select                          FALSE
+
+3) minor updates and bugfixes
+
