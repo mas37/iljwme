@@ -77,7 +77,8 @@ You should then configure MLIP with
 ```bash
 make libinterface
 ```
-
+This creates `lib/lib_mlip_interface.a` which should be used when building
+other packages embedding MLIP.
 
 ## TESTING THE MLIP BUILD
 The build can be tested by running:
