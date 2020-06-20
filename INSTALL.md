@@ -79,6 +79,9 @@ make libinterface
 ```
 This creates `lib/lib_mlip_interface.a` which should be used when building
 other packages embedding MLIP.
+The interface with MLIP is avaiable
+[here](https://gitlab.com/ashapeev/interface-lammps-mlip-2/)
+under a GPL license.
 
 ## TESTING THE MLIP BUILD
 The build can be tested by running:
