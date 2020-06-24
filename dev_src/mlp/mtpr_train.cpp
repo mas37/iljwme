@@ -231,7 +231,7 @@ void Train_MTPR(std::vector<std::string>& args, std::map<std::string, std::strin
 						i*rb_size + j] = 5e-7*uniform(generator);
 
 					mtpr.regression_coeffs[k*mtpr.radial_func_count*rb_size +
-						i*rb_size + min(i, rb_size - 1)] = 1e-7*(1 + uniform(generator));
+						i*rb_size + min(i, rb_size - 1)] = 5e-7 * uniform(generator);
 				}
 		}
 
