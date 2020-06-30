@@ -59,9 +59,8 @@ manual}
 \maketitle
 
 \begin{abstract}
-	MLIP is a software package implementing several machine learning interatomic potentials (aka force fields) for calculating the energy, forces and stresses of atomic configurations.
-	Such potentials seek to combine the accuracy of quantum mechanics with the computational efficiency of the empirical potentials.
-	%The structure and algorithm of the MLIP are described in \cite{Shapeev2016-MTP}
+	\texttt{MLIP} is a software package implementing moment tensor potentials for calculating the energy, forces and stresses of atomic configurations.
+	MTP belongs to the class of machine-learning potentials that seek to combine the accuracy of quantum mechanics with the computational efficiency of the empirical potentials.
 \end{abstract}
 
 
@@ -71,28 +70,29 @@ manual}
 
 \section{Some important info}
 \subsection{Status of this document}	
-This manual was written for the first (one-component) version of this software and has not been updated much.
+This manual was written for the first (one-component) version of this software and is in the process of updating for multiple components.
 If something written here does not work then please refer to \texttt{test/examples/} to see how things should work.
 
 \subsection{Licensing and distribution}	
-This package is developed by the group of Alexander Shapeev (\texttt{a.shapeev@skoltech.ru}) at Skoltech (Skolkovo Institute of Science and Technology), Moscow, Russia.
+This package is developed by the group of Alexander Shapeev at Skoltech (Skolkovo Institute of Science and Technology), Moscow, Russia.
 To use this software you are obliged, in short, not to distribute it, to use it only for noncommercial research and to acknowledge its use by properly citing the work.
 See the \texttt{LICENSE} file for the details.
+The access to the code can be requested at \url{https://forms.gle/P7EUbrF3gZNwEK3E7}.
 
-\subsection{A Quickstart guide (aka TL;DR)}
+\subsection{A Quickstart guidea}
 
 You like pushing buttons but not reading long texts?
 Try:
 \begin{itemize}
 \item Download the source through git by executing
 \\[0.5em]
-$\mathstrut$~~~~\texttt{git clone \url{http://gitlab.ru/shapeev/mlip-2.git mlip}}
+$\mathstrut$~~~~\texttt{git clone \url{https://gitlab.com/ashapeev/mlip-2.git}}
 \\[0.5em]
 This will create the \texttt{mlip/} folder with the sources.
 
-\item Install: Execute \texttt{make mlp} in the \texttt{make/} folder to build the \texttt{mlp} tool. Run the shell script in \texttt{make/LAMMPS/} to install MLIP with LAMMPS. The \texttt{lmp\_serial} and \texttt{lmp\_mpi} binaries will be created in the \texttt{LAMMPS/src/} folder and copied over to the \texttt{make/} folder.
-
-\item Try out examples, see \texttt{doc/examples/readme.txt}.
+\item Install: Execute \texttt{make mlp} in the main folder to build the \texttt{mlp} binary.
+To compile the library to be used for interfacing with other codes such as LAMMPS, execute \texttt{make libinterface} to build \texttt{lib\_mlip\_interface.a}.
+To build LAMMPS, use the interface available at \url{https://gitlab.com/ashapeev/interface-lammps-mlip-2/}.
 \end{itemize}
 
 \section{Theory}\label{sec:theory}
