@@ -77,7 +77,8 @@ You should then configure MLIP with
 ```bash
 make libinterface
 ```
-
+The LAMMPS interface itself is avaiable at
+https://gitlab.com/ashapeev/interface-lammps-mlip-2/
 
 ## TESTING THE MLIP BUILD
 The build can be tested by running:
