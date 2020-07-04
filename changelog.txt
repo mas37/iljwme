@@ -23,5 +23,6 @@ or simply
 mtp-filename                    pot.mtp
 select                          FALSE
 
-3) minor updates and bugfixes
+3) doc/manual/ updated, test/examples/ updated
 
+4) minor updates and bugfixes
