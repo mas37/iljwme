@@ -1,2 +1,3 @@
-The manual may be outdated, if something does not work - maybe it is because the manual is not complete.
-In this case you may contact the developer, email "shapeev+mlip-2@gmail.com"
+manual/ - folder with a manual
+
+Usage examples can be found at test/examples/

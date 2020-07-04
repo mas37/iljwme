@@ -21,5 +21,6 @@ You might also be interested in LAMMPS-MLIP interface distributed here:
 
 ## Getting Started
 
-Have a look at `doc/manual/` first. Note that the information there may be outdated.
-For a more up-to-date information, check how `test/examples/` are done.
+Have a look at `doc/manual/` first.
+
+Check the usage examples at `test/examples/`
