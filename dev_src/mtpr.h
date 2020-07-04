@@ -119,7 +119,7 @@ public:
 
 		if (linear_coeffs.size() == alpha_count)
 		{
-			for (int i = 0; i <= max_comp; i++) // CYKA BLYAT!!! is there a mistake: all regression_coeffs[radial_size + i] are set to the same number!!!
+			for (int i = 0; i <= max_comp; i++)
 				regression_coeffs[radial_size + i] = linear_coeffs[0];				//constants for component's site energy shift
 
 			for (int i = 1; i < alpha_count; i++)
