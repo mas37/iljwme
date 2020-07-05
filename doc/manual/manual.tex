@@ -70,8 +70,8 @@ manual}
 
 \section{Some important info}
 \subsection{Status of this document}	
-This manual was written for the first (one-component) version of this software and is in the process of updating for multiple components.
-If something written here does not work then please refer to \texttt{test/examples/} to see how things should work.
+This is an intermediate version of the report, it has some broken references, etc.
+Please do not report them until the status of this document changes.
 
 \subsection{Licensing and distribution}	
 This package is developed by the group of Alexander Shapeev at Skoltech (Skolkovo Institute of Science and Technology), Moscow, Russia.
@@ -79,11 +79,13 @@ To use this software you are obliged, in short, not to distribute it, to use it 
 See the \texttt{LICENSE} file for the details.
 The access to the code can be requested at \url{https://forms.gle/P7EUbrF3gZNwEK3E7}.
 
-\subsection{A Quickstart guidea}
+\subsection{A Quickstart guide}
 
 You like pushing buttons but not reading long texts?
 Try:
 \begin{itemize}
+\item Fill in registration form and agree or disagree with the term at \url{https://forms.gle/P7EUbrF3gZNwEK3E7}. If you disagree, you can ignore the rest of this document.
+\item Wait for a confirmation email
 \item Download the source through git by executing
 \\[0.5em]
 $\mathstrut$~~~~\texttt{git clone \url{https://gitlab.com/ashapeev/mlip-2.git}}
@@ -97,7 +99,7 @@ To build LAMMPS, use the interface available at \url{https://gitlab.com/ashapeev
 
 \section{Theory}\label{sec:theory}
 
-You are advised to read Section \ref{sec:theory:basic}, but you can skip the rest of Section \ref{sec:theory} if you have read \cite{Shapeev2016-MTP,podryabinkin2017-AL,gubaev2018-mtp-multicomponent}.
+You are advised to read Section \ref{sec:theory:basic}, but instead of the rest of Section \ref{sec:theory} you are advised to read the recent preprint +++reference will be pasted once it is online+++
 
 \subsection{Basic terms and definitions}\label{sec:theory:basic}
 
@@ -107,12 +109,12 @@ You are advised to read Section \ref{sec:theory:basic}, but you can skip the res
 	\item The empirical (classical) interatomic potentials, such as Lennard-Jones or EAM, will be specifically referred to as the \emph{empirical potentials}.
 	
 	\item \emph{Ab initio model} (AIM) means any interatomic interaction model or potential which is considered to reproduce sufficiently accurately the behavior of the real atomic systems. Such models are typically computationally expensive. The main examples are Density Functional Theory (DFT), Orbital-free DFT, Hartree-Fock, etc.
-	This package allows for using LAMMPS as an ab initio model.
+	You can, however, use LAMMPS or any other classical atomistic simulation code as an ab initio model.
 	
-	\item We will call an atomistic \emph{configuration} a system with $N$ atoms described by a collection of their types (presently, MLIP handles configurations with only one type, i.e, single-component configurations), their positions, and the supercell given by three lattice vectors ($L = \big(l_1 \,\, l_2 \,\, l_3\big)\in{\mathbb R}^{3\times 3}$).
+	\item We will call an atomistic \emph{configuration} a system with $N$ atoms described by a collection of their types, their positions, and the supercell given by three lattice vectors ($L = \big(l_1 \,\, l_2 \,\, l_3\big)\in{\mathbb R}^{3\times 3}$).
 	A configuration is typically denoted by $x$.
 	The supercell, thus, defines the periodic boundary conditions.
-	A very large supercell can be given to simulate non-periodic boundary conditions.
+	A very large supercell can be used to simulate non-periodic boundary conditions.
 	
 	\item The \emph{neighborhood} of atom $i$, $1\leq i\leq m$, is defined as a collection (tuple) of vectors pointing from atom $i$ to all the atoms and their periodic extensions, excluding the atom itself, that are not farther than $R_{\rm cut}$ (inside a cutoff sphere).
 	
@@ -238,49 +240,30 @@ A simple atomistic simulation with a trained potential (see Figure \ref{fig:diag
 Typically, this is done through LAMMPS.
 
 \item[(c)]
-A learning-on-the-fly type of simulation (see Figure \ref{fig:diagrams:lotf}).
+A active learning type of simulation (see Figure \ref{fig:diagrams:lotf}).
 This can be done both, through LAMMPS and \texttt{mlp run}.
 \end{itemize}
 
-In fact, the scenario (c) encompasses all the other scenarios (at least in the serial version of MLIP).
-For example, (b) corresponds to (c) when Potential decides not to do any ab initio calculations, while (a) corresponds to (c) when Driver=``reading from a database'' and AIM=``preserve EFS as read from the database''.
+%In fact, the scenario (c) encompasses all the other scenarios (at least in the serial version of MLIP).
+%For example, (b) corresponds to (c) when Potential decides not to do any ab initio calculations, while (a) corresponds to (c) when Driver=``reading from a database'' and AIM=``preserve EFS as read from the database''.
 
 More details are given in Section \ref{sec:aim}.
 
 \section{Installation} \label{sec:install}
 
-MLIP uses OpenBLAS (\url{http://www.openblas.net}) as a static library and is distributed as a part of this package (namely, OpenBLAS v.0.2.19 in the \texttt{blas/} folder). MLIP's makefile is configured to build and link to it automatically; if you want to link to your version of BLAS (for any reason) you should modify the makefile accordingly. 
-
-MLIP can be build and used (1) as stand-alone package; and (2) as a part of LAMMPS. 
-
-
-\subsection{Building as a stand-alone package}\label{sec:install:mlp} 
-
-Let \texttt{MLIP/} be a directory with MLIP sources pulled from \url{http://gitlab.skoltech.ru/shapeev/mlip}. 
-
-\begin{enumerate}
-	\item Specify your C++ compiler in the makefile:
-	
-		\subitem In the makefile (located in \texttt{MLIP/make/}) specify the compiler supporting the \texttt{C++11} standard (in a line beginning with ``\texttt{CC =}''). The default is \texttt{g++}.
-	
-	\item In the directory \texttt{MLIP/make/} build MLIP by executing \texttt{make mlp}.
-	The executable \texttt{mlp} should then appear in the same directory.
-\end{enumerate}
-
-\subsection{Building on Windows}
-
-Visual Studio projects of MLIP are available in \texttt{MLIP/dev/} folder.
-
+MLIP can use either a built-in BLAS or Intel MKL, or OpenBLAS (\url{http://www.openblas.net}) as a static library and is distributed as a part of this package (namely, OpenBLAS v.0.2.19 in the \texttt{blas/} folder). Use the \texttt{./configure} script to create a configuration.
+Refer to the \texttt{INSTALL.md} file for more details.
 
 \section{Usage examples} \label{Using}
 
-The examples demonstrate the most frequently used routines. Each example contains a brief description in the \texttt{readme.txt} file, the input files, the settings file \texttt{mlp.ini} and the expected output in the \texttt{sample\_out} folder.
+The examples demonstrate the most frequently used routines.
+All examples are available in \texttt{MLIP/test/examples/}.
+Each example contain the launching script \texttt{test.sh}, the input files and the expected output in the \texttt{sample\_out} folder.
 The output (normally) is written to the \texttt{out/} folder.
-All examples are available in \texttt{MLIP/doc/examples/}.
 
 \section{MLIP file formats}
 
-\subsection{Internal format of configuration files}\label{cfg-file}
+\subsection{CFG file}\label{cfg-file}
 
 MLIP supports two internal formats for storing configurations in database files, typically having the ``\texttt{.cfg}'' extension: textual and binary.
 We recommend using the binary format when the speed of input/output operations is critical.
@@ -361,237 +344,128 @@ After \texttt{BEGIN\_CFG} several compulsory and optional fields follow. Bellow 
 \end{enumerate}
 
 
-\subsection{MTP file}\label{MTPfile}
-
-The functional form of MTP and, optionally, the parameters are encoded in the \texttt{.mtp} files.
-% MLIP is able to handle files of this type constructing machine representation of the MTP. Using machine learning potentials is possible after loading from the appropriate file (it also possible to save the potential after fitting).
-MTPs may differ by:
-\begin{itemize}
-	\item particular basis functions of the atomic environment;
-	\item the number of basis functions;
-	\item the minimal allowed interatomic distance;
-	\item the cut-off radius;
-	\item values of the parameters.
-\end{itemize}
-Some of these properties can be seen directly in an \texttt{.mtp} file, and the minimal and cutoff distances can be edited directly (if you do it you have to re-train the potential).
-Fitted MTPs can be distinguished from the non-fitted ones by the presence of the ``\texttt{moment\_coeffs}'' string followed by the list of parameters in the \texttt{.mtp} file.
-
-\subsection{Settings file}
-MLIP can be configured to work with external codes, learn on the fly, etc.
-These settings are the given in the settings file (typically \texttt{mlip.ini}) and are described in Section \ref{Settings}.
 
 
-\section{A driver-potential-AIM framework}\label{sec:aim}
+\subsection{MTP file}\label{sup:mlip:mtp}
 
-Many use cases fall into the driver-potential-ab initio model framework as described below.
-The interaction between an atomistic simulation (driver) and MLIP can be viewed as the following data exchange (according to the scheme shown in Fig.~\ref{fig:diagrams:lotf}): 
-\begin{enumerate}
-	\item the driver generates a configuration and passes it to the model;
-	\item the model optionally queries EFS for this configuration from the ab initio model;
-	\item the model calculates EFS for this configuration and passes it to the driver;
-	\item the driver processes EFS data from the model and generates new (or modify in some way) the configuration and repeats the first step.
-\end{enumerate}
+MTP file encodes a certain potential allowing for calculation energy, forces, and stresses of a configuration.
 
-This scheme obviously describes the plain atomistic simulation scenario (with no communication between MLIP and ab initio model) and the learning-on-the-fly scenario.
-Fitting and active learning from the database are also described by this scheme when the driver simply reads configurations from a database while the ab initio model simply returns the EFS data that are read from the database.
-This point of view unifies many typical operations with configurations and machine learning potentials into the general scheme shown in Figure \ref{fig:diagrams:lotf}. 
-
-The particular operational mode of MLIP is determined from the input settings file. The scope of the main operations with configurations and machine learning potentials determining the mode are listed in Section~\ref{Capabilities}, the structure of the settings file is described in Section~\ref{Settings}. 
-
-%\begin{figure}[htbp]
-%	\centering
-%	\includegraphics[width=2in]{figs/Diagram.pdf}
-%	\caption{ General scheme of MLIP functioning: MLIP receives configuration from the driver, process it according with the set operating mode, optionally query EFS data for this configuration from the ab initio model (it can be needed, for example, for training the potential or calculation of approximation errors) and returns the EFS to the driver. 
-%	Driver considers MLIP as the interatomic interaction model (treated as a blackbox) for EFS calculation. }
-%	\label{fig:Diagram}
-%\end{figure}
-
-Generally the driver is some external package which uses MLIP as interatomic interaction model, however MLIP has two embedded drivers: (1) reading configurations from a database file and (2) relaxation (Section~\ref{internal_drivers}). When MLIP is operating under external driver it should be compiled as a part of the package providing that driver. This version of MLIP distributive provides an interface to LAMMPS package (see Section~\ref{sec:install} describing compiling the joint software and Section~\ref{lammps_drivers} describing MLIP usage from LAMMPS). 
-
-MLIP also supports working with a number of internal and external EFS calculators:
-\begin{enumerate}
-	\item DFT by VASP (external), see Section~\ref{abinitio} for more details;
-	\item any empirical potential available in LAMMPS (external) described in the Section~\ref{abinitio};
-	\item Lennard-Jones potential, usually used for testing purposes (internal);
-	\item internal dummy EFS ``calculator'', keeping the EFS data provided with the configurations in a database file;
-	\item another well-trained machine learning potential, which can be used, for example, for the fitting of ``light'' potentials (internal).
-\end{enumerate}
-Communication between MLIP and external EFS calculators is implemented through the exchange of files. Internal AIMs are set in the settings file (details of configuring are given in Section~\ref{abinitio}).
-
-In addition, MLIP provides a set of tools for self-testing, converting files into the ``.cfg'' format (for more details about the format see Section~\ref{cfg-file}), parallel MTP fitting and parallel error calculation. These tools can be executed from the command line. All tools are described in a detail in Section~\ref{utils}.
-
-\subsection{Capabilities of MLIP}\label{Capabilities}
-
-MLIP is a multifunctional tool communicating with a driver and an AIM as shown in Fig.\ \ref{fig:diagrams}.
-A particular operational mode is fully determined by the combination of the following options (each can be enabled or disabled independently from others).
-\begin{itemize}
-	\item[O1.] Calculation EFS for the configurations provided by the driver.
-	\item[O2.] Learning on the configurations (EFS for these configurations are queried from the ab initio model).
-	\item[O3.] Active selection of the configurations provided by driver;
-	\item[O4.] Comparison of EFS calculated by the potential and the AIM and accumulation of the average errors of approximation;
-	\item[O5.] Writing the processed configurations to a file (together with the EFS that are passed to the driver);
-	\item[O6.] Writing the log with the following information: the total number of configurations processed to the moment, the number of ab initio and MTP calculations of EFS.
-\end{itemize}
-All these options also have their own settings and parameters (that are described in detail in Section~\ref{Settings}).
-Table~\ref{tab:regimes} presents the most important scenarios that are defined by the combination of O1, O2 and O3. Options O4, O5, O6 provide the scenarios 1--8 from Table~\ref{tab:regimes} with the additional functionality but do not change the scenarios themselves.
-
-\begin{table}[htbp]	\small
-	\centering
-	\caption{Description of the main scenarios defined by the combination of O1, O2 and O3 options}
-	\medskip
-	\label{tab:regimes}
-	\begin{tabular}{c|c|c|c|p{.60\textwidth}}
-		     & Calc. &       &        &  \\
-		Mode & EFS   & Learn & Select &  \\
-		     & (O1)  & (O2)  & (O3)   & Scenario description\\
-		\hline
-		1&no&no&no& EFS is calculated by AIM. No action is performed with MTP.\\[.5em]
-		
-		2&yes&no&no& Calculation mode. MLIP just calculates EFS by MTP for each configuration provided by the driver.\\[.5em]
-		
-		3&no&yes&no& Learning mode.
-		MLIP fits MTP (according to the fitting settings) on the all the configurations provided by driver.
-		The training is done on EFS provided by the AIM.
-		The same EFS are returned to the driver.
-		\\[.5em]
-		
-		4&no&no&yes& Selection mode.
-		MLIP just selects (according to the selection settings) a D-optimal set of the configurations among all those provided by driver.
-		EFS returned to the driver depend on the setting \texttt{mlip:select:efs\_ignored}: if false then the EFS are taken from the AIM, otherwise EFS have unpredictable values (see Section~\ref{Settings} for more details).\\[.5em]
-		
-		5&yes&yes&no& Learning and calculation mode. The same as 3,
-		but the EFS are calculated by MTP and returned to the driver.\\[.5em]
-		
-		6&yes&no&yes& Selection and calculation mode. The same as 4, but the EFS are calculated by MTP and returned to the driver.\\[.5em]
-		
-		7&no&yes&yes& Active learning mode.
-		MTP is fitted on a D-optimal training set (according to the selection and fitting settings).
-		EFS returned to the driver depend on the setting \texttt{mlip:select:efs\_ignored}: if false then the EFS are taken from the AIM, otherwise EFS have unpredictable values (see Section~\ref{Settings} for more details).\\[.5em]
-		
-		8&yes&yes&yes& Learning on the fly mode.
-		For each configuration given by the driver MLIP decides whether it needs to be learned by MTP.
-		The EFS are calculated by MTP (after retraining, if necessary) and returned to the driver. (If \texttt{mlip:select:efs\_ignored} is true then ab initio EFS are returned whenever a configuration is trained on, see also Section~\ref{Settings}.)\\
-	\end{tabular}
-\end{table}
-
-Note:
-\begin{itemize}
-	\item When O4 is switched on, the EFS that are passed to the driver (the EFS predicted by the potential) are compared with ab initio EFS and the errors are calculated.
-	In some scenarios (see Table \ref{tab:regimes}) they are the same and hence the approximation error is zero.  
-	
-	\item O5 writes the configurations together with their EFS that are passed to the driver. They may not coincide with ab initio EFS. 
-\end{itemize}
-
-
-\subsection{Communication with AIM}\label{abinitio}
-
-MLIP is able to query ab initio EFS data that are required in some scenarios (see Section~\ref{Capabilities}). 
-The current MLIP version is capable to communicate with the two external packages as AIMs:
-\begin{itemize}
-	\item VASP implementing the DFT model (\url{https://www.vasp.at/});
-	\item LAMMPS that gives access to a large number of empirical potentials (\url{lammps.sandia.gov/}) useful mostly for testing purposes.
-	Note that LAMMPS can be linked to MLIP in two roles: as the AIM and as the driver. The former interface is described below in Section~\ref{lammps_drivers}.
-\end{itemize}
-The communication with the external packages is implemented through exchanging files as follows. 
-\begin{enumerate}
-	\item MLIP prepares an input configuration file in a special format  (POSCAR for VASP, and dump-file for LAMMPS). Some other input files, required by the external package (e.g. INCAR and POTCAR for VASP), should be prepared manually.
-	\item MLIP invokes the ab initio package through a system call with the command specified in the settings file \texttt{mlip.ini} (all other input files, such as pseudopotentials, required by the external package, should be already prepared);
-	\item After the system call has finished, MLIP reads the EFS data from the output file (OUTCAR in the case of VASP, and the dump-file in the case of LAMMPS).
-\end{enumerate}
-
-In addition to the external ab initio packages MLIP also has three internal EFS calculators:
-\begin{itemize}
-	\item internal dummy EFS ``calculator'' used only with configuration reading driver (see Section~\ref{internal_drivers}), preserving the EFS data as read from the configuration database;
-	\item Lennard-Jones potential, usually used for testing purposes (internal);
-	\item another well-trained machine learning potential, which can be used, for example, for the fitting of ``light'' potentials (internal).
-\end{itemize}
-
-Selecting a specific model and setting its parameters is configured in the settings file (see Section~\ref{Settings}). 
-
-
-\subsection{Internal drivers}\label{internal_drivers}
-
-The current MLIP version has two internal drivers:
-\begin{enumerate}
-	\item reading configurations from a file;
-	\item internal structure relaxation driver.
-\end{enumerate}
-Both drivers can be chosen and configured from the settings file (see Section~\ref{Settings}). To run the internal driver the following command should be executed from the command line:
+The objects, needed to calculate MTP basis functions (namlely, the parts of moment tensor descriptors), and MTP parameters are stored in \verb|.mtp| files. Here we describe the \verb|.mtp| file with the MTP of the level 8 before and after training. The example of empty MTP (before training) is shown below.
 \begin{verbatim}
-> ./mlp run mlip.ini
+MTP
+version = 1.1.0
+potential_name = MTP1m
+species_count = 1
+potential_tag = 
+radial_basis_type = RBChebyshev
+min_dist = 2.25
+max_dist = 6.2
+radial_basis_size = 8
+radial_funcs_count = 2
+alpha_moments_count = 18
+alpha_index_basic_count = 11
+alpha_index_basic = {{0, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 1, 0},
+{0, 0, 0, 1}, {0, 2, 0, 0}, {0, 1, 1, 0}, {0, 1, 0, 1},
+{0, 0, 2, 0}, {0, 0, 1, 1}, {0, 0, 0, 2}, {1, 0, 0, 0}}
+alpha_index_times_count = 14
+alpha_index_times = {{0, 0, 1, 11}, {1, 1, 1, 12}, {2, 2, 1, 12},
+{3, 3, 1, 12}, {4, 4, 1, 13}, {5, 5, 2, 13}, {6, 6, 2, 13},
+{7, 7, 1, 13}, {8, 8, 2, 13}, {9, 9, 1, 13}, {0, 10, 1, 14},
+{0, 11, 1, 15}, {0, 12, 1, 16}, {0, 15, 1, 17}}
+alpha_scalar_moments = 9
+alpha_moment_mapping = {0, 10, 11, 12, 13, 14, 15, 16, 17}
 \end{verbatim}
-Here:
-\begin{itemize}[leftmargin=20pt, topsep=0pt, partopsep=0pt, itemsep=0pt, parsep=0pt, itemindent=-10pt]
-	\item[] \texttt{mlp} is the name of executable (it should be build as stand-alone package, see Section~\ref{sec:install} for more details),
-	\item[] \texttt{run} is a special command word in mlp (other commands are described in Section~\ref{utils}),
-	\item[] \texttt{mlip.ini} is the settings file configuring the driver and MLIP settings.
-\end{itemize}
+There are two groups of objects in the file: the objects that could be changed by a user, and the unchangeable objects related to the level and particular functional form of the MTP.
+%\newpage
+First we describe the hyperparameters that could be adjusted by the user.
+\begin{description}[style=nextline,leftmargin=\widthof{\ttfamily radial\_basis\_sizeX|},font=\normalfont\ttfamily]
+	\item[species\_count] is the number of components (atomic types) in the system investigated;
+	\item[radial\_basis\_type] is the type of radial basis used (the most frequently used radial basis is the Chebyshev basis);
+	\item[min\_dist] is the minimal distance between atoms in the training set (in angstroms);
+	\item[max\_dist] is the cut-off radius (in angstroms);
+	\item[radial\_basis\_size] is the size of radial basis (the Chebyshev basis for this MTP).
+\end{description}
+The second group of the objects cannot be freely modified by a user. They are:
+\begin{description}[style=nextline,leftmargin=\widthof{\ttfamily XXX|},font=\normalfont\ttfamily]
+	\item[radial\_funcs\_count] is the maximum number of radial functions $f_{\mu}$ which is necessary to create all possible MTP basis functions for a specified MTP level (e.g., for the MTP of the level 8 it is necessary to consider two radial functions);
+	\item[alpha\_moments\_count] is the total number of the objects, written in the MTP file, which are the parts of the moment tensor descriptors, yielding a scalar, and not greater than a specified level;
+	\item[alpha\_index\_basic\_count] is the number of basic objects (i.e., the objects, that were not multiplied by the other objects);
+	\item[alpha\_index\_basic] are the basic objects, including the indices of radial functions (the first indices, could be equal to 0 or 1, because only two radial functions needed to construct all MTP basis functions), and the powers of $x_{ij}$, $y_{ij}$, $z_{ij}$ (the second, the third, and the fourth indices, correspondingly);
+	\item[alpha\_index\_times\_count] is the number of complex objects (i.e., the ones, obtained by pairwise multiplying of objects);
+	\item[alpha\_index\_times] are the pairwise multiplied complex objects, including the indices of two objects multiplied (the first and the second indices), the number of such the objects (i.e., the factor before multiplication, the third indices), and the number of complex object (the fourth indices, we emphasize, that the basic objects enumerated automatically, one ny one, we do not keep their indices); \item[alpha\_scalar\_moments] is the number of the MTP basis functions; and, finally,
+	\item[alpha\_moment\_mapping] are the indices of basis and complex objects, forming the MTP basis functions.
+\end{description}
+For example, for the current MTP of the level 8 there are 9 MTP basis function \eqref{eq:MTPbasisLevel8}, therefore, $\verb|alpha_scalar_moments| = 9$ and we need the objects with the indices \verb|alpha_moment_mapping| to form the MTP basis functions \eqref{eq:MTPbasisLevel8}.\\
 
-
-\subsection{Integration with the LAMMPS driver}\label{lammps_drivers}
-
-LAMMPS is a popular code implementing a broad range of algorithms for atomistic simulations.
-The MLIP package provides an interface to LAMMPS that allows using practically all drivers from LAMMPS with our machine learning potentials. 
-The interface is implemented as an optional user-provided potential for LAMMPS (for more information see compiling and installation details in Section~\ref{sec:install}). 
-
-From LAMMPS, MLIP looks like a ``pair potential'' (even though MTP is a many body potential!). Thus, to use MLIP as an interatomic potential one should set in the LAMMPS script the following pair style:
+\noindent After the fitting of the MTP, the parameters of fitting added in \verb|.mtp| file: the strings with $\verb|radial_basis_size| \times \verb|radial_funcs_count|$ radial coefficients
 \begin{verbatim}
-pair_style    mlip  mlip.ini
-pair_coeff    * *
+radial_coeffs
+0-0
+{-4.243215058993401e-01, -7.013766150563229e-01, ... }
+{8.483313776829586e-02, -2.944665241055562e-02, ... }
 \end{verbatim}
-The MLIP's operating mode is determined by the settings from \texttt{mlip.ini} file (for more information see Section~\ref{Settings}), as specified in the \texttt{pair\_style} command. The examples of the LAMMPS input script, \texttt{mlip.ini} and the MTP file can be found in the \texttt{doc/examples/} folder of the MLIP package and described in the Section~\ref{Using}.
+the string with energies of individual atoms, one per atomic type,
+\begin{verbatim}
+species_coeffs = {-4.699403701006758e+00}
+\end{verbatim}
+and the strings with 9 linear coefficients
+\begin{verbatim}
+moment_coeffs = {1.0466030834e+00, 6.5878384919e-01, ...}
+\end{verbatim}
 
-Note: 
-\begin{itemize}
-	\item The current version of MLIP does not support some of LAMMPS features. For example, trying to resume a computation after writing a restart file may lead to incorrect behavior. Some of the other known limitations are mentioned in Section~\ref{serpar}.
-	\item LAMMPS can be used by MLIP in two roles: as a driver and as an AIM. The former interface is described in Section~\ref{abinitio}.
-\end{itemize}
+\subsection{ALS file}\label{sup:mlip:als}
 
+A \verb|.als|-file stores the selection state data, including the MTP, and the active set. It has a mixed text/binary structure and is organized as follows. First it contain the fitted MTP. Next the selection weights are specified. After that a binary part follows. It contain a binary representation of active selection matrix $\mathsf A$ and $\mathsf A^{-1}$. Actually these matrices can be recalculated from the active set that is stored later, however this data helps to prevent the change of the selection state after loading due to rounding errors.
+Next, a block with the configurations corresponding to the matrix rows are stored.
+At the end of the \verb|.als|-file the active set (in \verb|.cfg|-format with full floating-point precision) is writen. 
 
-\subsection{Serial and parallel modes}\label{serpar}
+\subsection{mlp binary file}\label{sup:mlip:mlp}
 
-The current implementation of the internal drivers supports only a serial version, whereas the interface to LAMMPS supports also a parallel version. Parallelization is performed by LAMMPS and is the same as for any other ``pair'' potentials. However, the ``serial'' and ``parallel'' versions have partially different capabilities and limitations, see Table \ref{tab:table1}.
-Thus, for treating small and moderate-size configurations, the serial version may be preferable.
-
-\begin{table}[htbp]	\small
-	\centering
-	\caption{Comparison of capabilities and limitations of the two MLIP implementations}
+The \verb|mlp| binary file allows to run various MLIP code commands. To list the most frequently used MLIP commands, execute \verb|mlp list|. To provide a description of some command, execute \verb|mlp help [command]|. A typical template of the rest commands available is 
+\begin{verbatim}
+mlp [command] [input/output files] [options]
+\end{verbatim}
+The main MLIP commands (or, their examples) and description are shown below.
+\begin{description}[style=nextline,leftmargin=\widthof{\ttfamily XXX|},font=\normalfont\ttfamily]
+	\item[mlp relax mlip.ini --cfg-filename=to\_relax.cfg --save-relaxed=relaxed.cfg] Relaxation of configurations in the file \verb|to_relax.cfg| in accordance with the settings in \verb|mlip.ini|, writing the result in the file \verb|relaxed.cfg|.
+	\item[mlp convert-cfg <input-filename> <output-filename> --options ]
+	Converting of an atomic configuration from a format of \verb|input-filename| to a configuration in a format of \verb|output-filename|. All the formats, except for internal MLIP \verb|.cfg|, should be specified, e.g.
+	\begin{verbatim}
+	mlp convert-cfg input.cfg POSCAR --output-format=vasp-poscar
+	\end{verbatim}
+	\item[mlp train init.mtp train.cfg --trained-pot-name=pot.mtp ]
+	Training of MTP in the \verb|init.mtp| file on the dataset in \verb|train.cfg| file. The option \verb|trained-pot-name| indicates that the potential trained is written in the \verb|pot.mtp| file.
+	\item[mlp calc-errors pot.mtp db.cfg ]
+	Calculation of the prediction errors by the \verb|pot.mtp| potential on the database in \verb|db.cfg|.
+	\item[mlp calc-efs pot.mtp in.cfg out.cfg ]
+	Calculation of energies, forces, and stresses for the configurations in \verb|in.cfg| with the \verb|pot.mtp| potential, writing the result in \verb|out.cfg|.
+	\item[mlp calc-grade pot.mtp train.cfg in.cfg out.cfg --als-filename=state.als ]
+	Creation of the \verb|state.als| file with maxvol state for the potential \verb|pot.mtp| fitted on the database written in \verb|train.cfg|. Calculation grades of configurations in the \verb|in.cfg| file, writing the configurations with grades calculated in the \verb|out.cfg| file.
 	
-	\medskip
-	\label{tab:table1}
-	\begin{tabular}{l|c|c|c|c|c|c}
-		\hline
-		& \multicolumn{2}{c|}{Compatibility with} & Learning & Configuration & Error & I/O, \\
-		
-		Version & serial & parallel  & on the & selection & calculation &  logging\\
-		
-		&LAMMPS &LAMMPS & fly & & & \\
-		\hline
-		Serial MLIP  & $+$ & $-$ & $+$ & $+$ & $+$ & $+$    \\
-		Parallel MLIP& $+$ & $+$ & $-$ & $-$ & $-$ & $-$  \\
-		\hline
-	\end{tabular}
-\end{table}
+	\item[mlp select-add pot.mtp train.cfg preselected.cfg add\_to\_train.cfg ]
+	Maxvol selection of non-pereative configurations from \verb|preselected.cfg|, writing of the selected configurations in the \verb|add_to_train.cfg| file for further adding of these configurations to the \verb|train.cfg| file.
+	
+\end{description} 
 
-By default, MLIP is linked in the serial mode in LAMMPS. To enable linking in parallel mode the following requirements should be met: 
-\begin{enumerate}
-	\item MLIP is compiled with MPI;
-	\item no fitting is configured in settings;
-	\item no selection is configured in settings;
-	\item no ab initio calculation is configured in settings;
-	\item no error calculation is configured in settings;
-	\item no logging is configured in settings;
-	\item EFS calculation is enabled;
-\end{enumerate}
-If parallel mode is activated the message \texttt{MLIP linked in neighborhoods mode} will appear, otherwise the message \texttt{MLIP linked in configuration mode} will appear.
+\subsection{MLIP settings}\label{sec:mlip:ini}
 
+Settings file, typically named as \verb|mlip.ini|, is required when MLIP is used from LAMMPS as \verb|pair_style|, namely
+\begin{verbatim}
+pair_style  mlip mlip.ini
+pair_coeff  * *
+\end{verbatim}
+The same file can be used with the \verb|mlp relax| command to specify what MTP file to use and whether or how active learning should be used.
+It contains the instructions and settings for MLIP determining the operational regime.
+An example of a simple \verb|mlip.ini| is below:
+\begin{verbatim}
+mtp-filename          pot.mtp
+select                FALSE   # turned off for a large-scale MD run
+\end{verbatim}
+More examples of settings file can be found in examples provided with the MLIP package.
 
-\subsection{Settings file}\label{Settings}
-
-All settings determining the operational mode of MLIP are set in the configuring file typically named as \texttt{mlip.ini}.
-This file is organized according the following rules:
+The \verb|mlip.ini| file is organized according the following rules.
 \begin{itemize}
-	\item Each setting parameter must be given in a separate line and have the form 
+	\item Each setting is given in a separate line and have the form 
 	\begin{verbatim}
 	identifier    value
 	\end{verbatim}
@@ -600,260 +474,28 @@ This file is organized according the following rules:
 	
 	\item Other than identifiers and values, the lines of the settings file can contain comments. Comments begin with ``\texttt{\#}'' and all the foregoing symbols are ignored in this line. 
 	
-	\item Settings have a tree-like structure in which the parameters are grouped in blocks. Each block contains the settings and parameters for a particular module (e.g., fitting).
-	The names of the parameters in a block start with the same prefix that corresponds to the name of the block.
-	Each block can be either active or inactive.
-	The parameters related to inactive blocks have no effect.
-	In the example below, the blocks are highlighted by indents only for convenience (i.e., whitespace does not matter). 
+	\item The order of lines is not important; therefore the lines can be grouped for the user's convenience.
 	
-	\item The order of lines is not important; the settings are grouped for convenience.
+	\item If a parameter is not present (or commented out), its default value is used. 
 	
-	\item If a parameter is not present (or commented out), its default value is used. The blocks are switched off by default.
-	
-	\item If a setting is not supported (i.e. has no association with the internal variable) it has no effect (without warning).
+	\item If a setting is not supported then it is ignored (without a warning).
 \end{itemize}
 
-\subsubsection*{An example of the settings file}
-{\small
-	\begin{verbatim}
-    abinitio                                        void
-	    # void - EFS data should be provided									
-	    # lj - use embedded Lennard-Jones pair potential 					
-	        abinitio:lj:r_min                       2.0						
-	        abinitio:lj:scale                       1.0					
-	        abinitio:lj:cutoff                      5.0						
-	    # vasp - VASP															
-	        abinitio:vasp:poscar                    vasp_tmp/POSCAR		
-	        abinitio:vasp:outcar                    vasp_tmp/OUTCAR			
-	        abinitio:vasp:start_command             ./vasp					 
-	    # lammps - LAMMPS														
-	        abinitio:lammps:onput_file              dump.inp				
-	        abinitio:lammps:output_file             dump.out				
-	        abinitio:lammps:start_command           ./lmp.sh				
-	    # mtp - use pre-trained MTP											
-	        abinitio:mtp:filename                   MTP999_83.mtp		
-	
-	mlip                                            MTP
-			mlip:load_from							MTP.mtp					
-	        mlip:calculate_efs                      1						
-	        mlip:fit                                1					
-	                mlip:fit:save                   MTP.mtp					
-	                mlip:fit:energy_weight          1.0						
-	                mlip:fit:force_weight           0.001					
-	                mlip:fit:stress_weight          0.1						
-	                mlip:fit:scale_by_force         0.0						
-	                mlip:fit:log                    fitting.log				
-	        mlip:select                             1						
-	                mlip:select:site_en_weight      1.0						
-	                mlip:select:energy_weight       0.0						
-	                mlip:select:force_weight        0.0						
-	                mlip:select:stress_weight       0.0						
-	                mlip:select:threshold           1.1						
-	                mlip:select:save_ts             TS.cfgs					
-	                mlip:select:save_state          selection.mvs		
-	                mlip:select:load_state          selection.mvs	
-	                mlip:select:efs_ignored         false
-	                mlip:select:log                 selection.log			
-	        mlip:check_errors                       errors.log				
-	        mlip:write_cfgs                         record.cfgs			
-	                mlip:write_cfgs:skip            0					
-	        mlip:log                                lotf.log				
-	
-	driver                                          1					
-	    # 0 - no driver or external MD driver (e.g. LAMMPS)
-	    # 1 - read configurations from database file						
-	        driver:cfg_reader:filename              Li_NVT300.cfgs			
-	        driver:cfg_reader:limit                 1					
-	        driver:cfg_reader:log                   stdout				
-	    # 2 - relaxation													
-	        driver:relaxation:pressure              0.0						
-	        driver:relaxation:iteration_limit       500					
-	        driver:relaxation:min_dist              1.0						
-	        driver:relaxation:force_tolerance       0.0001					
-	        driver:relaxation:stress_tolerance      0.001								
-	        driver:relaxation:max_step              0.5						
-	        driver:relaxation:min_step              1.0e-8				
-	        driver:relaxation:bfgs_wolfe_c1         1.0e-3					
-	        driver:relaxation:bfgs_wolfe_c2         0.7					
-	        driver:relaxation:input_cfgs_filename   4Relax.cfg
-	        driver:relaxation:save_relaxed          relaxed.cfgs		
-	        driver:relaxation:log                   relaxation.log		
-	       	driver:relaxation:save_unrelaxed        unrelaxed.cfg	  
-	\end{verbatim}
-}
-
-Another example of settings file can be found in \texttt{doc/mlip.ini}.
-This file contains the full list of recognizable settings and comments explaining the meaning of the commands. All the settings are also listed in the Table below
-{
-	\newlength{\descriptionlength}
-	\footnotesize
-	\newlength{\largestoption}
-	\settowidth{\largestoption}{\texttt{driver:relaxation:stress\_tolerance}}
-	\setlength{\descriptionlength}{\dimexpr(\textwidth-8.5em-1\largestoption)\relax}
-	%\setlength{\descriptionlength}{1\descriptionlength minus 1\largestoption}
-	\pagestyle{empty}
-%	\begin{landscape}
-	%\caption{List of recognizable settings}
-	\medskip
-	% \widthof{\footnotesize\texttt{driver:relaxation:stress\_tolerance}
-	\begin{longtable}{| p{\largestoption} | p{3.5em} | p{\descriptionlength} |}
-		\hline
-		Identifier & Type & Description\\
-		\hline
-		\texttt{abinitio}	& string &	Switches between embedded ab initio models: "void" - No EFS change (configurations should be provided with EFS); "lj" - embedded Lennard-Jones pair potential; "vasp" - VASP; "lammps" - LAMMPS; "mtp" - pre-trained MTP\\
-&&\\
-		\texttt{abinitio:lj:r\_min}	& double, positive & Distance to the minimum of the pair potential function (in Angstroms)\\
-&&\\
-		\texttt{abinitio:lj:scale}	& double &	Value of the pair function at minimum (in eV)\\
-&&\\
-		\texttt{abinitio:lj:cutoff}	& double, positive & Cutoff radius (in Angstroms) \\
-&&\\
-		\texttt{abinitio:vasp:poscar} & string & "POSCAR" with (optionally) path to VASP calculaion folder\\
-&&\\
-		\texttt{abinitio:vasp:outcar} &	string & "OUTCAR" with (optionally) path to VASP calculaion folder\\
-&&\\
-		\texttt{abinitio:vasp:start\_command} & string & System command that starts VASP (Hint: it can be useful to specify here the command for launching a script that launches VASP)\\
-&&\\
-		\texttt{abinitio:lammps:input\_file} & string &	File with the configuration to be read by LAMMPS\\
-&&\\
-		\texttt{abinitio:lammps:output\_file}& string &	File with the configuration and EFS data to be read by MLIP\\
-&&\\
-		\texttt{abinitio:lammps:start\_command}	& string & System command for starting LAMMPS (Hint: it can be useful to specify here the command for launching a script that launches LAMMPS)\\
-&&\\
-		\texttt{abinitio:mtp:filename} & string & MTP file name that is used as AIM\\
-		\hline
-&&\\
-		\texttt{mlip}& string &	"MTP" or "void". If "void" specified then the driver operates directly with AIM (without additional MLIP routines)\\
-&&\\
-		\texttt{mlip:load\_from}& string &	Filename with MTP\\
-&&\\
-		\texttt{mlip:calculate\_efs}& bool &	Enables/disables EFS calculation by MTP\\
-&&\\
-		\texttt{mlip:fit}& bool &		Enables/disables MTP fitting\\
-&&\\
-		\texttt{mlip:fit:save} &string&	MTP output file name (for the fitted MTP)\\
-&&\\
-		\texttt{mlip:fit:scale\_by\_force}&	double&	Coefficient $\epsilon_f$ in \eqref{eq:fitrel} if greater then zero, otherwise MTP is fitted according \eqref{eq:fit}\\
-&&\\
-		\texttt{mlip:fit:energy\_weight}& double & Coefficient $C_E$ in \eqref{eq:fit} or \eqref{eq:fitrel}\\
-&&\\
-		\texttt{mlip:fit:force\_weight}	& double & Coefficient $C_f$ in \eqref{eq:fit} or \eqref{eq:fitrel} \\
-&&\\
-		\texttt{mlip:fit:stress\_weight}& double &  Coefficient $C_\sigma$ in \eqref{eq:fit} or \eqref{eq:fitrel}\\
-&&\\
-		\texttt{mlip:fit:log}	&string&	File/stream to write the fitting log.
-		No logging if not specified; "stdout" and "stderr" corresponds to standard output streams; otherwise the log will be saved to the file with that name\\
-&&\\
-		\texttt{mlip:select}& bool &		Activates/deactivates selection (active learning engine)\\
-&&\\
-		\texttt{mlip:select:site\_en\_weight}&double&	Weight for site energy equations in selection procedure\\
-&&\\
-		\texttt{mlip:select:energy\_weight}&double&	Weight for energy equation in selection procedure\\
-&&\\
-		\texttt{mlip:select:force\_weight}&double&	Weight for forces equations in selection procedure\\
-&&\\
-		\texttt{mlip:select:stress\_weight}&double&	Weight for stresses equations in selection procedure\\
-&&\\
-		\texttt{mlip:select:threshold}&double, $\geq1$&	Selection threshold - maximum allowed extrapolation level\\
-&&\\
-		\texttt{mlip:select:save\_selected}&string&	Selected configurations will be saved in this file after selection is complete. No configurations are saved if not specified.\\
-&&\\
-		\texttt{mlip:select:save\_state}&string&	The state of the selection will be saved in this file after selection is complete (or not saved if not specified). Can be used for restarting selection/learning on the fly\\
-&&\\
-		\texttt{mlip:select:load\_state}&string&	The state of the selection will be loaded (if specified) from this file before selection starts. Can be used for restarting selection/learning on the fly\\
-&&\\
-		\texttt{mlip:select:efs\_ignored}&bool&Indicates that the driver actually does not need EFS to be calculated (e.g. in the fitting scenario). "true" value may speed up processing by skipping some extra EFS calculations\\
-&&\\
-		\texttt{mlip:select:log}&string&	Where to write the selection log. No logging if not specified; "stdout" and "stderr" corresponds to standard output streams; otherwise the log will be saved to the file with that name\\
-&&\\
-		\texttt{mlip:check\_errors}	& string &	If present, enables comparison and accumulation of error statistics for EFS calculated by AIM and MTP. Requires that AIM is specified in the settings. The value indicates where to write the log of learning on-the-fly. No logging if not specified; "stdout" and "stderr" corresponds to standard output streams; otherwise the log will be written to the file with that name \\
-&&\\
-		\texttt{mlip:write\_cfgs}& string &	File for writing all(or some, depending on \texttt{mlip:write\_cfgs:skip}) processed configurations. No confuguration recording if not specified\\
-&&\\
-		\texttt{mlip:write\_cfgs:skip}& int &		Skip this number of configurations while writing\\
-&&\\
-		\texttt{mlip:log}	&string&	Where to write MLIP log. No logging if not specified; "stdout" and "stderr" corresponds to standard output streams; otherwise the log will be saved to file with that name\\
-		\hline
-&&\\
-		\texttt{driver}	& integer, ~0--3 &		Defines the configuration driver. Ignored if MLIP is linked to an external driver (e.g., LAMMPS). 0 - no driver or external MD driver; 1 - read configurations from database file; 2 - embedded relaxation\\
-&&\\
-		\texttt{driver:cfg\_reader:filename}&string&	Configuration file name\\ 
-&&\\
-		\texttt{driver:cfg\_reader:max\_count}	&int&		Maximal number of configurations to read\\
-&&\\
-		\texttt{driver:cfg\_reader:log}&string&	Where to write the reading log. No logging if not specified; "stdout" and "stderr" corresponds to standard output streams; otherwise the log will be saved to file with that name\\
-&&\\
-		\texttt{driver:relaxation:pressure}	&double&	External pressure (in GPa). If not zero enthalpy is minimized\\
-&&\\
-		\texttt{driver:relaxation:iteration\_limit}	&int&		Maximal number of iteration of the relaxation process\\
-&&\\
-		\texttt{driver:relaxation:min\_dist}& double&	Minimal interatomic distance constraint (in Angstroms)\\
-&&\\
-		\texttt{driver:relaxation:force\_tolerance}&double&	Forces on atoms in relaxed configuration should be smaller than this value (in eV/Angstroms). Zero or negative value disables atoms relaxation (changing fractional coordinates of atoms)			\\	
-&&\\
-		\texttt{driver:relaxation:stress\_tolerance}&double&	Stresses in relaxed configuration should be smaller than this value (in GPa). Zero or negative value disables supercell relaxation (changing lattice vectors of the supercell)				\\
-&&\\
-		\texttt{driver:relaxation:max\_step}&double&	Maximal allowed displacement of atoms and lattice vectors in Cartesian coordinates (in Angstroms) during a single step\\
-&&\\
-		\texttt{driver:relaxation:min\_step}&double&	Minimal displacement of atoms and lattice vectors in Cartesian coordinates (in Angstroms) during a single step. If all actual displacements are less then the relaxation stops\\
-&&\\
-		\texttt{driver:relaxation:bfgs\_wolfe\_c1}	&double&	Wolfe condition constant on the function decrease (linesearch stopping criterea)\\
-&&\\
-		\texttt{driver:relaxation:bfgs\_wolfe\_c2}	&double&	Wolfe condition constant on the gradient decrease (linesearch stopping criterea)\\
-&&\\
-		\texttt{driver:relaxation:cfg\_filename}& string& Filename with configurations for the relaxation\\
-&&\\
-		\texttt{driver:relaxation:save\_relaxed}	&string&	
-		Filename for output results of relxation (configurations). No configuration will be saved if not specified\\
-&&\\
-		\texttt{driver:relaxation:log}&string&	Where to write the relaxation log. No logging if not specified; if "stdout" and "stderr" corresponds to standard output streams; otherwise the log will be saved to file with that name\\
-		\hline
-	\end{longtable}
-%	\end{landscape}
-}
-
-All settings are divided into three main blocks:
-\begin{enumerate}
-	\item The \texttt{abinitio} block defining ab initio model;
-	\item The \texttt{mlip} block defining the operational mode of MLIP;
-	\item The \texttt{driver} block defining configuration driver (make sense only if running under internal driver);
-\end{enumerate}
-There is a number of different available ab initio models (see Section~\ref{abinitio}):
-\begin{enumerate}
-	\item[0] ab initio model is not used,
-	\item[1] dummy EFS calculator extracting EFS from .cfg file (applicable only with configuration reading driver),
-	\item[2] embedded Lennard-Jones potential,
-	\item[3] VASP (external),
-	\item[4] LAMMPS (external),
-	\item[5] pre-learned MTP,
-\end{enumerate}
-and internal drivers (see Section~\ref{internal_drivers}):
-\begin{enumerate}
-	\item[0] no driver or external driver,
-	\item[1] reading configurations from a file,
-	\item[2] embedded relaxation driver.
-\end{enumerate}
-The choice of a particular number after \texttt{abinitio}/\texttt{driver} activates the corresponding model/driver. \texttt{abinitio} and \texttt{driver} blocks can be missing from the settings file (that is equivalent to the ``0'' option) if a scenario does not require ab initio EFS (for example when MLIP just calculates EFS) or driven by an external driver.
-
-\subsection{More stand-alone tools}\label{utils}
-
-\texttt{mlp} is a self-explanatory binary that embeds several commands (tools).
-To list all the commands, execute ``\texttt{mlp list}''.
-To get an extended help page on a command, execute ``\texttt{mlp help <command>}''.
-The list of commands embedded into \texttt{mlp} include:
-\begin{description}
-\item[\texttt{convert-cfg}] (serial only): a command that converts configuration files from one format (textual, binary, vasp outcar, vasp poscar) into another
-
-\item[\texttt{train}] (serial and MPI): fits an MTP
-
-\item[\texttt{calc-errors}]  (serial and MPI): compares EFS calculated by MTP with values stored in the database
-
-\item[\texttt{self-test}]  (serial and MPI): performs a number of unit tests
+The recognizable identifiers and their meaning are listed below.
+\begin{description}[style=nextline,leftmargin=\widthof{\ttfamily XXX|},font=\normalfont\ttfamily]
+	\item[mtp-filename   <filename>] File name with MTP to be loaded.
+	\item[write-cfgs   <filename>] if this setting is present then the processed configurations will be written to the specified file, may be useful for debug.
+	\item[write-cfgs:skip   <number>] skip this many configurations before writing a processed configuration.
+	\item[select   <TRUE/FALSE>] activates or deactivates calculation of extrapolation grades and optionally writing configurations with high extrapolation grades. Can be combined with (or run independent from) energy, forces and stresses calculation. If \texttt{false} value is specified the following settings will be ignored.
+	\item[select:threshold   <real number>]  corresponds to $\gamma_{\rm select}$ mentioned in Section \ref{sec:AL}. If the extrapolation grade exceeds this value configuration will be saved to a file with extrapolative configurations met.    
+	\item[select:threshold-break   <real number>]  corresponds to $\gamma_{\rm break}$ mentioned in Section \ref{sec:AL}. If the extrapolation grade exceeds this value the program execution will be interrupted, that can be used for prevention of instability of the simulation.    
+	\item[select:load-state   <filename>] a file for loading the selection state.
+	\item[select:log   <filename>/stdout/stderr] a file (or standard output stream) for writing a log of configuration selection with the extrapolation grades of treated configurations.
 \end{description}
 
-
 \section{Feedback}
-If you run into problems with MLIP or if you have a some related questions, please contact Alexander Shapeev (a.shapeev@skoltech.ru).
+We will later, once the status of this manual changes, provide an email for user feedback.
+%If you run into problems with MLIP or if you have a some related questions, please contact Alexander Shapeev (\texttt{mlip.soft@gmail.com}).
 
 \bibliography{manual}
 
