@@ -6,5 +6,5 @@ TMP_DIR=./out
 mkdir -p $TMP_DIR
 
 # Body:
-$MLP_EXE train 04.mtp train.cfg --trained-pot-name=$TMP_DIR/pot.mtp
+$MLP_EXE train 04.mtp train.cfg --trained-pot-name=$TMP_DIR/pot.mtp --max-iter=100
 
