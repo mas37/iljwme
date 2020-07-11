@@ -213,13 +213,13 @@ void Warning(const std::string& str)
 {
 	//std::cerr << "WARNING: " << str << std::endl;
 	if (p_os != nullptr)
-		*p_os << "WARNING: " << str << std::endl;
+		*p_os << "MLIP WARNING: " << str << std::endl;
 }
 
 void Message(const std::string& str)
 {
 	if (p_os != nullptr)
-		*p_os << str << std::endl;
+		*p_os << "MLIP: " << str << std::endl;
 }
 
 std::ostream* SetStreamForOutput(std::ostream* _p_os)
@@ -314,7 +314,7 @@ void Settings::Load(const string& filename)
 		ERROR((string)"Cannot open the settings file " + filename);
 	else
 	{
-		Message("Reading settings from " + filename);
+		//Message("Reading settings from " + filename);
 
 		string buff_key;
 		ifs >> buff_key;

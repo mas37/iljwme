@@ -93,7 +93,7 @@ bool DevCommands(const std::string& command, std::vector<std::string>& args, std
 		"  --force-weight=<num>: set the weight for force equations, default=0\n"
 		"  --stress-weight=<num>: set the weight for stress equations, default=0\n"
 		"  --nbh-weight=<num>: set the weight for site energy equations, default=0\n"
-		"  --mvs-filename=<filename>: name of mvs file\n"
+		"  --als-filename=<filename>: active learning state (ALS) filename\n"
 		"  --selected-filename=<filename>: file with selected configurations\n"
 		"  --selection-limit=<num>: swap limit for multiple selection, default=0 (disabled)\n"
 		"  --weighting=<string>: way of weighting the functional for better fitting of properties. Default=vibrations. Others=molecules, structures.\n"
@@ -138,9 +138,11 @@ bool DevCommands(const std::string& command, std::vector<std::string>& args, std
 		double str_cmpnts_weight = 0;
 		if (opts["stress-weight"] != "")
 			str_cmpnts_weight = std::stod(opts["stress-weight"]);
-		string mvs_filename = "state.mvs";
+		string als_filename = "state.als";
 		if (opts["mvs-filename"] != "")
-			mvs_filename = opts["mvs-filename"];
+			als_filename = opts["mvs-filename"];
+		if (opts["als-filename"] != "")
+			als_filename = opts["als-filename"];
 		string selected_filename = "selected.cfg";
 		if (opts["selected-filename"] != "")
 			selected_filename = opts["selected-filename"];
@@ -262,7 +264,7 @@ bool DevCommands(const std::string& command, std::vector<std::string>& args, std
 		cout << "TS increased by " << delta << " configs" << endl;
 		}
 		
-		selector.Save(mvs_filename);
+		selector.Save(als_filename);
 		selector.SaveSelected(selected_filename);
 		ofs.open(diff_filename,ios::app);
 		for (int i = 0; i < delta; i++)
@@ -274,7 +276,7 @@ bool DevCommands(const std::string& command, std::vector<std::string>& args, std
 	BEGIN_COMMAND("calc-grade",
 		"calculates and saves maxvol grades of input configurations",
 		"mlp calc-grade pot.mtp train.cfg in.cfg out.cfg:\n"
-		"actively selects from train.cfg, generates state.mvs file from train.cfg, and\n"
+		"actively selects from train.cfg, generates the ALS file from train.cfg, and\n"
 		"calculates maxvol grades of configurations located in in.cfg\n"
 		"and writes them to out.cfg\n"
 		"  Options:\n"
@@ -285,7 +287,7 @@ bool DevCommands(const std::string& command, std::vector<std::string>& args, std
 		"  --force-weight=<num>: set the weight for force equations, default=0\n"
 		"  --stress-weight=<num>: set the weight for stress equations, default=0\n"
 		"  --nbh-weight=<num>: set the weight for site energy equations, default=0\n"
-		"  --mvs-filename =<filename>: name of mvs file\n"
+		"  --als-filename=<filename>: active learning state (ALS) filename\n"
 		) {
 
 		if (args.size() != 4) {
@@ -325,9 +327,11 @@ bool DevCommands(const std::string& command, std::vector<std::string>& args, std
 		double str_cmpnts_weight = 0;
 		if (opts["stress-weight"] != "")
 			str_cmpnts_weight = std::stod(opts["stress-weight"]);
-		string mvs_filename = "state.mvs";
+		string als_filename = "state.als";
 		if (opts["mvs-filename"] != "")
-			mvs_filename = opts["mvs-filename"];		
+			als_filename = opts["mvs-filename"];		
+		if (opts["als-filename"] != "")
+			als_filename = opts["als-filename"];		
 
 		MaxvolSelection selector(&mtpr, init_threshold, select_threshold, swap_threshold, 
 						nbh_cmpnts_weight, ene_cmpnts_weight, frc_cmpnts_weight, str_cmpnts_weight);
@@ -340,7 +344,7 @@ bool DevCommands(const std::string& command, std::vector<std::string>& args, std
 		selector.Select();
 
 		ifs_train.close();
-		selector.Save(mvs_filename);
+		selector.Save(als_filename);
 
 		ifstream ifs_input(input_filename, std::ios::binary);
 		ofstream ofs(output_filename, std::ios::binary);

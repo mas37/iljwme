@@ -192,11 +192,13 @@ void ErrorMonitor::reset()
 	epa_cfg.clear();
 	str_cfg.clear();
 	frc_cfg.clear();
+	vir_cfg.clear();
 
 	ene_all.clear();
 	epa_all.clear();
 	frc_all.clear();
 	str_all.clear();
+	vir_all.clear();
 }
 
 void ErrorMonitor::MPI_Synchronize()

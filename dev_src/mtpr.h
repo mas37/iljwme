@@ -62,11 +62,11 @@ public:
 	void CalcBasisFuncsDers(const Neighborhood& Neighborhood);		//Linear basic functions and their derivatives calculation
 	void CalcEFSComponents(Configuration& cfg);						//Calculate the components for linear regression matrix
 	void CalcEComponents(Configuration& cfg);			//Calculate the components for linear regression matrix
-	void CalcEFS(Configuration& cfg) override
-	{
-		AnyLocalMLIP::CalcEFS(cfg);
-		cfg.features["EFS_by"] = "MultiMTP" + to_string(alpha_count);
-	}
+//	void CalcEFS(Configuration& cfg) override
+//	{
+//		AnyLocalMLIP::CalcEFS(cfg);
+//		cfg.features["EFS_by"] = "MultiMTP" + to_string(alpha_count);
+//	}
 
 	void AccumulateCombinationGrad(	const Neighborhood& nbh,
 									std::vector<double>& out_grad_accumulator,
@@ -119,7 +119,7 @@ public:
 
 		if (linear_coeffs.size() == alpha_count)
 		{
-			for (int i = 0; i <= max_comp; i++) // CYKA BLYAT!!! is there a mistake: all regression_coeffs[radial_size + i] are set to the same number!!!
+			for (int i = 0; i <= max_comp; i++)
 				regression_coeffs[radial_size + i] = linear_coeffs[0];				//constants for component's site energy shift
 
 			for (int i = 1; i < alpha_count; i++)

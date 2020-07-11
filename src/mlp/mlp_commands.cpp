@@ -484,7 +484,7 @@ bool Commands(const string& command, vector<string>& args, map<string, string>& 
 		"                               (with roughtly force < <double>) get more weight. \n"
 		"    --valid-cfgs=<string>: filename with configuration to validate\n"
 		"    --max-iter=<int>: maximal number of iterations. Default=1000\n"
-		"    --curr-pot-name=<string>: filename for potential on current iteration.\n"
+		"    --curr-pot-name=<string>: save potential on each iteration if <string> not empty.\n"
 		"    --trained-pot-name=<string>: filename for trained potential. Default=Trained.mtp_\n"
 		"    --bfgs-conv-tol=<double>: stop if error dropped by a factor smaller than this\n"
 		"                              over 50 BFGS iterations. Default=1e-3\n"	

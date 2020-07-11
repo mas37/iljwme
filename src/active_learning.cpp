@@ -430,7 +430,7 @@ void MaxvolSelection::Save(const std::string & filename)
 
 void MaxvolSelection::Load(const std::string & filename)
 {
-	Message("Selection: loading state from \"" + filename + '\"');
+	// Message("Selection: loading state from \"" + filename + '\"');
 
 	if (p_mlip == nullptr)
 		ERROR("MLIP must be initialized before loading selection state");
@@ -439,7 +439,7 @@ void MaxvolSelection::Load(const std::string & filename)
 	ifstream ifs(filename, ios::binary);
 	ifs.ignore(HUGE_INT,'^');
 	if (ifs.fail() || ifs.eof())
-		ERROR("Error reading file" + filename);
+		ERROR("Error reading active learning state from " + filename);
 
 	// Loading selection weights
 	ifs.read((char*)&MV_nbh_cmpnts_weight, sizeof(double));
@@ -496,5 +496,5 @@ void MaxvolSelection::Load(const std::string & filename)
 		cfgs4swap[cfg_numbers[i]].pop_back();
 	}
 
-	Message("Selection: loading state complete");
+	// Message("Selection: loading state complete");
 }
