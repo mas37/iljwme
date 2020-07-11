@@ -133,8 +133,8 @@ ifneq (0, $(words $(filter mlp libinterface librpmd,$(MAKECMDGOALS))))
    # use C++11 standart for c++ files
    CXXFLAGS += -std=c++11
    # this suppresses the error when .cfg files are read with "Stress" instead of "PlusStress"
-   # this luxury will be removed soon
-   CXXFLAGS += -DMLIP_NO_WRONG_STRESS_ERROR
+   # this luxury is now removed - you were warned
+   # CXXFLAGS += -DMLIP_NO_WRONG_STRESS_ERROR
    ifneq ($(USE_MLIP_PUBLIC), 1)
        CXXFLAGS += -DMLIP_DEV
    endif
@@ -172,8 +172,8 @@ else ifneq (0, $(words $(filter mlippy pymlip,$(MAKECMDGOALS))))
    # use C++11 standart for c++ files
    CXXFLAGS += -std=c++11
    # this suppresses the error when .cfg files are read with "Stress" instead of "PlusStress"
-   # this luxury will be removed soon
-   CXXFLAGS += -DMLIP_NO_WRONG_STRESS_ERROR
+   # this luxury is now removed
+   # CXXFLAGS += -DMLIP_NO_WRONG_STRESS_ERROR
    ifneq ($(USE_MLIP_PUBLIC), 1)
        CXXFLAGS += -DMLIP_DEV
    endif
