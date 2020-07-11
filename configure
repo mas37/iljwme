@@ -11,6 +11,7 @@ prefix=.
 prefix_fortran=/usr/local/gfortran/lib
 debug=
 mpi=0
+lossless_cfg=0
 compiler=gnu
 blas=embedded
 blasroot=
@@ -36,6 +37,7 @@ Options:
   --prefix_fortran=<path>      install path to fortran
   --no-mpi                     disable MPI libraries [autodetect]
   --no-selftest                disable selftest implementation
+  --lossless-cfg               turn on lossless configuration file writing
   --compiler=[intel|gnu]       which compilers to use [autodetect]
   --blas=NAME                  BLAS library [autodetect]
   --program-suffix=<suffix>    program name suffix
@@ -68,6 +70,8 @@ for arg in "$@"; do
         prefix=$(echo $arg | sed 's/--prefix=//') ;;
     --no-mpi )
         mpi=0 ;;
+    --lossless-cfg )
+        lossless_cfg=1 ;;
     --no-selftest )
         selftest=0 ;;
     --enable-debug )
@@ -98,7 +102,11 @@ FORTRAN_DIR = $prefix_fortran
 MKEOF
 
 if [ "${debug}" == 1 ]; then
-  debugflag="-DDEBUG -g"
+  compileflag="-DDEBUG -g"
+fi
+
+if [ "${lossless_cfg}" == 1 ]; then
+  compileflag="-DMLIP_LOSSLESS_CFG"
 fi
 
 case "${compiler}" in
@@ -144,8 +152,8 @@ case "${compiler}" in
 esac
 echo "" >> ${MKFILE}
 echo "# Compile and link flags" >> ${MKFILE}
-echo "CPPFLAGS += -O3 ${debugflag}" >> ${MKFILE}
-echo "FFLAGS += -O3 ${debugflag}" >> ${MKFILE}
+echo "CPPFLAGS += -O3 ${compileflag}" >> ${MKFILE}
+echo "FFLAGS += -O3 ${compileflag}" >> ${MKFILE}
 if [ "${mpi}" == 1 ]; then
 	cxxflag+=" -DMLIP_MPI"
 fi

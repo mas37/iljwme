@@ -1068,6 +1068,9 @@ void Configuration::Save(ofstream& ofs, unsigned int flags) const
 
 	unsigned int save_binary = flags & SAVE_BINARY;
 	unsigned int without_loss = flags & SAVE_NO_LOSS;
+#ifdef MLIP_LOSSLESS_CFG
+	without_loss = SAVE_NO_LOSS;
+#endif
 	unsigned int direct_atom_coord = flags & SAVE_DIRECT_COORDS;
 
 	if (!ofs.is_open())
