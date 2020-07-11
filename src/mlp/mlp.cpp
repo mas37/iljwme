@@ -51,9 +51,8 @@ int main(int argc, char *argv[])
 	// parse argv to extract args and opts
 	std::string command = "help";
 	if (argc >= 2) command = argv[1];
-	ParseOptions(argc-1, argv+1, args, opts);
-
 	try {
+		ParseOptions(argc-1, argv+1, args, opts);
 		ExecuteCommand(command, args, opts);
 	}
 	catch (const MlipException& e) { std::cerr << e.What(); return 1; }

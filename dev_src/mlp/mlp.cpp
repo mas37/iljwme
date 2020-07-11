@@ -49,14 +49,14 @@ int main(int argc, char *argv[])
 	std::vector<std::string> args;
 	std::map<std::string, std::string> opts;
 
-	int iarg = ParseCommonOptions(argc, argv);
-	if ( 0 > iarg || false == CheckCommonOptions() ) return 2;
-	// parse argv to extract args and opts
-	std::string command = "help";
-	if ( argc > iarg ) command = argv[iarg];
-	ParseOptions(argc - iarg, argv + iarg, args, opts);
-
 	try {
+		int iarg = ParseCommonOptions(argc, argv);
+		if ( 0 > iarg || false == CheckCommonOptions() ) return 2;
+		// parse argv to extract args and opts
+		std::string command = "help";
+		if ( argc > iarg ) command = argv[iarg];
+
+		ParseOptions(argc - iarg, argv + iarg, args, opts);
 		ExecuteCommand(command, args, opts);
 	}
 	catch (const MlipException& e) { std::cerr << e.What(); return 1; }
