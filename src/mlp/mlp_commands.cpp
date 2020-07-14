@@ -721,7 +721,7 @@ bool Commands(const string& command, vector<string>& args, map<string, string>& 
 		cout << count << " configurations processed.\n";
 	} END_COMMAND;
 
-	BEGIN_UNDOCUMENTED_COMMAND("mindist",
+	BEGIN_COMMAND("mindist",
 		"reads a cfg file and saves it with added mindist feature",
         "mlp mindist db.cfg [Options]\n"
         "  Options can be given in any order. Options include:\n"
