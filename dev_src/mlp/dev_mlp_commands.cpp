@@ -89,14 +89,15 @@ bool DevCommands(const std::string& command, std::vector<std::string>& args, std
 		"  --init-threshold=<num>: set the initial threshold to num, default=1e-5\n"
 		"  --select-threshold=<num>: set the select threshold to num, default=1.1\n"
 		"  --swap-threshold=<num>: set the swap threshold to num, default=1.0000001\n"
-		"  --energy-weight=<num>: set the weight for energy equation, default=1\n"
-		"  --force-weight=<num>: set the weight for force equations, default=0\n"
-		"  --stress-weight=<num>: set the weight for stress equations, default=0\n"
-		"  --nbh-weight=<num>: set the weight for site energy equations, default=0\n"
+//		"  --energy-weight=<num>: set the weight for energy equation, default=1\n"
+//		"  --force-weight=<num>: set the weight for force equations, default=0\n"
+//		"  --stress-weight=<num>: set the weight for stress equations, default=0\n"
+//		"  --nbh-weight=<num>: set the weight for site energy equations, default=0\n"
 		"  --als-filename=<filename>: active learning state (ALS) filename\n"
 		"  --selected-filename=<filename>: file with selected configurations\n"
 		"  --selection-limit=<num>: swap limit for multiple selection, default=0 (disabled)\n"
-		"  --weighting=<string>: way of weighting the functional for better fitting of properties. Default=vibrations. Others=molecules, structures.\n"
+		"  --weighting=<string>: way of weighting configurations with different number of atoms,\n"
+                "                        default=vibrations, other=molecules, structures.\n"
 		) {
 
 		if (args.size() != 4) {
@@ -283,10 +284,10 @@ bool DevCommands(const std::string& command, std::vector<std::string>& args, std
 		"  --init-threshold=<num>: set the initial threshold to 1+num, default=1e-5\n"
 		"  --select-threshold=<num>: set the select threshold to num, default=1.1\n"
 		"  --swap-threshold=<num>: set the swap threshold to num, default=1.0000001\n"
-		"  --energy-weight=<num>: set the weight for energy equation, default=1\n"
-		"  --force-weight=<num>: set the weight for force equations, default=0\n"
-		"  --stress-weight=<num>: set the weight for stress equations, default=0\n"
-		"  --nbh-weight=<num>: set the weight for site energy equations, default=0\n"
+//		"  --energy-weight=<num>: set the weight for energy equation, default=1\n"
+//		"  --force-weight=<num>: set the weight for force equations, default=0\n"
+//		"  --stress-weight=<num>: set the weight for stress equations, default=0\n"
+//		"  --nbh-weight=<num>: set the weight for site energy equations, default=0\n"
 		"  --als-filename=<filename>: active learning state (ALS) filename\n"
 		) {
 
