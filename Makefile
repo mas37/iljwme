@@ -111,51 +111,6 @@ ifneq (0, $(words $(filter mlp libinterface,$(MAKECMDGOALS))))
    OBJ_FILES += $(SRC_COMMON:$(SRC_DIR)/%=%.o) 
    OBJ_FILES += $(SRC_EXTRA:$(SRC_DEV_DIR)/%=%.o) 
 
-else ifneq (0, $(words $(filter mlippy pymlip,$(MAKECMDGOALS))))
-
-   CXX = $(CXX_EXE)
-
-   # source file's directories
-   SRC_DIR = $(CURDIR)/src
-   SRC_DEV_DIR = $(CURDIR)/dev_src
-   # source files
-   SRC_COMMON := $(wildcard $(SRC_DIR)/common/*.cpp)
-   SRC_COMMON += $(wildcard $(SRC_DIR)/drivers/*.cpp)
-   SRC_COMMON += $(wildcard $(SRC_DIR)/*.cpp)
-   SRC_COMMON += $(SRC_DIR)/mlp/self_test.cpp
-   SRC_EXTRA := $(SRC_DEV_DIR)/mtpr.cpp $(SRC_DEV_DIR)/mtpr_trainer.cpp \
-			    $(SRC_DEV_DIR)/non_linear_regression.cpp \
-				$(SRC_DEV_DIR)/sw.cpp $(SRC_DEV_DIR)/sw_basis.cpp\
-			    $(SRC_DEV_DIR)/external/python/mlippy.cpp \
-			    $(SRC_DEV_DIR)/external/python/mlip_handler.cpp
-
-   SRC_FILES += $(SRC_COMMON)
-   SRC_FILES += $(SRC_EXTRA)
-
-   OBJ_FILES += $(SRC_COMMON:$(SRC_DIR)/%=%.o) 
-   OBJ_FILES += $(SRC_EXTRA:$(SRC_DEV_DIR)/%=%.o) 
-
-   # use C++11 standart for c++ files
-   CXXFLAGS += -std=c++11
-   # this suppresses the error when .cfg files are read with "Stress" instead of "PlusStress"
-   # this luxury is now removed
-   # CXXFLAGS += -DMLIP_NO_WRONG_STRESS_ERROR
-   ifneq ($(USE_MLIP_PUBLIC), 1)
-       CXXFLAGS += -DMLIP_DEV
-   endif
-
-   CPPFLAGS += -fPIC
-   LDFLAGS += -shared
-
-   EXE_TARGET = libmlippy.so
-   TARGET_EXE = libmlippy
-
-   # obj directory name suffix 
-   OBJ_SUFFIX = /mlippy
-
-   # python module files dir
-   PYMODULE_DIR=$(SRC_DEV_DIR)/external/python
-
 else ifneq (0, $(words $(filter cblas,$(MAKECMDGOALS))))
 
    CC = $(CC_LIB)
@@ -202,27 +157,12 @@ all:
 #
 -include $(CURDIR)/make/Makefile
 
-ifneq (0, $(words $(filter mlp libinterface mlippy pymlip,$(MAKECMDGOALS))))
+ifneq (0, $(words $(filter mlp libinterface,$(MAKECMDGOALS))))
 # target to build inner blas
 $(LIB_DIR)/lib_mlip_cblas.a:
 	@ $(MAKE) --no-print-directory -f $(MK_THIS) cblas
 
 endif
-
-.PHONY: mlippy
-mlippy: libmlippy
-	@ cp $(PYMODULE_DIR)/mlippy.py $(BIN_DIR)
-
-.PHONY: pymlip
-# pymlip: mlippy
-pymlip:
-	@ cp $(CURDIR)/make/setup.py $(CURDIR) && \
-	  python setup.py build_ext --inplace
-
-.PHONY: clean-py
-clean-py:
-	@ $(RM) -rf $(CURDIR)/build
-	@ $(RM) -f $(CURDIR)/setup.py
 
 .PHONY: distclean
 distclean: clean
