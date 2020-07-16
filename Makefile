@@ -14,7 +14,6 @@
 # Targets to be generated:
 #   <bin_dir>/mlp
 #   <lib_dir>/lib_mlip_interface.a
-#   <lib_dir>/lib_mlip_rpmd.a
 #   <lib_dir>/lib_mlip_cblas.a
 
 MK_THIS := $(lastword $(MAKEFILE_LIST))
@@ -24,7 +23,7 @@ MK_THIS := $(lastword $(MAKEFILE_LIST))
 
 -include $(CURDIR)/make/auto_vars.mk
 
-ifneq (0, $(words $(filter mlp libinterface librpmd,$(MAKECMDGOALS))))
+ifneq (0, $(words $(filter mlp libinterface,$(MAKECMDGOALS))))
     # source file's directories
     SRC_DIR = $(CURDIR)/src
     SRC_DEV_DIR = $(CURDIR)/dev_src
@@ -96,39 +95,6 @@ ifneq (0, $(words $(filter mlp libinterface librpmd,$(MAKECMDGOALS))))
 
         endif
 
-#
-    else ifneq (0, $(words $(filter librpmd,$(MAKECMDGOALS))))
-        CXX = $(CXX_LIB)
-        FC = $(FC_LIB)
-        # rpmd target source files
-        SRC_COMMON += $(SRC_DIR)/external/rpmd/rpmd_interface.cpp
-        ifneq ($(USE_MLIP_PUBLIC), 1)
-          SRC_EXTRA += $(wildcard $(SRC_DEV_DIR)/utils/mtpr_train.cpp)
-        endif
-        ifneq (0, $(words $(filter -DMLIP_MPI,$(CXXFLAGS))))
-          CXXFLAGS := $(filter-out -DMLIP_MPI, $(CXXFLAGS))
-        endif
-        CXXFLAGS += -fPIC
-        CPPFLAGS += -fPIC
-        FFLAGS += -fPIC
-        LIB_TARGET = lib_mlip_rpmd.a
-        TARGET_LIB = librpmd
-
-       # obj directory name suffix 
-        OBJ_SUFFIX = /rpmd
-
-        SRC_BLAS := $(wildcard ./blas/*.f) 
-        SRC_CBLAS := $(wildcard ./cblas/*.c) 
-        SRC_CBLAS += $(wildcard ./cblas/*.f) 
-
-        SRC_FILES += $(SRC_BLAS)
-        SRC_FILES += $(SRC_CBLAS)
-
-        OBJ_FILES += $(SRC_BLAS:./blas/%=%.o) 
-        OBJ_FILES += $(SRC_CBLAS:./cblas/%=%.o) 
-
-        TARGET_PRERQ =
-#
    endif
    # use C++11 standart for c++ files
    CXXFLAGS += -std=c++11
@@ -275,7 +241,6 @@ help:
 	@echo ""
 	@echo "make mlp            - builds mlp program"
 	@echo "make libinterface   - builds interface library for external codes"
-	@echo "make librpmd        - builds rpmd library"
 	@echo "make clean          - removes intermediate objects"
 	@echo "make test           - run integration test"
 	@echo "make help           - this info"
