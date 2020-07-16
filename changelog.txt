@@ -1,4 +1,4 @@
-Release 2020-0?-??:
+Release 2020-07-20:
 
 1) Training errors: the force errors and stress errors are now computed
 component-wise (not vector- or tensor-wise). This means, e.g., that the
@@ -9,10 +9,6 @@ smaller.
 
 mtp-filename                    pot.mtp
 select                          TRUE
-  select:site-en-weight           0.0
-  select:energy-weight            1.0
-  select:force-weight             0.0
-  select:stress-weight            0.0
   select:threshold                2.0
   select:threshold-break          10.0
   select:save-selected            preselected.cfg

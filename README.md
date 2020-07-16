@@ -24,3 +24,10 @@ You might also be interested in LAMMPS-MLIP interface distributed here:
 Have a look at `doc/manual/` first.
 
 Check the usage examples at `test/examples/`
+
+## Have questions?
+
+Note that that we'll not be able to answer all of your questions.
+As a rule, we are supporting only the documented functionality of MLIP.
+If you think you found a bug or an inconsistency in the documentation or usage examples,
+please create a Gitlab.com issue.
