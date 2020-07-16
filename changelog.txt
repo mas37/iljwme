@@ -25,4 +25,6 @@ select                          FALSE
 
 3) doc/manual/ updated, test/examples/ updated
 
-4) minor updates and bugfixes
+4) "Stress" in cfg-files now gives error, use PlusStress
+
+5) minor updates and bugfixes
