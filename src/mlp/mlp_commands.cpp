@@ -82,7 +82,7 @@ bool Commands(const string& command, vector<string>& args, map<string, string>& 
 #else
 				<< "serial version, "
 #endif
-				<< "(C) A. Shapeev, E. Podryabinkin, I. Novikov (Skoltech).\n";
+				<< "(C) Alexander V. Shapeev, Evgeny V. Podryabinkin, Konstantin Gubaev, Ivan S. Novikov (Skoltech).\n";
 			if (command == "help" && args.size() == 0)
 				cout << USAGE;
 			if (command == "list")
