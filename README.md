@@ -5,7 +5,7 @@ It has been developed at Skoltech (Moscow) by
 Alexander Shapeev, Evgeny Podryabinkin, Konstantin Gubaev, and Ivan Novikov
 
 ## Licence
-See [LICENSE.md](LICENSE.md)
+See [LICENSE](LICENSE)
 
 ## Prerequisties
 * g++, gcc, gfortran, mpicxx
