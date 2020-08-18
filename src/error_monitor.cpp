@@ -170,7 +170,7 @@ void ErrorMonitor::GetReport(std::string& log)
 													 (str_all.max.value + 1.0e-300) << '\n'
 			<< "\tRMS(StresDiff) / RMS(Stres) = " << str_rmsrel() << '\n'
 			<< "\n"
-			<< "Virial stresses (in GPa):\n"
+			<< "Stresses (in GPa):\n"
 			<< "\tErrors checked for " << vir_all.count << " configurations\n"
 			<< "\tMaximal absolute difference = " << vir_all.max.delta << '\n'
 			<< "\tAverage absolute difference = " << vir_aveabs() << '\n'
