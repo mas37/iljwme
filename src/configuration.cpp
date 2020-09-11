@@ -1826,8 +1826,13 @@ void Configuration::LoadFromOUTCAR(const std::string& filename)
 //! Assumes atom types 0, 1, ... correspond to those in POTCAR.
 void Configuration::WriteVaspPOSCAR(const std::string& filename) const
 {
-	const int LAT_WIDTH = 13; const int LAT_PRECISION = 6;
-	const int POS_WIDTH = 13; const int POS_PRECISION = 6;
+#ifdef MLIP_LOSSLESS_CFG
+	const int LAT_WIDTH = 23; const int LAT_PRECISION = 16;
+	const int POS_WIDTH = 23; const int POS_PRECISION = 16;
+#else
+	const int LAT_WIDTH = 23; const int LAT_PRECISION = 16;
+	const int POS_WIDTH = 23; const int POS_PRECISION = 16;
+#endif
 
 	std::ofstream ofs(filename);
 	if (!ofs.is_open())
