@@ -28,8 +28,10 @@ void Relaxation::WriteLog()
 				<< "\te/a " << cfg.energy/cfg.size()
 				<< "\tent " << f
 				<< "\tfrc " << max_force
-				<< "\tstr " << max_stress
-				<< std::endl;
+				<< "\tstr " << max_stress;
+	if(cfg.features["MV_grade"]!="")
+    	    logstrm1		<< "\tgrade " << cfg.features["MV_grade"];	
+	logstrm1		<< std::endl;
     MLP_LOG(tagname,logstrm1.str());
 };
 
