@@ -13,7 +13,7 @@ See [LICENSE](LICENSE)
 * make
 
 ## Compile
-For full instructions see [INSTALL.md](INSTALL.md).
+For full instructions see [INSTALL.md](INSTALL.md) or [INSTALL-cmake.md](INSTALL-cmake.md).
 
 You might also be interested in LAMMPS-MLIP interface distributed here:
 [https://gitlab.com/ashapeev/interface-lammps-mlip-2](https://gitlab.com/ashapeev/interface-lammps-mlip-2)
