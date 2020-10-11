@@ -6,5 +6,5 @@ TMP_DIR=./out
 mkdir -p $TMP_DIR
 
 $MLP_EXE convert-cfg OUTCAR out/POSCAR --input-format=vasp-outcar --output-format=vasp-poscar > /dev/null
-diff correctPOSCAR out/POSCAR 1>&2
+diff correct_POSCAR out/POSCAR 1>&2
 
