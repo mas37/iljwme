@@ -16,12 +16,12 @@ set(AUTHOR "Alexander Shapeev, Evgeny Podryabinkin, Konstantin Gubaev, and Ivan 
 set(AUTHOR_DETAILS "")
 set(DESCRIPTION "MLIP is a software for Machine Learning Interatomic Potentials.")
 
-if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
-  message(STATUS "Setting the build type (configuration) to \"Release\" as none was specified.")
-  set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Set the build type in this build tree." FORCE)
+if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CXX_FLAGS)
+  message(STATUS "Setting the build type to \"RelWithDebInfo\" as none was specified.")
+  set(CMAKE_BUILD_TYPE "RelWithDebInfo" CACHE STRING "Set the build type in this build tree." FORCE)
   # Possible values of build type in MLIP for cmake-gui
-  set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release")
-endif(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
+  set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release" "RelWithDebInfo" "MinSizeRel")
+endif(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CXX_FLAGS)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH}
                       "${CMAKE_SOURCE_DIR}/cmake"
