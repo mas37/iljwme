@@ -75,7 +75,7 @@ The CMake command-line options useful for building MLIP are,
 ```bash
 -DCMAKE_INSTALL_PREFIX=path  # where to install MLIP executable, lib if desired
 
--DCMAKE_BUILD_TYPE=type      # type = Release or Debug, default is 'Release' if nothing is specified
+-DCMAKE_BUILD_TYPE=type      # type = Debug, Release, RelWithDebInfo, MinSizeRel, default is 'RelWithDebInfo' if nothing is specified
 
 -DWITH_MPI=value             # ON or OFF, default is ON if CMake finds MPI, else OFF
 -DWITH_SELFTEST=value        # ON or OFF, default is ON (Enable 'self-testing' implementation)
@@ -106,7 +106,8 @@ cmake ../cmake -DCMAKE_BUILD_TYPE=Debug
 
 CMake will see to having DEBUG settings get added to the compilers FLAGS.
 
-If no building type is specified, it defaults to a `Release` build.
+If no building type is specified, it defaults to a `RelWithDebInfo` (short
+for Release With Debug Information) build.
 
 **NOTE: WITH_MPI OPTION**
 
