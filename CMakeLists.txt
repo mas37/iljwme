@@ -16,6 +16,13 @@ set(AUTHOR "Alexander Shapeev, Evgeny Podryabinkin, Konstantin Gubaev, and Ivan 
 set(AUTHOR_DETAILS "")
 set(DESCRIPTION "MLIP is a software for Machine Learning Interatomic Potentials.")
 
+if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CXX_FLAGS)
+  message(STATUS "Setting the build type to \"RelWithDebInfo\" as none was specified.")
+  set(CMAKE_BUILD_TYPE "RelWithDebInfo" CACHE STRING "Set the build type in this build tree." FORCE)
+  # Possible values of build type in MLIP for cmake-gui
+  set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release" "RelWithDebInfo" "MinSizeRel")
+endif(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CXX_FLAGS)
+
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH}
                       "${CMAKE_SOURCE_DIR}/cmake"
                       "${CMAKE_SOURCE_DIR}/cmake/Modules")
@@ -25,6 +32,9 @@ include(PreventInSourceBuilds)
 option(WITH_MPI "Build an MPI version" ON)
 if(WITH_MPI)
   find_package(MPI QUIET) # sets MPI_FOUND=TRUE if successful
+  if(MPI_FOUND)
+    message(STATUS "Found MPI: TRUE (found version \"${MPI_CXX_VERSION}\")")
+  endif(MPI_FOUND)
 endif(WITH_MPI)
 option(WITH_SELFTEST "Enable 'self-testing' implementation" ON)
 option(WITH_LOSSLESS_CFG "Enable 'lossless configuration' file writing" OFF)

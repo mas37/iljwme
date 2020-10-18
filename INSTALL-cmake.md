@@ -75,7 +75,7 @@ The CMake command-line options useful for building MLIP are,
 ```bash
 -DCMAKE_INSTALL_PREFIX=path  # where to install MLIP executable, lib if desired
 
--DCMAKE_BUILD_TYPE=type      # type = Release or Debug
+-DCMAKE_BUILD_TYPE=type      # type = Debug, Release, RelWithDebInfo, MinSizeRel, default is 'RelWithDebInfo' if nothing is specified
 
 -DWITH_MPI=value             # ON or OFF, default is ON if CMake finds MPI, else OFF
 -DWITH_SELFTEST=value        # ON or OFF, default is ON (Enable 'self-testing' implementation)
@@ -83,6 +83,31 @@ The CMake command-line options useful for building MLIP are,
 -DWITH_SYSTEM_BLAS=value     # ON or OFF, default is ON (Enable using system built BLAS library (with a C-style interface))
 -DBLAS_ROOT=path             # where to look for system/user built BLAS library (with a C-style interface)
 ```
+
+**NOTE: CMAKE_BUILD_TYPE OPTION**
+
+`CMAKE_BUILD_TYPE` specifies what build type (configuration) will be
+built in this build tree. Selecting the build type causes CMake to
+set many per-config properties and variables. For example, in a build
+tree configured to build `Release,`
+
+```bash
+cmake ../cmake -DCMAKE_BUILD_TYPE=Release
+```
+
+CMake will see having RELEASE settings get added to the compilers FLAGS.
+Thus when configuring MLIP in this mode, optimization flags are used.
+
+Or in a build tree configured to build type Debug,
+
+```bash
+cmake ../cmake -DCMAKE_BUILD_TYPE=Debug
+```
+
+CMake will see to having DEBUG settings get added to the compilers FLAGS.
+
+If no building type is specified, it defaults to a `RelWithDebInfo` (short
+for Release With Debug Information) build.
 
 **NOTE: WITH_MPI OPTION**
 
@@ -142,6 +167,12 @@ or, for building with the GNU Compilers (latest version), within build from
 mlip-2/build directoy
 ```bash
 cmake ../cmake -DCMAKE_CXX_COMPILER=g++-10 -DCMAKE_C_COMPILER=gcc-10 -DCMAKE_Fortran_COMPILER=gfortran-10
+```
+
+or, for building with the specific MPI wrapper compilers, within build from mlip-2/build
+directoy
+```bash
+cmake ../cmake -DCMAKE_CXX_COMPILER=/path/to/mpi/bin/mpic++ -DCMAKE_C_COMPILER=/path/to/mpi/bin/mpicc -DCMAKE_Fortran_COMPILER=/path/to/mpi/bin/mpifort
 ```
 
 **NOTE:**
