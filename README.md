@@ -25,6 +25,8 @@ Have a look at `doc/manual/` first.
 
 Check the usage examples at `test/examples/`
 
+Go to the repository [https://gitlab.com/ashapeev/mlip-2-tutorials](https://gitlab.com/ashapeev/mlip-2-tutorials) with tutorials
+
 ## Have questions?
 
 Note that we'll not be able to answer all of your questions.
