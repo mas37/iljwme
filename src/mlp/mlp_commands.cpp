@@ -119,7 +119,7 @@ bool Commands(const string& command, vector<string>& args, map<string, string>& 
 		"settings file should contain settings for relaxation and for mlip regime.\n"
 		"  Options can be given in any order. Options include:\n"
 		"  --pressure=<num>: external pressure (in GPa)\n"
-		"  --iteration_limit=<num>: maximum number of iterations\n"
+		"  --iteration-limit=<num>: maximum number of iterations\n"
 		"  --min-dist=<num>: terminate relaxation if atoms come closer than <num>\n"
 		"  --force-tolerance=<num>: relaxes until forces are less than <num>(eV/Angstr.)\n"
 		"        Zero <num> disables atom relaxation (fixes atom fractional coordinates)\n"
