@@ -50,9 +50,9 @@ protected:
 	//! reading one ionic iteration from VASP OUTCAR. Ions_per_type should be read before calling LoadNext.
 	//! IMPORTANT: if there is no next configuration in the file, it should not overwrite the existing configuration!
 	//! Returns true if success, false if end-of-file.
-	bool LoadNextFromOUTCAR(std::ifstream&,int maxiter=0);
-	bool LoadNextFromOUTCARold(std::ifstream&,int maxiter=0);
-	int friend LoadPreambleFromOUTCAR(std::ifstream&, std::vector<int>& ions_per_type, bool& is_old_vasp);	//!< Fills ions_per_type & max. number of iterations
+	bool LoadNextFromOUTCAR(std::ifstream&,int maxiter=0, int ISMEAR = 0);
+	bool LoadNextFromOUTCARold(std::ifstream&,int maxiter=0, int ISMEAR = 0);
+	int friend LoadPreambleFromOUTCAR(std::ifstream&, std::vector<int>& ions_per_type, bool& is_old_vasp, int& ISMEAR);	//!< Fills ions_per_type & max. number of iterations
 public:
 
 	//! Latice vectors in rows (i.e., lattice[0], lattice[1], lattice[2] are the 3 vectors). Required for periodical extension of the configuration. If lattice[3]==(0,0,0) then it is not periodic w.r.t lattice[3]. If all lattice==0 then it is an open-shell molecule, no periodicity whatsoever

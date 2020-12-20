@@ -1389,7 +1389,7 @@ void Configuration::WriteProfessIon(const std::string&  filename, std::string* s
 	ofs.close();
 }
 
-bool Configuration::LoadNextFromOUTCAR(std::ifstream& ifs,int maxiter)
+bool Configuration::LoadNextFromOUTCAR(std::ifstream& ifs, int maxiter, int ISMEAR)
 {
 	std::string line;
 
@@ -1554,6 +1554,18 @@ bool Configuration::LoadNextFromOUTCAR(std::ifstream& ifs,int maxiter)
 		if (str1 != "free" && str2 != "energy" && str3 != "TOTEN" && str4 != "=")
 			ERROR((string)"Outcar-file parsing error: Can't read energy");
 		ifs >> energy;
+		if(ISMEAR>0) {
+			std::getline(ifs, line);
+			ifs >> str1 >> str2 >> str3;
+//std::cerr << str1 << "," << str2 << ","<<str3;
+			if (str1 != "energy" && str2 != "without" && str3 != "entropy=")
+				ERROR((string)"Outcar-file parsing error: Can't read energy");
+			ifs >> energy;
+			ifs >> str1 >> str4;
+			if (str1 != "energy(sigma->0)" && str4 != "=")
+				ERROR((string)"Outcar-file parsing error: Can't read energy");
+			ifs >> energy;
+		}
 	}
 
 	if (ifs.fail() || ifs.eof()) {
@@ -1568,7 +1580,7 @@ bool Configuration::LoadNextFromOUTCAR(std::ifstream& ifs,int maxiter)
 }
 
 
-bool Configuration::LoadNextFromOUTCARold(std::ifstream& ifs,int maxiter)
+bool Configuration::LoadNextFromOUTCARold(std::ifstream& ifs, int maxiter, int ISMEAR)
 {
 	std::string line;
 
@@ -1638,6 +1650,16 @@ bool Configuration::LoadNextFromOUTCARold(std::ifstream& ifs,int maxiter)
 		if (str1 != "free" && str2 != "energy" && str3 != "TOTEN" && str4 != "=")
 			ERROR((string)"Outcar-file parsing error: Can't read energy");
 		ifs >> energy;
+		if(ISMEAR>0) {
+			ifs >> str1 >> str2 >> str3 >> str4;
+			if (str1 != "energy" && str2 != "without" && str3 != "entropy" && str4 != "=")
+				ERROR((string)"Outcar-file parsing error: Can't read energy");
+			ifs >> energy;
+			ifs >> str1 >> str4;
+			if (str1 != "energy(sigma->0)" && str4 != "=")
+				ERROR((string)"Outcar-file parsing error: Can't read energy");
+			ifs >> energy;
+		}
 	}
 
 	// stresses reading block
@@ -1731,7 +1753,7 @@ bool Configuration::LoadNextFromOUTCARold(std::ifstream& ifs,int maxiter)
 	return true;
 }
 
-int LoadPreambleFromOUTCAR(std::ifstream& ifs, std::vector<int>& ions_per_type, bool& is_old_vasp)
+int LoadPreambleFromOUTCAR(std::ifstream& ifs, std::vector<int>& ions_per_type, bool& is_old_vasp, int& ISMEAR)
 {
 	std::string line;
 
@@ -1769,17 +1791,26 @@ int LoadPreambleFromOUTCAR(std::ifstream& ifs, std::vector<int>& ions_per_type, 
 			ERROR((string)"\"Number of electronic iterations\" not given");
 	}
 
+	int maxiter = -1;
 	{
 		line.erase(0, 11);
 		std::stringstream stream(line);
-		int maxiter = -1;
 		stream >> maxiter;
-		return maxiter;
-
 	}
 
+	while (line.substr(0, 11) !=
+		"   ISMEAR =") {
+		std::getline(ifs, line);
+		if (ifs.eof())
+			ERROR((string)"\"ISMEAR\" not given");
+	}
 
-
+	{
+		line.erase(0, 11);
+		std::stringstream stream(line);
+		stream >> ISMEAR;
+	}
+	return maxiter;
 }
 
 void Configuration::LoadFromOUTCAR(const std::string& filename)
@@ -1791,17 +1822,18 @@ void Configuration::LoadFromOUTCAR(const std::string& filename)
 
 	std::vector<int> ions_per_type;
     bool is_old_vasp = false;
-	int maxiter = LoadPreambleFromOUTCAR(ifs, ions_per_type, is_old_vasp);
+	int ISMEAR = 0;
+	int maxiter = LoadPreambleFromOUTCAR(ifs, ions_per_type, is_old_vasp, ISMEAR);
 
     if (is_old_vasp == false) {
 
-	if (!LoadNextFromOUTCAR(ifs, maxiter))
+	if (!LoadNextFromOUTCAR(ifs, maxiter, ISMEAR))
 		ERROR("No configuration read from OUTCAR");
 
     }
     else {
 
-    if (!LoadNextFromOUTCARold(ifs, maxiter))
+    if (!LoadNextFromOUTCARold(ifs, maxiter, ISMEAR))
         ERROR("No configuration read from OUTCAR");
 
     }
@@ -1888,13 +1920,14 @@ bool LoadDynamicsFromOUTCAR(std::vector<Configuration> &db, const std::string& f
 	std::vector<int> ions_per_type;
     bool is_old_vasp = false;
 
-	int maxiter = LoadPreambleFromOUTCAR(ifs, ions_per_type, is_old_vasp);
+	int ISMEAR = 0;
+	int maxiter = LoadPreambleFromOUTCAR(ifs, ions_per_type, is_old_vasp, ISMEAR);
 	MlipException err("");
 	bool caught = false;
 	bool status = false;
     if (is_old_vasp == false) {
 	for (Configuration cfg; ; db.push_back(cfg)) {
-		try { status = cfg.LoadNextFromOUTCAR(ifs, maxiter); }
+		try { status = cfg.LoadNextFromOUTCAR(ifs, maxiter, ISMEAR); }
 		catch (const MlipException &e) {
 			err = e; caught = true;
 		}
@@ -1944,7 +1977,8 @@ bool Configuration::LoadLastFromOUTCAR(const std::string& filename)
 	std::vector<int> ions_per_type;
     bool is_old_vasp = false;
 
-	LoadPreambleFromOUTCAR(ifs, ions_per_type, is_old_vasp);
+	int ISMEAR = 0;
+	int maxiter = LoadPreambleFromOUTCAR(ifs, ions_per_type, is_old_vasp, ISMEAR);
 
 	MlipException err("");
 	int i = 0;
