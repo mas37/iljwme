@@ -39,11 +39,11 @@ void Relaxation::EFStoFuncGrad()
 {
 	double vol = fabs(cfg.lattice.det());
 
-	f = cfg.energy + pressure*vol;
+	f = cfg.energy + pressure*vol / 160.21766208;
 
 	if (relax_cell_flag)
 	{
-		Matrix3 Stress = cfg.stresses - Matrix3::Id()*pressure*vol;
+		Matrix3 Stress = cfg.stresses - Matrix3::Id()*(1.0/160.21766208)*pressure*vol;
 		Matrix3 dEdL = cfg.lattice.inverse().transpose() * Stress;
 		for (int a=0; a<3; a++)
 			for (int b=0; b<3; b++)
