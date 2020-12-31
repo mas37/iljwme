@@ -15,7 +15,7 @@ const std::string USAGE = \
 "Usage:\n"
 "mlp help                 prints this message\n"
 "mlp list                 lists all the available commands\n"
-"mlp help [command]       prints the decription of the command\n"
+"mlp help [command]       prints the description of the command\n"
 "mlp [command] [options]  executes the command (with the options)\n";
 
 #define BEGIN_COMMAND(command_name, descr, usage) \
