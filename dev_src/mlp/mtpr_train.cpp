@@ -90,6 +90,62 @@ void Rescale(MTPR_trainer& trainer,MLMTPR& mtpr)
 		} while (ind != 2);
 }
 
+//FOR PYTHON
+
+void Rescale(MTPR_trainer& trainer,MLMTPR* mtpr, vector<Configuration>& training_set, int prank)
+{
+		double min_scaling = mtpr->scaling;
+		double max_scaling = mtpr->scaling;
+
+		mtpr->linear_coeffs = mtpr->LinCoeff();
+
+		int ind;
+		do {
+			double condition_number[5];
+			double scaling = mtpr->scaling;
+			double scalings[5] = { scaling / 1.2,scaling / 1.1, scaling, scaling * 1.1, scaling*1.2 };
+			vector<double> coeffs;
+			coeffs.resize(mtpr->linear_coeffs.size());
+			if (prank == 0) std::cout << "Rescaling...\n";
+			for (int j = 0; j < 5; j++) {
+				if (prank == 0) std::cout << "   scaling = " << scalings[j] << ", condition number = ";
+				mtpr->scaling = scalings[j];
+				trainer.TrainLinear(prank, training_set);
+				mtpr->linear_coeffs = mtpr->LinCoeff();
+				double rms = 0;
+
+				for (int i = 0; i < mtpr->linear_coeffs.size(); i++) {
+					coeffs[i] = std::abs(mtpr->linear_coeffs[i]);
+					rms += coeffs[i] * coeffs[i];
+				}
+				rms = sqrt(rms);
+				std::sort(coeffs.begin(), coeffs.end());
+				
+				double median = coeffs[coeffs.size() / 2];
+
+				condition_number[j] = rms / median;
+				if (prank == 0) std::cout << rms / median << "\n";
+			}
+
+			// finds minimal condition number
+			ind = 2;
+			for (int j = 0; j < 5; j++)
+				if (condition_number[j] < condition_number[ind]) ind = j;
+
+			mtpr->scaling = scalings[ind];
+			if (prank == 0) std::cout << "Rescaling to " << mtpr->scaling << "... ";
+			trainer.TrainLinear(prank, training_set);
+			if (prank == 0) std::cout << "done" << std::endl;
+			if ((min_scaling < mtpr->scaling) && (mtpr->scaling < max_scaling))
+				ind = 2;
+			else {
+				min_scaling = std::min(min_scaling, mtpr->scaling);
+				max_scaling = std::max(max_scaling, mtpr->scaling);
+			}
+		} while (ind != 2);
+}
+
+
 void Train_MTPR(std::vector<std::string>& args, std::map<std::string, std::string>& opts)
 {
 	//args[0] - potname
