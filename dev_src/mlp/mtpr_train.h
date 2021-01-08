@@ -16,6 +16,8 @@
 
 void AddConfigs(const char*, NonLinearRegression &, int, int);
 void Rescale(MTPR_trainer& trainer, MLMTPR& mtpr);
+//FOR PYTHON
+void Rescale(MTPR_trainer& trainer, MLMTPR* mtpr, std::vector<Configuration>& training_set, int prank); 
 void Train_MTPR(std::vector<std::string>& args,std::map<std::string, std::string>& opts);
 
 
