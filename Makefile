@@ -15,6 +15,8 @@
 #   <bin_dir>/mlp
 #   <lib_dir>/lib_mlip_interface.a
 #   <lib_dir>/lib_mlip_cblas.a
+#   <lib_dir>/lib_mlip.a
+
 
 MK_THIS := $(lastword $(MAKEFILE_LIST))
 
@@ -138,6 +140,67 @@ else ifneq (0, $(words $(filter cblas,$(MAKECMDGOALS))))
 
    TARGET_PRERQ =
 
+else ifneq (0, $(words $(filter libmlip,$(MAKECMDGOALS))))
+        # source file's directories
+    SRC_DIR = $(CURDIR)/src
+    SRC_DEV_DIR = $(CURDIR)/dev_src
+    # source files
+	SRC_COMMON := $(wildcard $(SRC_DIR)/common/*.cpp) 
+    SRC_COMMON += $(wildcard $(SRC_DIR)/drivers/*.cpp)
+    SRC_COMMON += $(wildcard $(SRC_DIR)/*.cpp) 
+      SRC_EXTRA := $(wildcard $(SRC_DEV_DIR)/*.cpp) 
+      SRC_EXTRA += $(wildcard $(SRC_DEV_DIR)/*.f90)
+ 
+
+           CXX = $(CXX_EXE)
+        FC = $(FC_EXE)
+        # mlp target source files
+          SRC_COMMON += $(wildcard $(SRC_DIR)/mlp/*.cpp) 
+          SRC_COMMON := $(filter-out $(SRC_DIR)/mlp/mlp.cpp, $(SRC_COMMON))
+          SRC_EXTRA += $(wildcard $(SRC_DEV_DIR)/mlp/*.cpp) 
+          SRC_EXTRA += $(wildcard $(SRC_DEV_DIR)/utils/mtpr_train.cpp)
+
+       # obj directory name suffix 
+        ifeq (1, $(USE_MPI)) 
+          OBJ_SUFFIX = /mpi
+        else
+          OBJ_SUFFIX = /ser
+        endif
+
+        CXXFLAGS += -fPIC
+        CPPFLAGS += -fPIC
+        FFLAGS += -fPIC
+        LIB_TARGET = lib_mlip.a
+        TARGET_LIB = libmlip
+
+       # obj directory name suffix 
+        OBJ_SUFFIX = /ser
+
+        ifneq (1, $(words $(filter -DMLIP_INTEL_MKL, $(CXXFLAGS))))
+          SRC_BLAS := $(wildcard ./blas/*.f) 
+          SRC_CBLAS := $(wildcard ./cblas/*.c) 
+          SRC_CBLAS += $(wildcard ./cblas/*.f) 
+
+          SRC_FILES += $(SRC_BLAS)
+          SRC_FILES += $(SRC_CBLAS)
+
+          OBJ_FILES += $(SRC_BLAS:./blas/%=%.o) 
+          OBJ_FILES += $(SRC_CBLAS:./cblas/%=%.o) 
+
+          TARGET_PRERQ =
+
+        endif
+   # use C++11 standart for c++ files
+   CXXFLAGS += -std=c++11
+   CXXFLAGS += -DMLIP_DEV
+
+
+   SRC_FILES += $(SRC_COMMON)
+   SRC_FILES += $(SRC_EXTRA)
+
+   OBJ_FILES += $(SRC_COMMON:$(SRC_DIR)/%=%.o) 
+   OBJ_FILES += $(SRC_EXTRA:$(SRC_DEV_DIR)/%=%.o) 
+
 endif
 
 NODEPS += distclean help
@@ -185,3 +248,25 @@ help:
 	@echo "make test           - run integration test"
 	@echo "make help           - this info"
 	@echo ""
+
+SRC_DIR = $(CURDIR)/src
+
+# ----------------   BEGIN mlippy   ----------------
+.PHONY: mlippy
+
+mlippy: $(LIB_DIR)/lib_mlip.a  $(PREREQ)
+	@ cp -v $(SRC_DIR)/external/python/*.py $(LIB_DIR)/
+	@ cp -v $(SRC_DIR)/external/python/*.pyx $(LIB_DIR)/
+	@ cp -v $(SRC_DIR)/external/python/*.pxd $(LIB_DIR)/
+	@ rm -f $(LIB_DIR)/mlippy*.so
+	@ python ./setup.py build_ext --build-temp=$(OBJ_DIR)/mlippy/ --inplace
+	@ rm $(LIB_DIR)/*.py
+	@ rm $(LIB_DIR)/*.pyx
+	@ rm $(LIB_DIR)/*.pxd
+	
+NODEPS += clean-py
+.PHONY: clean-py
+clean-py: ;
+
+# ----------------   END mlippy   ----------------
+
