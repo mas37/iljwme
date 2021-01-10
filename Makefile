@@ -259,7 +259,8 @@ mlippy: $(LIB_DIR)/lib_mlip.a  $(PREREQ)
 	@ cp -v $(SRC_DIR)/external/python/*.pyx $(LIB_DIR)/
 	@ cp -v $(SRC_DIR)/external/python/*.pxd $(LIB_DIR)/
 	@ rm -f $(LIB_DIR)/mlippy*.so
-	@ python ./setup.py build_ext --build-temp=$(OBJ_DIR)/mlippy/ --inplace
+	@ echo using python $(PYTHON)
+	@ $(PYTHON) ./setup.py build_ext --build-temp=$(OBJ_DIR)/mlippy/ --inplace
 	@ rm $(LIB_DIR)/*.py
 	@ rm $(LIB_DIR)/*.pyx
 	@ rm $(LIB_DIR)/*.pxd

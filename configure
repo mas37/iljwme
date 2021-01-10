@@ -40,6 +40,7 @@ Options:
   --lossless-cfg               turn on lossless configuration file writing
   --compiler=[intel|gnu]       which compilers to use [autodetect]
   --blas=NAME                  BLAS library [autodetect]
+  --python=<path>              Path to python (e.g., ~/anaconda3/bin/python)
   --program-suffix=<suffix>    program name suffix
 BLAS option names:
   mkl                          Intel MKL library
@@ -54,6 +55,8 @@ test $(Check mpicc) && mpi=1
 # autodetect compiler and blas library ( intel and mkl only )
 test $(Check icc) && compiler="intel"
 [[ "${compiler}" = "intel" ]] && test ${MKLROOT} && blas=mkl
+# detect python
+test $(Check python) && python=`which python`
 
 # LP64 or non-LP64 for the Intel MKL
 arch=$(arch)
@@ -78,6 +81,8 @@ for arg in "$@"; do
         debug=1 ;;
     --compiler=* )
         compiler=$(echo $arg | sed 's/--compiler=//') ;;
+    --python=* )
+        python=$(echo $arg | sed 's/--python=//') ;;
     --blas=*)
         blas=$(echo $arg | sed 's/--blas=//') ;;
     --blas-root=* )
@@ -195,6 +200,10 @@ case "${blas}" in
         ;;
     * ) Halt "unknown BLAS library name \"${blas}\"." ;;
 esac
+echo "" >> ${MKFILE}
+
+echo "# Python support" >> ${MKFILE}
+echo "PYTHON = ${python}" >> ${MKFILE}
 echo "" >> ${MKFILE}
 
 echo "# Extra variables" >> ${MKFILE}
