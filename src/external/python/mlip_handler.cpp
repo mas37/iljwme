@@ -741,6 +741,7 @@ map<string,string> _calcerrors(void* pot_addr, const int size, const cfg_data *c
 			cfg = cfg_orig;
 			pMtpr->CalcEFS(cfg);	
 			errmon.collect(cfg_orig, cfg,1);
+			
 		}
 
 		std::string report="";
@@ -824,6 +825,8 @@ int _run_command(const string& infname, const string& outfname, int cfg_pos, con
 
 	return 0;
 }
+
+
 /////////////////
 // POT_HANDLER //
 /////////////////
@@ -847,6 +850,8 @@ int pot_handler::calc_cfg_efs(cfg_data *atom_cfg)
     }
 	return 0;
 }
+
+
 
 void pot_handler::init_wrapper(map<string,string> opts)
 {
@@ -912,6 +917,38 @@ void pot_handler::save_potential(const string& filename)
         Warning("Saving MTP potential failed: " + e.message);
     }
 }
+
+int pot_handler::add_atomic_type(int atomic_number)
+{
+   	if (n_mapped >= n_types)
+	{
+		cout << "ERROR:Too few species present in current MTP!" << endl;
+         	return -1;
+
+	}
+
+	for (int i=0;i<n_mapped;i++)
+		if (types_mapping[i]==atomic_number)
+			{
+				cout << "ERROR:this type is aldready prsent in current MTP!" << endl;
+				return -1;
+			}
+
+
+
+	types_mapping.push_back(atomic_number);
+    	n_mapped++;
+  
+
+  return 0;
+
+}
+
+vector<int> pot_handler::get_types_mapping()
+{	
+	return types_mapping;
+}
+
 
 /*
 vector<int> pot_handler::species_avail()

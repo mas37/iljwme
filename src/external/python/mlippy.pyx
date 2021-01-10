@@ -137,7 +137,7 @@ def ase_train(pot,train_cfg,options={}):
 		opts[key.encode('utf-8')] = value.encode('utf-8')
 
 	_train(pot_addr(pot),train_n,train_pcfgs,opts)
-	ase_errors(pot, train_cfg)
+	
 	
 def ase_errors(pot, check_cfgs, on_screen=False):
 	conf_n = len(check_cfgs)
@@ -196,6 +196,10 @@ cdef class mtp:
 		self.pot.load_potential(name.encode('utf-8'))
 	def save_potential(self,name):
 		self.pot.save_potential(name.encode('utf-8'))
+	def add_atomic_type(self,ase_type):
+		return self.pot.add_atomic_type(ase_type)
+	def get_types_mapping(self):
+		return self.pot.get_types_mapping()
 	def init_wrapper(self, options):					#"select":"TRUE" in options means considering grades
 		opts = {}
 		for key, value in options.items():
@@ -209,13 +213,17 @@ cdef class mtp:
 
 		#changing of atomic types to relative numeration: 0,1,2....
 				
-		types_map = {}
+		types_present = np.array(self.pot.get_types_mapping())
 		
 		for i in range(len(unique_types)):
-			types_map[unique_types[i]] = i	
+			if (unique_types[i] in types_present):
+				continue	
+			else:
+				raise Exception("ERROR: atomic number " + str(unique_types[i]) + " is not present in the MTP!")
+				return -1
 	
 		for i in range(len(system_types)):
-			system_types[i] = types_map[system_types[i]]
+			system_types[i] = (np.where(types_present == system_types[i]))[0]
 
 		atom_cfg.set_atomic_numbers(system_types)
 		

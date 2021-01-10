@@ -34,6 +34,8 @@ cdef extern from "mlip_handler.h":
         pot_handler()
         void load_potential(const string& fname)
         void save_potential(const string& fname)
+        int add_atomic_type(int ase_type)
+        vector[int] get_types_mapping()
         void* get_address();	
         int calc_cfg_efs(cfg_data *atom_cfg);  
         void init_wrapper(cmap[string,string] options);

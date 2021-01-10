@@ -55,6 +55,8 @@ public:
     MLIP_Wrapper* potWrapper; //for using inside the MLIP_calculator
     int n_types=0;          //number of species in the potential
     int n_coeffs=0;         //number of coeffs in the potential   
+    int n_mapped=0;         //number of types mapped
+    vector<int> types_mapping;
 public:
     pot_handler();
     ~pot_handler();
@@ -63,6 +65,8 @@ public:
     void save_potential(const string& filename);
     void init_wrapper(map<string,string> options);
     int calc_cfg_efs(cfg_data *atom_cfg); 
+    int add_atomic_type(int ase_type);
+    vector<int> get_types_mapping();
 
     void* get_address()
         {  return static_cast<void*>(pMtpr); }
