@@ -18,7 +18,7 @@ def initialize(MPI.Comm comm=None):
 cdef cfg_set(atoms, cfg_data& cfg):
 	cdef np.ndarray[long, ndim=1, mode = 'c'] types = atoms.numbers
 	cdef np.ndarray[double, ndim=2, mode = 'c'] pos = atoms.positions
-	cdef np.ndarray[double, ndim=2, mode = 'c'] lat = atoms.cell
+	cdef np.ndarray[double, ndim=2, mode = 'c'] lat = atoms.cell[:]
 	cdef np.ndarray[double, ndim=2, mode = 'c'] forces 
 	cdef np.ndarray[double, ndim=1, mode = 'c'] stresses
 
