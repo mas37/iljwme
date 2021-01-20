@@ -493,7 +493,9 @@ bool Commands(const string& command, vector<string>& args, map<string, string>& 
 		"    --init-params=<string>: how to initialize parameters if a potential was not\n"
 		"        pre-fitted. Default is random. Other is same - this is when interaction\n"
 		"        of all species is the same (more accurate fit, but longer optimization)\n"
-		"    --skip-preinit: skip the 75 iterations done when params are not given\n"
+		"    --skip-preinit: skip the 75 iterations done when parameters are not given\n"
+		"    --no-mindist-update: no updating the mindist parameter with actual \n"
+		"                         minimal interatomic distance in the training set\n"
 	) {
 
 		if (args.size() < 2) {

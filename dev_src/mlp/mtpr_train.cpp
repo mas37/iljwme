@@ -143,6 +143,10 @@ void Train_MTPR(std::vector<std::string>& args, std::map<std::string, std::strin
 		opts["init-params"] = "random";
 	if (opts["init-params"] != "random" && opts["init-params"] != "same")
 		ERROR("--init-params should be 'random' or 'same'");
+		
+	bool no_mindist_update = false;
+	if (opts["no-mindist-update"] != "")
+	    no_mindist_update = true;
 
 	SetTagLogStream("dev", &std::cout);
 	int end = 1;
@@ -255,6 +259,29 @@ void Train_MTPR(std::vector<std::string>& args, std::map<std::string, std::strin
 		if (prank == 0)
 			std::cout << "Pre-training ended" << std::endl;
 	}
+	
+        //getting the lowest min_dist for the training set
+        double min_dist = 999;
+        for (int i = 0; i < training_set.size(); i++) {
+             if (training_set[i].MinDist() < min_dist)
+                 min_dist = training_set[i].MinDist();
+        }
+
+        double total_min_dist = min_dist;
+        
+        //finding minimum distance in configuration among the processes
+#ifdef MLIP_MPI
+        MPI_Barrier(MPI_COMM_WORLD);
+        MPI_Allreduce(&min_dist, &total_min_dist, 1, MPI_DOUBLE, MPI_MIN, MPI_COMM_WORLD);
+#endif
+
+        if (!no_mindist_update) {
+            if (prank == 0)
+            {
+                std::cout << "Found configuration with mindist=" << total_min_dist << ", MTP's mindist will be decreased\n";
+            }
+            mtpr.p_RadialBasis->min_dist = 0.99 * total_min_dist;
+        }
 
 	trainer.max_step_count = maxits;				//maximum step count (linesearch doesn't count)
 
