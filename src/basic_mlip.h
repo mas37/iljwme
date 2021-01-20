@@ -25,7 +25,8 @@ private:
 
 protected:
 	Array1D tmp_grad_accumulator_;					//!< Temporal variable storing gradient of site energy w.r.t. coefficients
-
+	
+public:
 	AnyRadialBasis* p_RadialBasis = nullptr;		//!< pointer to RadialBasis
 
 public:
