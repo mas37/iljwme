@@ -144,9 +144,9 @@ void Train_MTPR(std::vector<std::string>& args, std::map<std::string, std::strin
 	if (opts["init-params"] != "random" && opts["init-params"] != "same")
 		ERROR("--init-params should be 'random' or 'same'");
 		
-	bool no_mindist_update = false;
-	if (opts["no-mindist-update"] != "")
-	    no_mindist_update = true;
+	bool mindist_update = false;
+	if (opts["mindist-update"] != "")
+	    mindist_update = true;
 
 	SetTagLogStream("dev", &std::cout);
 	int end = 1;
@@ -275,7 +275,7 @@ void Train_MTPR(std::vector<std::string>& args, std::map<std::string, std::strin
         MPI_Allreduce(&min_dist, &total_min_dist, 1, MPI_DOUBLE, MPI_MIN, MPI_COMM_WORLD);
 #endif
 
-        if (!no_mindist_update) {
+        if (mindist_update) {
             if (prank == 0)
             {
                 std::cout << "Found configuration with mindist=" << total_min_dist << ", MTP's mindist will be decreased\n";
