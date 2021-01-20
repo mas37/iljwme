@@ -201,7 +201,7 @@ void Train_MTPR(std::vector<std::string>& args, std::map<std::string, std::strin
 		ERROR("--init-params should be 'random' or 'same'");
 		
 	bool mindist_update = false;
-	if (opts["mindist-update"] != "")
+	if (opts["update-mindist"] != "")
 	    mindist_update = true;
 
 	SetTagLogStream("dev", &std::cout);
