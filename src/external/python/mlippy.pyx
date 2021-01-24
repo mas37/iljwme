@@ -646,6 +646,10 @@ class MLIP_Calculator:
 				self.results = {'energy': mlp_res[1],
 						   'forces': mlp_res[2],
 						  'stress': -mlp_res[3]}
+				#for quantities to be saved while writing in cfg format
+				atoms.energy = mlp_res[1]
+				atoms.forces = mlp_res[2]
+				atoms.stress = -mlp_res[3]
 			else:
 				print ('mlip EFS calculation failed')
 				sys.exit()
@@ -668,4 +672,4 @@ class MLIP_Calculator:
 			return self.equal(b, a, tol)
 		if tol is None:
 			return a == b
-		return abs(a - b) < tol * abs(b) + tol
+		return (abs(a - b) < tol * abs(b) + tol).all()
