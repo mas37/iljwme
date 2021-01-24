@@ -479,10 +479,12 @@ class MLIP_Calculator:
 	
 		self.mlip=mtp_pot
 		options = mlip_opts
-		options["mtp-filename"]="state.mvs"
+		options["mtp-filename"]="temp.mtp"
 		options["calculate_efs"]="TRUE"
 		options["ab-initio"]="";
+		self.mlip.save_potential("temp.mtp")
 		self.mlip.init_wrapper(options)			
+		os.system("rm -f temp.mtp")
 
 		self.atoms = None  # copy of atoms object from last calculation
 		self.results = {}  # calculated properties (energy, forces, ...)

@@ -5,15 +5,15 @@ import mlippy
 import ase
 from ase.optimize import BFGS
 
-mlp = mlippy.mtp('state.mvs')
+mlp = mlippy.mtp('state.als')
 
-opts = {"select":"FALSE",
-"load_state":"state.mvs",
-"save_selected":"selected.cfg",
-"threshold":"2",
-"threshold_break":"10",
-"write_cfgs":"record.cfgs",
-"write_cfgs:skip":"3"
+opts = {"select":"TRUE",
+"load-state":"state.als",
+"save-selected":"out/selected.cfg",
+"threshold":"10",
+"threshold-break":"100",
+"write-cfgs":"out/record.cfgs",
+"write-cfgs:skip":"50"
 }
 
 
