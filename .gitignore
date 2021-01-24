@@ -69,6 +69,8 @@ doc/examples/**/out
 doc/examples/**/vasp
 doc/examples/**/log.lammps
 
+doc/examples_mlippy/**/out
+
 test/self-test/**/out
 test/examples/**/out
 test/examples/convert-cfg/**/out

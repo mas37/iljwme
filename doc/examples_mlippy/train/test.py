@@ -25,23 +25,17 @@ opts = {"max-iter":"20",
 "init-params":"same",
 
 }
-
 mlippy.ase_train(mlip,ts,opts)  
 errors = mlippy.ase_errors(mlip,ts)
 import pprint as pp
 
 if (rank==0):
 	pp.pprint(errors)
+	os.system('mkdir out')
 	mlip.save_potential('out/Trained_py.mtp')
 
 status=os.EX_OK
 
-if (filecmp.cmp('out/Trained_py.mtp', 'out/Trained_bin.mtp')==False):
-	print('error')
-	status=1
-
-#if (rank==0):
-#	os.system('rm -rf out')
-
+print ('success')
 sys.exit(status)
 	

@@ -30,12 +30,18 @@ a=a.repeat(2)
 a.rattle(stdev=0.5)
 
 a.set_calculator(calc)
-mlippy.ase_savecfgs('initial_ase.cfg',[a])
 
-print(a.get_potential_energy())
+os.system('mkdir out')
+
+en_initial = a.get_potential_energy()
+mlippy.ase_savecfgs('out/initial_ase.cfg',[a])
+
 
 dyn = BFGS(a)
 dyn.run(fmax=1e-2)
 
-mlippy.ase_savecfgs('relaxed_ase.cfg',[a])
+mlippy.ase_savecfgs('out/relaxed_ase.cfg',[a])
+en_final = a.get_potential_energy()
 
+print ("Potential energy of initial configuration: "+str(en_initial))
+print ("Potential energy of final configuration: "+str(en_final))

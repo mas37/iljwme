@@ -23,8 +23,9 @@ for i in range(len(cfgs)):
 	else:
 		rejected.append(cfgs[i])
 
-mlippy.ase_savecfgs(fname + "_screened",screened)
-mlippy.ase_savecfgs(fname + "_rejected",rejected)
+os.system('mkdir out')
+mlippy.ase_savecfgs("out/" + fname + "_screened",screened)
+mlippy.ase_savecfgs("out/" + fname + "_rejected",rejected)
 
 
 report = mlippy.ase_errors(mlp,cfgs)
