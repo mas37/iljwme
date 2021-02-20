@@ -1,0 +1,16 @@
+general:
+ System = bcc Li
+ ENCUT  =    15
+ PREC   = Low
+ ISMEAR =     1;   
+ SIGMA  =   0.1
+ ISYM   =      0
+ NELM   =     80
+ EDIFF  = 1E-01
+ LWAVE  = .FALSE.
+ LCHARG = .FALSE. 
+
+ LPLANE = .TRUE.
+ NCORE   = 1
+ LSCALU = .FALSE.
+ NSIM   = 4

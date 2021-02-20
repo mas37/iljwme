@@ -3,7 +3,7 @@
  *   The use of MLIP must be acknowledged by citing approriate references.
  *   See the LICENSE file for details.
  *
- *   This file contributors: Alexander Shapeev, Evgeny Podryabinkin, Ivan Novikov
+ *   Contributors: Alexander Shapeev, Evgeny Podryabinkin, Ivan Novikov
  */
 
 #ifndef MLIP_MLP_COMMANDS_H

@@ -1,0 +1,492 @@
+Minimal interatomic distance in the training set is 3.04841. MTP's mindist will be updated
+BFGS iterations count set to 5
+BFGS convergence tolerance set to 1e-08
+Energy weight: 1
+Force weight: 0.01
+Stress weight: 0.003
+Minimal interatomic distance in the training set is 3.04841. MTP's mindist will be updated
+MTPR training started on 1 core(s)
+BFGS iter 0: f=1.79333
+BFGS iter 1: f=0.602633
+BFGS iter 2: f=0.173186
+BFGS iter 3: f=0.0602263
+BFGS iter 4: f=0.00580946
+step limit reached
+MTPR training ended
+Rescaling...
+   scaling = 1, condition number = 91.857712
+   scaling = 1.0909091, condition number = 114.93294
+   scaling = 1.2, condition number = 160.1068
+   scaling = 1.32, condition number = 261.72781
+   scaling = 1.44, condition number = 304.78023
+Rescaling to 1... done
+Rescaling...
+   scaling = 0.83333333, condition number = 65.164846
+   scaling = 0.90909091, condition number = 75.586078
+   scaling = 1, condition number = 91.857662
+   scaling = 1.1, condition number = 117.79171
+   scaling = 1.2, condition number = 160.1068
+Rescaling to 0.83333333... done
+Rescaling...
+   scaling = 0.69444444, condition number = 50.422672
+   scaling = 0.75757576, condition number = 56.59081
+   scaling = 0.83333333, condition number = 65.164846
+   scaling = 0.91666667, condition number = 76.761565
+   scaling = 1, condition number = 91.857662
+Rescaling to 0.69444444... done
+Rescaling...
+   scaling = 0.5787037, condition number = 39.710292
+   scaling = 0.63131313, condition number = 44.885855
+   scaling = 0.69444444, condition number = 50.422672
+   scaling = 0.76388889, condition number = 57.25116
+   scaling = 0.83333333, condition number = 65.164846
+Rescaling to 0.5787037... done
+Rescaling...
+   scaling = 0.48225309, condition number = 25.952082
+   scaling = 0.52609428, condition number = 32.435553
+   scaling = 0.5787037, condition number = 39.710292
+   scaling = 0.63657407, condition number = 45.327814
+   scaling = 0.69444444, condition number = 50.422672
+Rescaling to 0.48225309... done
+Rescaling...
+   scaling = 0.40187757, condition number = 19.071673
+   scaling = 0.4384119, condition number = 20.343715
+   scaling = 0.48225309, condition number = 25.952082
+   scaling = 0.5304784, condition number = 33.004613
+   scaling = 0.5787037, condition number = 39.710292
+Rescaling to 0.40187757... done
+Rescaling...
+   scaling = 0.33489798, condition number = 20.375323
+   scaling = 0.36534325, condition number = 22.493453
+   scaling = 0.40187757, condition number = 19.071673
+   scaling = 0.44206533, condition number = 20.765122
+   scaling = 0.48225309, condition number = 25.952135
+Rescaling to 0.40187757... done
+Minimal interatomic distance in the training set is 2.6391458. MTP's mindist will be updated
+BFGS iterations count set to 5
+BFGS convergence tolerance set to 1e-08
+Energy weight: 1
+Force weight: 0.01
+Stress weight: 0.003
+Minimal interatomic distance in the training set is 2.6391458. MTP's mindist will be updated
+MTPR training started on 1 core(s)
+BFGS iter 0: f=0.011186033
+BFGS iter 1: f=0.0094314692
+BFGS iter 2: f=0.0015440303
+BFGS iter 3: f=0.0005244426
+BFGS iter 4: f=7.8241597e-05
+step limit reached
+MTPR training ended
+Rescaling...
+   scaling = 0.33489798, condition number = 15.481069
+   scaling = 0.36534325, condition number = 16.625058
+   scaling = 0.40187757, condition number = 18.159527
+   scaling = 0.44206533, condition number = 21.829531
+   scaling = 0.48225309, condition number = 24.15788
+Rescaling to 0.33489798... done
+Rescaling...
+   scaling = 0.27908165, condition number = 13.79034
+   scaling = 0.30445271, condition number = 14.465683
+   scaling = 0.33489798, condition number = 15.481069
+   scaling = 0.36838777, condition number = 16.744143
+   scaling = 0.40187757, condition number = 18.159527
+Rescaling to 0.27908165... done
+Rescaling...
+   scaling = 0.23256804, condition number = 13.373523
+   scaling = 0.25371059, condition number = 13.38195
+   scaling = 0.27908165, condition number = 13.79034
+   scaling = 0.30698981, condition number = 14.543312
+   scaling = 0.33489798, condition number = 15.481069
+Rescaling to 0.23256804... done
+Rescaling...
+   scaling = 0.1938067, condition number = 14.764373
+   scaling = 0.21142549, condition number = 13.8398
+   scaling = 0.23256804, condition number = 13.373523
+   scaling = 0.25582484, condition number = 13.401991
+   scaling = 0.27908165, condition number = 13.79034
+Rescaling to 0.23256804... done
+Minimal interatomic distance in the training set is 2.3667859. MTP's mindist will be updated
+BFGS iterations count set to 5
+BFGS convergence tolerance set to 1e-08
+Energy weight: 1
+Force weight: 0.01
+Stress weight: 0.003
+Minimal interatomic distance in the training set is 2.3667859. MTP's mindist will be updated
+MTPR training started on 1 core(s)
+BFGS iter 0: f=0.00027376201
+BFGS iter 1: f=0.00023287417
+BFGS iter 2: f=0.00016478388
+BFGS iter 3: f=0.00015754912
+BFGS iter 4: f=0.00013939186
+step limit reached
+MTPR training ended
+Rescaling...
+   scaling = 0.1938067, condition number = 3.9035976
+   scaling = 0.21142549, condition number = 4.0369428
+   scaling = 0.23256804, condition number = 4.2327334
+   scaling = 0.25582484, condition number = 4.4807031
+   scaling = 0.27908165, condition number = 4.7532161
+Rescaling to 0.1938067... done
+Rescaling...
+   scaling = 0.16150558, condition number = 3.7650884
+   scaling = 0.17618791, condition number = 3.8073473
+   scaling = 0.1938067, condition number = 3.9035976
+   scaling = 0.21318737, condition number = 4.0519241
+   scaling = 0.23256804, condition number = 4.2327334
+Rescaling to 0.16150558... done
+Rescaling...
+   scaling = 0.13458799, condition number = 3.8177786
+   scaling = 0.14682326, condition number = 3.7688189
+   scaling = 0.16150558, condition number = 3.7650884
+   scaling = 0.17765614, condition number = 3.8136538
+   scaling = 0.1938067, condition number = 3.9035976
+Rescaling to 0.16150558... done
+Minimal interatomic distance in the training set is 2.3667859. MTP's mindist will be updated
+BFGS iterations count set to 5
+BFGS convergence tolerance set to 1e-08
+Energy weight: 1
+Force weight: 0.01
+Stress weight: 0.003
+Minimal interatomic distance in the training set is 2.3667859. MTP's mindist will be updated
+MTPR training started on 1 core(s)
+BFGS iter 0: f=0.00010293282
+BFGS iter 1: f=0.00010126076
+BFGS iter 2: f=9.9799979e-05
+BFGS iter 3: f=9.9510827e-05
+BFGS iter 4: f=9.9414455e-05
+step limit reached
+MTPR training ended
+Rescaling...
+   scaling = 0.13458799, condition number = 4.5846807
+   scaling = 0.14682326, condition number = 4.5243078
+   scaling = 0.16150558, condition number = 4.529313
+   scaling = 0.17765614, condition number = 4.6105899
+   scaling = 0.1938067, condition number = 4.7108297
+Rescaling to 0.14682326... done
+Rescaling...
+   scaling = 0.12235271, condition number = 4.7199271
+   scaling = 0.13347569, condition number = 4.5936147
+   scaling = 0.14682326, condition number = 4.5243078
+   scaling = 0.16150558, condition number = 4.529313
+   scaling = 0.17618791, condition number = 4.6004359
+Rescaling to 0.14682326... done
+Minimal interatomic distance in the training set is 2.3667859. MTP's mindist will be updated
+BFGS iterations count set to 5
+BFGS convergence tolerance set to 1e-08
+Energy weight: 1
+Force weight: 0.01
+Stress weight: 0.003
+Minimal interatomic distance in the training set is 2.3667859. MTP's mindist will be updated
+MTPR training started on 1 core(s)
+BFGS iter 0: f=8.60536e-05
+BFGS iter 1: f=8.566782e-05
+BFGS iter 2: f=8.505764e-05
+BFGS iter 3: f=8.4799292e-05
+BFGS iter 4: f=8.4770242e-05
+step limit reached
+MTPR training ended
+Rescaling...
+   scaling = 0.12235271, condition number = 4.5095479
+   scaling = 0.13347569, condition number = 4.3713238
+   scaling = 0.14682326, condition number = 4.2825169
+   scaling = 0.16150558, condition number = 4.2607854
+   scaling = 0.17618791, condition number = 4.3007779
+Rescaling to 0.16150558... done
+Rescaling...
+   scaling = 0.13458799, condition number = 4.3609671
+   scaling = 0.14682326, condition number = 4.2825169
+   scaling = 0.16150558, condition number = 4.2607854
+   scaling = 0.17765614, condition number = 4.3076132
+   scaling = 0.1938067, condition number = 4.411298
+Rescaling to 0.16150558... done
+Minimal interatomic distance in the training set is 2.3667859. MTP's mindist will be updated
+BFGS iterations count set to 5
+BFGS convergence tolerance set to 1e-08
+Energy weight: 1
+Force weight: 0.01
+Stress weight: 0.003
+Minimal interatomic distance in the training set is 2.3667859. MTP's mindist will be updated
+MTPR training started on 1 core(s)
+BFGS iter 0: f=8.1961634e-05
+BFGS iter 1: f=8.1856122e-05
+BFGS iter 2: f=8.1680542e-05
+BFGS iter 3: f=8.1640286e-05
+BFGS iter 4: f=8.1636791e-05
+step limit reached
+MTPR training ended
+Rescaling...
+   scaling = 0.13458799, condition number = 4.4655123
+   scaling = 0.14682326, condition number = 4.3691493
+   scaling = 0.16150558, condition number = 4.328501
+   scaling = 0.17765614, condition number = 4.3572502
+   scaling = 0.1938067, condition number = 4.4452375
+Rescaling to 0.16150558... done
+Minimal interatomic distance in the training set is 2.3667859. MTP's mindist will be updated
+BFGS iterations count set to 5
+BFGS convergence tolerance set to 1e-08
+Energy weight: 1
+Force weight: 0.01
+Stress weight: 0.003
+Minimal interatomic distance in the training set is 2.3667859. MTP's mindist will be updated
+MTPR training started on 1 core(s)
+BFGS iter 0: f=8.721044e-05
+BFGS iter 1: f=8.7206339e-05
+BFGS iter 2: f=8.7021043e-05
+BFGS iter 3: f=8.701892e-05
+BFGS iter 4: f=8.701675e-05
+step limit reached
+MTPR training ended
+Rescaling...
+   scaling = 0.13458799, condition number = 4.7800513
+   scaling = 0.14682326, condition number = 4.6451357
+   scaling = 0.16150558, condition number = 4.5691661
+   scaling = 0.17765614, condition number = 4.5717173
+   scaling = 0.1938067, condition number = 4.5710365
+Rescaling to 0.16150558... done
+Minimal interatomic distance in the training set is 2.3271423. MTP's mindist will be updated
+BFGS iterations count set to 5
+BFGS convergence tolerance set to 1e-08
+Energy weight: 1
+Force weight: 0.01
+Stress weight: 0.003
+Minimal interatomic distance in the training set is 2.3271423. MTP's mindist will be updated
+MTPR training started on 1 core(s)
+BFGS iter 0: f=0.00015826066
+BFGS iter 1: f=0.00015303714
+BFGS iter 2: f=0.0001511483
+BFGS iter 3: f=0.00015002457
+BFGS iter 4: f=0.00014733791
+step limit reached
+MTPR training ended
+Rescaling...
+   scaling = 0.13458799, condition number = 3.9560475
+   scaling = 0.14682326, condition number = 3.9970579
+   scaling = 0.16150558, condition number = 4.1025283
+   scaling = 0.17765614, condition number = 3.93935
+   scaling = 0.1938067, condition number = 4.0736885
+Rescaling to 0.17765614... done
+Rescaling...
+   scaling = 0.14804678, condition number = 4.003698
+   scaling = 0.16150558, condition number = 4.1025283
+   scaling = 0.17765614, condition number = 3.93935
+   scaling = 0.19542176, condition number = 4.0951549
+   scaling = 0.21318737, condition number = 4.3507594
+Rescaling to 0.17765614... done
+Minimal interatomic distance in the training set is 2.3271423. MTP's mindist will be updated
+BFGS iterations count set to 5
+BFGS convergence tolerance set to 1e-08
+Energy weight: 1
+Force weight: 0.01
+Stress weight: 0.003
+Minimal interatomic distance in the training set is 2.3271423. MTP's mindist will be updated
+MTPR training started on 1 core(s)
+BFGS iter 0: f=0.00011105227
+BFGS iter 1: f=0.00011104027
+BFGS iter 2: f=0.00011100669
+BFGS iter 3: f=0.00011100284
+BFGS iter 4: f=0.00011099641
+step limit reached
+MTPR training ended
+Rescaling...
+   scaling = 0.14804678, condition number = 3.7209188
+   scaling = 0.16150558, condition number = 3.8245629
+   scaling = 0.17765614, condition number = 3.7543644
+   scaling = 0.19542176, condition number = 3.9754167
+   scaling = 0.21318737, condition number = 4.2335484
+Rescaling to 0.14804678... done
+Rescaling...
+   scaling = 0.12337232, condition number = 3.6579082
+   scaling = 0.13458799, condition number = 3.6626011
+   scaling = 0.14804678, condition number = 3.7209188
+   scaling = 0.16285146, condition number = 3.8370371
+   scaling = 0.17765614, condition number = 3.7543644
+Rescaling to 0.12337232... done
+Rescaling...
+   scaling = 0.10281027, condition number = 3.7919182
+   scaling = 0.11215665, condition number = 3.7041555
+   scaling = 0.12337232, condition number = 3.6579082
+   scaling = 0.13570955, condition number = 3.6654417
+   scaling = 0.14804678, condition number = 3.7209188
+Rescaling to 0.12337232... done
+Minimal interatomic distance in the training set is 2.3271423. MTP's mindist will be updated
+BFGS iterations count set to 5
+BFGS convergence tolerance set to 1e-08
+Energy weight: 1
+Force weight: 0.01
+Stress weight: 0.003
+Minimal interatomic distance in the training set is 2.3271423. MTP's mindist will be updated
+MTPR training started on 1 core(s)
+BFGS iter 0: f=0.00010670363
+BFGS iter 1: f=0.00010657892
+BFGS iter 2: f=0.00010650936
+BFGS iter 3: f=0.00010639124
+BFGS iter 4: f=0.00010632281
+step limit reached
+MTPR training ended
+Rescaling...
+   scaling = 0.10281027, condition number = 4.136734
+   scaling = 0.11215665, condition number = 4.0364616
+   scaling = 0.12337232, condition number = 3.9819813
+   scaling = 0.13570955, condition number = 3.9869118
+   scaling = 0.14804678, condition number = 4.0447212
+Rescaling to 0.12337232... done
+Minimal interatomic distance in the training set is 2.3271423. MTP's mindist will be updated
+BFGS iterations count set to 5
+BFGS convergence tolerance set to 1e-08
+Energy weight: 1
+Force weight: 0.01
+Stress weight: 0.003
+Minimal interatomic distance in the training set is 2.3271423. MTP's mindist will be updated
+MTPR training started on 1 core(s)
+BFGS iter 0: f=0.00010100357
+BFGS iter 1: f=0.00010099612
+BFGS iter 2: f=0.00010099289
+BFGS iter 3: f=0.00010099182
+BFGS iter 4: f=0.00010098644
+step limit reached
+MTPR training ended
+Rescaling...
+   scaling = 0.10281027, condition number = 4.335082
+   scaling = 0.11215665, condition number = 4.2231276
+   scaling = 0.12337232, condition number = 4.1587409
+   scaling = 0.13570955, condition number = 4.1569309
+   scaling = 0.14804678, condition number = 4.2114754
+Rescaling to 0.13570955... done
+Rescaling...
+   scaling = 0.11309129, condition number = 4.215079
+   scaling = 0.12337232, condition number = 4.1587409
+   scaling = 0.13570955, condition number = 4.1569309
+   scaling = 0.14928051, condition number = 4.2195355
+   scaling = 0.16285146, condition number = 4.334627
+Rescaling to 0.13570955... done
+Minimal interatomic distance in the training set is 2.3271423. MTP's mindist will be updated
+BFGS iterations count set to 5
+BFGS convergence tolerance set to 1e-08
+Energy weight: 1
+Force weight: 0.01
+Stress weight: 0.003
+Minimal interatomic distance in the training set is 2.3271423. MTP's mindist will be updated
+MTPR training started on 1 core(s)
+BFGS iter 0: f=0.00010592281
+BFGS iter 1: f=0.00010586645
+BFGS iter 2: f=0.00010578401
+BFGS iter 3: f=0.00010571105
+BFGS iter 4: f=0.00010567317
+step limit reached
+MTPR training ended
+Rescaling...
+   scaling = 0.11309129, condition number = 3.9093599
+   scaling = 0.12337232, condition number = 3.8604414
+   scaling = 0.13570955, condition number = 3.8642103
+   scaling = 0.14928051, condition number = 3.9305364
+   scaling = 0.16285146, condition number = 3.9016172
+Rescaling to 0.12337232... done
+Rescaling...
+   scaling = 0.10281027, condition number = 4.0181217
+   scaling = 0.11215665, condition number = 3.9165658
+   scaling = 0.12337232, condition number = 3.8604414
+   scaling = 0.13570955, condition number = 3.8642103
+   scaling = 0.14804678, condition number = 3.9222005
+Rescaling to 0.12337232... done
+Minimal interatomic distance in the training set is 2.3271423. MTP's mindist will be updated
+BFGS iterations count set to 5
+BFGS convergence tolerance set to 1e-08
+Energy weight: 1
+Force weight: 0.01
+Stress weight: 0.003
+Minimal interatomic distance in the training set is 2.3271423. MTP's mindist will be updated
+MTPR training started on 1 core(s)
+BFGS iter 0: f=0.00010785382
+BFGS iter 1: f=0.00010780304
+BFGS iter 2: f=0.00010777628
+BFGS iter 3: f=0.00010772605
+BFGS iter 4: f=0.00010771464
+step limit reached
+MTPR training ended
+Rescaling...
+   scaling = 0.10281027, condition number = 4.568454
+   scaling = 0.11215665, condition number = 4.4262498
+   scaling = 0.12337232, condition number = 4.3369077
+   scaling = 0.13570955, condition number = 3.9309403
+   scaling = 0.14804678, condition number = 3.9212336
+Rescaling to 0.14804678... done
+Rescaling...
+   scaling = 0.12337232, condition number = 4.3369077
+   scaling = 0.13458799, condition number = 3.9951657
+   scaling = 0.14804678, condition number = 3.9212336
+   scaling = 0.16285146, condition number = 4.046711
+   scaling = 0.17765614, condition number = 4.2319884
+Rescaling to 0.14804678... done
+Minimal interatomic distance in the training set is 2.3271423. MTP's mindist will be updated
+BFGS iterations count set to 5
+BFGS convergence tolerance set to 1e-08
+Energy weight: 1
+Force weight: 0.01
+Stress weight: 0.003
+Minimal interatomic distance in the training set is 2.3271423. MTP's mindist will be updated
+MTPR training started on 1 core(s)
+BFGS iter 0: f=0.00010405
+BFGS iter 1: f=0.00010404618
+BFGS iter 2: f=0.000104038
+BFGS iter 3: f=0.00010403474
+BFGS iter 4: f=0.00010403369
+step limit reached
+MTPR training ended
+Rescaling...
+   scaling = 0.12337232, condition number = 4.3391195
+   scaling = 0.13458799, condition number = 4.1093192
+   scaling = 0.14804678, condition number = 4.1674724
+   scaling = 0.16285146, condition number = 4.3071209
+   scaling = 0.17765614, condition number = 4.5111713
+Rescaling to 0.13458799... done
+Rescaling...
+   scaling = 0.11215665, condition number = 4.4262718
+   scaling = 0.12235271, condition number = 4.3437909
+   scaling = 0.13458799, condition number = 4.1093192
+   scaling = 0.14804678, condition number = 4.1674724
+   scaling = 0.16150558, condition number = 4.2915677
+Rescaling to 0.13458799... done
+Minimal interatomic distance in the training set is 2.3271423. MTP's mindist will be updated
+BFGS iterations count set to 5
+BFGS convergence tolerance set to 1e-08
+Energy weight: 1
+Force weight: 0.01
+Stress weight: 0.003
+Minimal interatomic distance in the training set is 2.3271423. MTP's mindist will be updated
+MTPR training started on 1 core(s)
+BFGS iter 0: f=0.0001030823
+BFGS iter 1: f=0.00010305627
+BFGS iter 2: f=0.00010304868
+BFGS iter 3: f=0.00010304015
+BFGS iter 4: f=0.00010303163
+step limit reached
+MTPR training ended
+Rescaling...
+   scaling = 0.11215665, condition number = 4.8090678
+   scaling = 0.12235271, condition number = 4.6892648
+   scaling = 0.13458799, condition number = 4.3353902
+   scaling = 0.14804678, condition number = 4.3995856
+   scaling = 0.16150558, condition number = 4.5348681
+Rescaling to 0.13458799... done
+Minimal interatomic distance in the training set is 2.3271423. MTP's mindist will be updated
+BFGS iterations count set to 5
+BFGS convergence tolerance set to 1e-08
+Energy weight: 1
+Force weight: 0.01
+Stress weight: 0.003
+Minimal interatomic distance in the training set is 2.3271423. MTP's mindist will be updated
+MTPR training started on 1 core(s)
+BFGS iter 0: f=9.9229078e-05
+BFGS iter 1: f=9.922877e-05
+BFGS iter 2: f=9.922847e-05
+BFGS iter 3: f=9.9228065e-05
+BFGS iter 4: f=9.9227475e-05
+step limit reached
+MTPR training ended
+Rescaling...
+   scaling = 0.11215665, condition number = 4.9621711
+   scaling = 0.12235271, condition number = 4.5813338
+   scaling = 0.13458799, condition number = 4.3640196
+   scaling = 0.14804678, condition number = 4.4287956
+   scaling = 0.16150558, condition number = 4.5663998
+Rescaling to 0.13458799... done

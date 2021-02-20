@@ -26,29 +26,17 @@ MK_THIS := $(lastword $(MAKEFILE_LIST))
 ifneq (0, $(words $(filter mlp libinterface,$(MAKECMDGOALS))))
     # source file's directories
     SRC_DIR = $(CURDIR)/src
-    SRC_DEV_DIR = $(CURDIR)/dev_src
     # source files
-	SRC_COMMON := $(wildcard $(SRC_DIR)/common/*.cpp) 
-    SRC_COMMON += $(wildcard $(SRC_DIR)/drivers/*.cpp)
+    SRC_COMMON := $(wildcard $(SRC_DIR)/common/*.cpp) 
     SRC_COMMON += $(wildcard $(SRC_DIR)/*.cpp) 
-    ifneq ($(USE_MLIP_PUBLIC), 1)
-      SRC_EXTRA := $(wildcard $(SRC_DEV_DIR)/*.cpp) 
-      SRC_EXTRA += $(wildcard $(SRC_DEV_DIR)/*.f90)
-    endif
 
-    ifneq (0, $(words $(filter mlp,$(MAKECMDGOALS))))
+    ifneq (0, $(words $(filter mlp, $(MAKECMDGOALS))))
         CXX = $(CXX_EXE)
         FC = $(FC_EXE)
         # mlp target source files
-        ifeq ($(USE_MLIP_PUBLIC), 1)
-          SRC_COMMON += $(wildcard $(SRC_DIR)/mlp/*.cpp) 
-          SRC_COMMON += $(SRC_DIR)/mlp/self_test.cpp
-        else
-          SRC_COMMON += $(wildcard $(SRC_DIR)/mlp/*.cpp) 
-          SRC_COMMON := $(filter-out $(SRC_DIR)/mlp/mlp.cpp, $(SRC_COMMON))
-          SRC_EXTRA += $(wildcard $(SRC_DEV_DIR)/mlp/*.cpp) 
-          SRC_EXTRA += $(wildcard $(SRC_DEV_DIR)/utils/mtpr_train.cpp)
-        endif
+        SRC_COMMON += $(wildcard $(SRC_DIR)/drivers/*.cpp)
+        SRC_COMMON += $(wildcard $(SRC_DIR)/mlp/*.cpp) 
+        SRC_COMMON += $(wildcard $(SRC_DIR)/test_suite/*.cpp)
 
         EXE_TARGET = mlp$(PROGRAM_NAME_SUFFIX)
         TARGET_EXE = mlp
@@ -64,10 +52,7 @@ ifneq (0, $(words $(filter mlp libinterface,$(MAKECMDGOALS))))
         CXX = $(CXX_LIB)
         FC = $(FC_LIB)
           SRC_COMMON += $(SRC_DIR)/external/interface.cpp
-        ifneq ($(USE_MLIP_PUBLIC), 1)
-          SRC_EXTRA  += $(wildcard $(SRC_DEV_DIR)/utils/mtpr_train.cpp)
-        endif
-        ifneq (0, $(words $(filter -DMLIP_MPI,$(CXXFLAGS))))
+        ifneq (0, $(words $(filter -DMLIP_MPI, $(CXXFLAGS))))
           CXXFLAGS := $(filter-out -DMLIP_MPI, $(CXXFLAGS))
         endif
 
@@ -95,7 +80,8 @@ ifneq (0, $(words $(filter mlp libinterface,$(MAKECMDGOALS))))
 
         endif
 
-   endif
+    endif
+    
    # use C++11 standart for c++ files
    CXXFLAGS += -std=c++11
    # this suppresses the error when .cfg files are read with "Stress" instead of "PlusStress"
@@ -106,10 +92,8 @@ ifneq (0, $(words $(filter mlp libinterface,$(MAKECMDGOALS))))
    endif
 
    SRC_FILES += $(SRC_COMMON)
-   SRC_FILES += $(SRC_EXTRA)
 
    OBJ_FILES += $(SRC_COMMON:$(SRC_DIR)/%=%.o) 
-   OBJ_FILES += $(SRC_EXTRA:$(SRC_DEV_DIR)/%=%.o) 
 
 else ifneq (0, $(words $(filter cblas,$(MAKECMDGOALS))))
 

@@ -4,6 +4,11 @@ MLIP is a software for Machine Learning Interatomic Potentials.
 It has been developed at Skoltech (Moscow) by
 Alexander Shapeev, Evgeny Podryabinkin, Konstantin Gubaev, and Ivan Novikov
 
+IMPORTANT!!!
+
+This is a beta-version of the code modified for nanoindentation simulations.
+We do not offer any extensive support for this version.
+
 ## Licence
 See [LICENSE](LICENSE)
 
@@ -13,10 +18,10 @@ See [LICENSE](LICENSE)
 * make
 
 ## Compile
-For full instructions see [INSTALL.md](INSTALL.md) or [INSTALL-cmake.md](INSTALL-cmake.md).
+For full instructions see [INSTALL.md](INSTALL.md).
 
 You might also be interested in LAMMPS-MLIP interface distributed here:
-[https://gitlab.com/ashapeev/interface-lammps-mlip-2](https://gitlab.com/ashapeev/interface-lammps-mlip-2)
+[https://gitlab.com/ashapeev/interface-lammps-mlip-2h](https://gitlab.com/ashapeev/interface-lammps-mlip-2h)
 
 
 ## Getting Started
@@ -27,9 +32,3 @@ Check the usage examples at `test/examples/`
 
 Go to the repository [https://gitlab.com/ashapeev/mlip-2-tutorials](https://gitlab.com/ashapeev/mlip-2-tutorials) with tutorials
 
-## Have questions?
-
-Note that we'll not be able to answer all of your questions.
-As a rule, we are supporting only the documented functionality of MLIP.
-If you think you found a bug or an inconsistency in the documentation or usage examples,
-please create a Gitlab.com issue.

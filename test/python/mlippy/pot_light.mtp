@@ -1,0 +1,29 @@
+MTP
+version = 1.1.0
+potential_name = MTP1m
+scaling = 1.584000000000000e+00
+species_count = 2
+potential_tag = 
+radial_basis_type = RBChebyshev
+	min_val = 2.000000000000000e+00
+	max_val = 5.000000000000000e+00
+	basis_size = 4
+	radial_funcs_count = 1
+	radial_coeffs
+		0-0
+			{-2.046538181797516e-01, 8.329198426994606e-12, 1.656336253832472e-01, 3.563677381177111e-01}
+		0-1
+			{-1.396433692442002e-01, -6.913193346816903e-11, -1.628792023992501e-01, 1.344720477610037e-01}
+		1-0
+			{0.516796109658666e-02, 1.572456087293344e-11, 8.126020419626875e-02, 2.012439782864923e-01}
+		1-1
+			{-3.282267045797095e-02, -9.143789321611687e-12, -4.662040351951818e-02, 1.462778418722571e-01}
+alpha_moments_count = 5
+alpha_index_basic_count = 1
+alpha_index_basic = {{0, 0, 0, 0}}
+alpha_index_times_count = 4
+alpha_index_times = {{0, 0, 1, 1}, {0, 1, 1, 2}, {0, 2, 1, 3}, {0, 3, 1, 4}}
+alpha_scalar_moments = 3
+alpha_moment_mapping = {0, 1, 2}
+species_coeffs = {-7.760918234882467e+02, -4.310499524157961e+02}
+moment_coeffs = {2.327965354527964e+01, -1.570350083942645e+00, 2.615750527290637e-01}

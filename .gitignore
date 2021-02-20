@@ -22,6 +22,9 @@ src/*/*.o
 src/*.o
 **~
 
+test/mpi/examples/*/out
+test/serial/examples/*/out
+
 win/*
 !win/MLIP.sln
 !win/readme.txt
@@ -54,16 +57,14 @@ dev_src/alglib/*.o
 bin/*
 lib/*
 obj/*
-*.mk
-!make/Makefile*
-!make/auto_vars.mk
-!make/setup.py
 !README.md
 !INSTALL.md
 !Makefile
+setup.py
+
+dev_src/external/python/pymlip.cpp
 
 build
-setup.py
 
 doc/examples/**/out
 doc/examples/**/vasp
@@ -71,5 +72,13 @@ doc/examples/**/log.lammps
 
 test/self-test/**/out
 test/examples/**/out
+test/examples/**/vasp
 test/examples/convert-cfg/**/out
 test/python/**/out
+
+dev_doc/*.aux
+dev_doc/*.log
+dev_doc/*.out
+dev_doc/*.synctex.gz
+test/serial/examples/10.Relax_train/relaxation.log
+test/mpi/examples/10.Relax_train/relaxation.log_0

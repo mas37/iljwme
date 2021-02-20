@@ -91,3 +91,15 @@ make test
 This launches a number of tests, including test of LAMMPS if it is present in `bin/`
 (i.e., if `bin/lmp_serial` and `bin/lmp_mpi` exist).
 
+## PYTHON LIBRARY (mlippy)
+
+To build mlippy, from the root directory execute:
+```bash
+make mlippy
+```
+You will need to install "Cython","MPI4py","ASE" packages to build mlippy.
+
+This will create a file 'lib/mlippy.so'
+
+To make the mlippy library importable, put the 'mlippy.so' file into the $PYTHONPATH directory
+or near your running *.py file

@@ -3,7 +3,7 @@
  *   The use of MLIP must be acknowledged by citing approriate references.
  *   See the LICENSE file for details.
  *
- *   This file contributors: Alexander Shapeev, Evgeny Podryabinkin
+ *   Contributors: Alexander Shapeev, Evgeny Podryabinkin
  */
 
 #pragma once
@@ -21,7 +21,7 @@
 #include <fstream>
 #include <iomanip>
 #include <utility>
-#include <string.h>	//memcpy, memset in it in linux
+#include <string.h> //memcpy, memset in it in linux
 #include <iostream>
 
 //#define MLIP_MPI
