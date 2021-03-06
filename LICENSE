@@ -2,13 +2,14 @@ This Code is distributed under the following terms:
 
 1) This Code or its derivative work will not be used for any purpose other than non-commercial research.
 2) This Code or its derivative work will not be published or otherwise distributed.
-3) The use of this Code should be acknowledged by citing one or more references (at the discretion of the user):
-
-The tutorial paper describing the use of this code:
+3) The use of this Code should be acknowledged by citing the tutorial paper
+describing the use of this code:
 
 [1] I.S. Novikov, K. Gubaev, E.V. Podryabinkin, A.V. Shapeev.
 The MLIP package: Moment tensor potentials with mpi and active learning.
 Machine Learning: Science and Technology, 2(2):025002, 2020.  (doi: 10.1088/2632-2153/abc9fe)
+
+Additional references that may be cited (at the discretion of the user) are:
 
 Original MTP potentials:
 [2] A.V. Shapeev, Moment tensor potentials: A class of systematically improvable interatomic potentials,
