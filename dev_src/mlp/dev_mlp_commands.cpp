@@ -389,6 +389,36 @@ bool DevCommands(const std::string& command, std::vector<std::string>& args, std
 
 	} END_COMMAND;
 
+	BEGIN_COMMAND("calc-descriptors",
+		"calculates descriptors in each neighborhood of configurations",
+		"mlp calc-descriptors pot.mtp in.cfg out.cfg:\n"
+		"calculates descriptors in each neighborhood of configurations from in.cfg and\n"
+		"writes configurations with calculated descriptors to out.cfg\n"
+		) {
+
+		if (args.size() != 3) {
+			std::cout << "\tError: 3 arguments required\n";
+			return 1;
+		}
+
+		const string mtp_filename = args[0];
+		const string input_filename = args[1];
+		const string output_filename = args[2];
+
+		MLMTPR mtpr(mtp_filename);	
+
+		ifstream ifs(input_filename, std::ios::binary);
+		ofstream ofs(output_filename, std::ios::binary);
+		Configuration cfg;
+		while (cfg.Load(ifs)) {
+			mtpr.CalcDescriptors(cfg, ofs);
+		}
+
+		ifs.close();
+		ofs.close();
+
+	} END_COMMAND;
+
 	BEGIN_UNDOCUMENTED_COMMAND("invert-stress",
 		"changes sign of stress in a configuration database",
 		"mlp invert-stress db.cfg:\n"

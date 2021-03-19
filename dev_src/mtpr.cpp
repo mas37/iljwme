@@ -467,6 +467,34 @@ void MLMTPR::CalcEComponents(Configuration& cfg)
 	}
 }
 
+void MLMTPR::CalcDescriptors(Configuration& cfg, ofstream& ofs)
+{
+	int n = alpha_count + species_count - 1;
+
+	Neighborhoods neighborhoods(cfg,p_RadialBasis->max_dist);
+
+	ofs << cfg.size() << endl;
+	ofs <<  "cell_vec1 " << cfg.lattice[0][0] << " " << cfg.lattice[0][1] << " " << cfg.lattice[0][2]
+	    << " cell_vec2 " << cfg.lattice[1][0] << " " << cfg.lattice[1][1] << " " << cfg.lattice[1][2]
+	    << " cell_vec3 " << cfg.lattice[2][0] << " " << cfg.lattice[2][1] << " " << cfg.lattice[2][2]
+	    << " pbc 1 1 1" << endl;
+	for (int ind = 0; ind < cfg.size(); ind++) {
+		Neighborhood& nbh = neighborhoods[ind];
+		CalcBasisFuncs(nbh, basis_vals);
+
+		ofs << nbh.my_type << '\t';
+		ofs << cfg.pos(ind, 0) << '\t' << cfg.pos(ind, 1) << '\t' << cfg.pos(ind, 2) << '\t';
+		ofs << basis_vals[0]; // constant basis function
+		for (int i = 0; i < alpha_scalar_moments; i++) {
+			ofs << '\t' << basis_vals[1 + i];
+		}
+		ofs << endl;
+
+		if (nbh.my_type>=species_count)
+			throw MlipException("Too few species count in the MTP potential!");
+	}
+}
+
 void MLMTPR::CalcBasisFuncs(Neighborhood& Neighborhood, double* bf_vals)
 {
 	int C = species_count;						//number of different species in current potential

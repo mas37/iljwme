@@ -62,6 +62,7 @@ public:
 	void CalcBasisFuncsDers(const Neighborhood& Neighborhood);		//Linear basic functions and their derivatives calculation
 	void CalcEFSComponents(Configuration& cfg);						//Calculate the components for linear regression matrix
 	void CalcEComponents(Configuration& cfg);			//Calculate the components for linear regression matrix
+	void CalcDescriptors(Configuration& cfg, std::ofstream &ofs);
 //	void CalcEFS(Configuration& cfg) override
 //	{
 //		AnyLocalMLIP::CalcEFS(cfg);
