@@ -477,16 +477,25 @@ void MLMTPR::CalcDescriptors(Configuration& cfg, ofstream& ofs)
 	ofs <<  "cell_vec1 " << cfg.lattice[0][0] << " " << cfg.lattice[0][1] << " " << cfg.lattice[0][2]
 	    << " cell_vec2 " << cfg.lattice[1][0] << " " << cfg.lattice[1][1] << " " << cfg.lattice[1][2]
 	    << " cell_vec3 " << cfg.lattice[2][0] << " " << cfg.lattice[2][1] << " " << cfg.lattice[2][2]
-	    << " pbc 1 1 1" << endl;
+	    << " pbc 1 1 1 " << "alpha_scalar_moments " << alpha_scalar_moments << endl;
 	for (int ind = 0; ind < cfg.size(); ind++) {
 		Neighborhood& nbh = neighborhoods[ind];
-		CalcBasisFuncs(nbh, basis_vals);
+		CalcBasisFuncsDers(nbh);
 
-		ofs << nbh.my_type << '\t';
-		ofs << cfg.pos(ind, 0) << '\t' << cfg.pos(ind, 1) << '\t' << cfg.pos(ind, 2) << '\t';
-		ofs << basis_vals[0]; // constant basis function
+		ofs << nbh.my_type;
+		ofs << '\t' << cfg.pos(ind, 0)
+		    << '\t' << cfg.pos(ind, 1)
+		    << '\t' << cfg.pos(ind, 2);
 		for (int i = 0; i < alpha_scalar_moments; i++) {
 			ofs << '\t' << basis_vals[1 + i];
+		}
+		ofs << '\t' << nbh.count;
+		for (int i = 0; i < alpha_scalar_moments; i++) {
+			for (int j = 0; j < nbh.count; j++) {
+				ofs << '\t' << basis_ders(1 + i, j, 0)
+				    << '\t' << basis_ders(1 + i, j, 1)
+				    << '\t' << basis_ders(1 + i, j, 2);
+			}
 		}
 		ofs << endl;
 
