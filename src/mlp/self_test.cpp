@@ -24,6 +24,7 @@
 
 #include "../drivers/relaxation.h"
 #include "../mlip_wrapper.h"
+#include "../pair_potentials.h"
 
 using namespace std;
 
@@ -420,6 +421,55 @@ TEST("MTP file format v1.1.0 test") {
 	catch (...)
 		FAIL();
 
+} END_TEST;
+
+TEST("ZBL file reading") {
+    string filename = "pot.zbl";
+    ZBL pot(filename);
+} END_TEST;
+
+TEST("ZBL check zbl-function derivative") {
+    
+    double r = 3.5;
+    double a = 0.4685 / (pow(12, 0.23) + pow(12, 0.23));
+    double delta = 1e-5;
+    
+    string filename = "pot.zbl";
+    ZBL pot(filename);
+    
+    r += delta;
+    double F_plus = pot.F(r, a);
+    r -= 2*delta;
+    double F_minus = pot.F(r, a);
+    r += delta;
+    double dF_dr_cdiff = (F_plus - F_minus) / (2 * delta);
+    
+    //cout << fabs((dF_dr_cdiff - pot.dF_dr(r, a)) / pot.dF_dr(r, a)) << endl;
+    if (fabs((dF_dr_cdiff - pot.dF_dr(r, a)) / pot.dF_dr(r, a)) > 1e-3)
+        FAIL()
+    
+} END_TEST;
+
+TEST("ZBL check repulsion function derivative") {
+    
+    double r = 3.5;
+    double delta = 1e-5;
+    
+    string filename = "pot.zbl";
+    ZBL pot(filename);
+    
+    r += delta;
+    double f_plus = pot.f_repulsion(r);
+    r -= 2*delta;
+    double f_minus = pot.f_repulsion(r);
+    r += delta;
+    double df_repulsion_dr_cdiff = (f_plus - f_minus) / (2 * delta);
+    
+    //cout << df_repulsion_dr_cdiff << " " << pot.df_repulsion_dr(r) << endl;
+    //cout << fabs((df_repulsion_dr_cdiff - pot.df_repulsion_dr(r)) / pot.df_repulsion_dr(r)) << endl;
+    if (fabs((df_repulsion_dr_cdiff - pot.df_repulsion_dr(r)) / pot.df_repulsion_dr(r)) > 1e-3)
+        FAIL()
+    
 } END_TEST;
 
 TEST("MTP file reading 1") {

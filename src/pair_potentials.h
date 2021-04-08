@@ -11,6 +11,7 @@
 
 
 #include "basic_potentials.h"
+#include <iostream>
 
 
 class PairPotential : public AnyPotential
@@ -133,12 +134,13 @@ public:
 	}
 };
 
-class ZBL : public PairPotential, protected InitBySettings
+class ZBL : public AnyPotential
 {
+
 private:
     const std::string filename;
-    int atom_types_in_substance_count;
-    double r_min;
+    int species_count;
+    double r_min, r_cut;
     std::vector<int> z;
     const double m1 = 0.18175;
     const double m2 = 0.50986;
@@ -148,18 +150,47 @@ private:
     const double p2 = -0.94229;
     const double p3 = -0.4029;
     const double p4 = -0.20162;
-    
-/*    void InitSettings() // Sets correspondence between variables and setting names in settings file
-    {
-        MakeSetting(r_min, "r_min");
-        MakeSetting(atom_types_in_substance_count, "n_atomic_types");
-        MakeSetting(cutoff, "cutoff");
-    }
-*/
 
 public:
     void Load(const std::string& filename) {
-        ;
+    
+        std::ifstream ifs(filename);
+        if (!ifs.is_open())
+        ERROR((std::string)"Cannot open " + filename);
+        
+        char tmpline[1000];
+        std::string tmpstr;
+
+        ifs.getline(tmpline, 1000);
+        int len = (int)((std::string)tmpline).length();
+        if (tmpline[len - 1] == '\r')	// Ensures compatibility between Linux and Windows line endings
+            tmpline[len - 1] = '\0';
+
+        if ((std::string)tmpline != "ZBL")
+            ERROR("Can read only ZBL format potentials");
+
+        ifs >> tmpstr;
+        if (tmpstr != "species_count")
+            ERROR("Error reading species_count in .zbl file");
+        ifs.ignore(2);
+        ifs >> species_count;
+        
+        z.resize(species_count);
+        for (int i = 0; i < species_count; i++) 
+            ifs >> z[i];
+        
+        ifs >> tmpstr;
+        if (tmpstr != "min_dist")
+            ERROR("Error reading min_dist in .zbl file");
+        ifs.ignore(2);
+        ifs >> r_min;
+        
+        ifs >> tmpstr;
+        if (tmpstr != "max_dist")
+            ERROR("Error reading max_dist in .zbl file");
+        ifs.ignore(2);
+        ifs >> r_cut;
+        
     } 
 
     ZBL(const std::string& filename_) :
@@ -194,20 +225,25 @@ public:
     
     double f_repulsion(double r)
     {
-        double A = -1 * (cutoff - r_min) / (cutoff - r);
-        double B = exp((cutoff - r) / (r_min - r));
-        if (r < 1.0001 * r_min) return 1;
-        else if (1.0001 * r_min <= r < 0.9999 * cutoff) return exp(A * B);
+        double A = -1 * (r_cut - r_min) / (r_cut - r);
+        double B = exp((r_cut - r) / (r_min - r));
+        if (r < 1.05 * r_min) return 1;
+        else if (1.05 * r_min <= r < 0.95 * r_cut) return exp(A * B);
         else return 0;
     }
     double df_repulsion_dr(double r)
     {
-        double A = -1 * (cutoff - r_min) / (cutoff - r);
-        double B = exp((cutoff - r) / (r_min - r));
-        double dA_dr = -1 * (cutoff - r_min)  / ((cutoff - r) * (cutoff - r));
-        double dB_dr = B * (- 1.0 / (r_min - r) + (cutoff - r) / (r_min - r)*(r_min - r));
-        if (1.0001 * r_min <= r < 0.9999 * cutoff) return exp(A * B) * (dA_dr * B + A * dB_dr);
+        double A = -1 * (r_cut - r_min) / (r_cut - r);
+        double B = exp((r_cut - r) / (r_min - r));
+        double dA_dr = -1 * (r_cut - r_min) / ((r_cut - r) * (r_cut - r));
+        double dB_dr = B * (- 1.0 / (r_min - r) + (r_cut - r) / ((r_min - r)*(r_min - r)));
+        if (1.05 * r_min <= r < 0.95 * r_cut) return exp(A * B) * (dA_dr * B + A * dB_dr);
         else return 0;
+    }
+    
+    void CalcEFS(Configuration& cfg) 
+    {
+        ;
     }
 
     ~ZBL(){};
