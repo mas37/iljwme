@@ -241,9 +241,35 @@ public:
         else return 0;
     }
     
-    void CalcEFS(Configuration& cfg) 
+    void CalcEFS(Configuration& cfg)
     {
-        ;
+        ResetEFS(cfg);
+        cfg.has_site_energies(true);
+
+        Neighborhoods neighborhoods(cfg, r_cut);
+
+        for (int i = 0; i < cfg.size(); i++) {
+            Neighborhood& nbh = neighborhoods[i]; 
+            int type_central = nbh.my_type;
+            for (int j = 0; j < nbh.count; j++)
+            {
+                double r = nbh.dists[j];
+                int type_outer = nbh.types[j];
+                double C = 10000 * z[type_central] * z[type_outer] / (4 * M_PI * 55.26349406);
+                double a = 0.4685 / (pow(z[type_central], 0.23) + pow(z[type_outer], 0.23));
+
+                cfg.site_energy(i) += C * F(r,a) * f_repulsion(r);
+
+                for (int l = 0; l < 3; l++)
+                {
+                    double force_val = C * (dF_dr(r,a)*f_repulsion(r) + F(r,a)*df_repulsion_dr(r)) * nbh.vecs[j][l] / r;
+                    cfg.force(i, l) += 2 * force_val;
+                    for (int b = 0; b < 3; b++)
+                        cfg.stresses[l][b] -= force_val * nbh.vecs[j][b];
+                }
+            }
+            cfg.energy += cfg.site_energy(i);
+        }
     }
 
     ~ZBL(){};

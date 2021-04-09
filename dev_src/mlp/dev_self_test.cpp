@@ -34,6 +34,7 @@
 //#include "../mtpr_trainer2.h"
 #include "../../src/mlip_wrapper.h"
 #include "../../src/mlp/self_test.h"
+#include "../../src/pair_potentials.h"
 #include "../sw_basis.h"
 
 //#ifndef MLIP_NOEWALD
@@ -83,6 +84,35 @@ bool RunAllTestsDev(bool is_parallel)
 	std::string curr_test_name;
 {} // this tricks MSVS not to create an extra tab
 //
+
+TEST("ZBL CalcEFS check with finite differences") {
+        Configuration cfg, cfg1, cfg2;
+        double displacement = 1e-4;
+        double control_delta = 1E-3;
+        string filename = PATH+"pot.zbl";
+        ZBL pot(filename);
+
+	ifstream ifs(PATH+"Al_Ni4cdiffs.cfgs", ios::binary);
+
+	cfg.Load(ifs);
+	/*pot.CalcEFS(cfg);
+	for (int i = 0; i < cfg.size(); i++) {
+	    for (int l = 0; l < 3; l++) {
+	        cfg1 = cfg;
+	        cfg1.pos(i)[l] += displacement;
+	        pot.CalcEFS(cfg1);
+	        cfg2 = cfg;
+	        cfg2.pos(i)[l] -= displacement;
+	        pot.CalcEFS(cfg2);
+	        double force_cdiff = (cfg2.energy - cfg1.energy) / (2 * displacement);
+	        cout << i << " " << l << " " << force_cdiff << " " << cfg.force(i)[l] << endl;
+	    }
+	}*/ 
+	if (!pot.CheckEFSConsistency_debug(cfg, displacement, control_delta))
+		FAIL()
+
+	ifs.close();
+} END_TEST;
 
 TEST("EAMSimple CalcEnergyGrad test by finite difference") {
 	Configuration cfg, cfg1, cfg2;
