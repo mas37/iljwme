@@ -362,7 +362,7 @@ void RadialBasis_Shapeev2::RB_Calc(double r)
 		return;
 	}
 	const double x_sq = r_sq / maxdist_sq;
-	const double mult = exp(exp_ratio / (1 - x_sq));
+	const double mult = scaling * exp(exp_ratio / (1 - x_sq));
 	rb_vals[0] = zeroth_poly * mult;
 	rb_ders[0] = exp_ratio / ((1 - x_sq) * (1 - x_sq)) * zeroth_poly * mult;
 	double prev_val = 0;
