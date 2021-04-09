@@ -60,7 +60,27 @@ public:
 	void RB_Calc(double r) override;
 };
 
+class RadialBasis_Shapeev2 : public AnyRadialBasis
+{
+private:
+	void InitShapeev2RB();
+	int size_; // assumed >0
+	double mindist_, maxdist_;
+	double maxdist_sq_minus_eps; // maxdist after which return zero
+	double min_to_max_ratio, maxdist_sq, exp_ratio;
+	std::vector<std::array<double, 3>> recursive_coeffs;
+	double zeroth_poly;
+public:
+	std::string GetRBTypeString() override
+	{
+		return "RBShapeev2";
+	}
 
+	RadialBasis_Shapeev2(double _min_dist, double _max_dist, int _size);
+	RadialBasis_Shapeev2(std::ifstream& ifs);
+
+	void RB_Calc(double r) override;
+};
 
 class RadialBasis_Chebyshev : public AnyRadialBasis
 {
