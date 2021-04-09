@@ -85,6 +85,27 @@ bool RunAllTestsDev(bool is_parallel)
 {} // this tricks MSVS not to create an extra tab
 //
 
+TEST("check radial basis shapeev2 derivatives with finite differences") {
+	double diffstep = 1e-4;
+	int basis_function_count = 8;
+	double r_min = 1.6;
+	double r_cut = 5.2;
+	double r = 3.5;
+	RadialBasis_Shapeev2 bas(r_min, r_cut, basis_function_count);
+	bas.RB_Calc(r);
+	RadialBasis_Shapeev2 bas_p(r_min, r_cut, basis_function_count);
+	bas_p.RB_Calc(r + diffstep);
+	RadialBasis_Shapeev2 bas_m(r_min, r_cut, basis_function_count);
+	bas_m.RB_Calc(r - diffstep);
+	for (int i = 0; i < basis_function_count; i++) {
+		double cdiff = (bas_p.rb_vals[i] - bas_m.rb_vals[i]) / (2 * diffstep);
+		if (fabs((cdiff - bas.rb_ders[i])) > 2e-4) {
+			std::cout << "\ni = " << i << ": " << fabs((cdiff - bas.rb_ders[i])) << std::endl;
+			FAIL()
+		}
+	}
+} END_TEST;
+
 TEST("ZBL CalcEFS check with finite differences") {
         Configuration cfg, cfg1, cfg2;
         double displacement = 1e-4;

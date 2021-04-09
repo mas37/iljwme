@@ -7,6 +7,7 @@
  */
 
 #include "radial_basis.h"
+#include <iostream>
 
 
 #include <cmath>
@@ -318,6 +319,7 @@ void RadialBasis_Shapeev2::InitShapeev2RB() {
 	exp_ratio = -2 * (1 - min_to_max_ratio * min_to_max_ratio);
 
 	// maps mindist = 4/5 * maxdist -> cheb_x=1
+	recursive_coeffs.resize(size_);
 	const double cheb_acos_x = acos(1.25 * min_to_max_ratio);
 	for (int i = 0; i < size_; i++)
 		for (int j = 0; j < 3; j++) {
@@ -377,6 +379,8 @@ void RadialBasis_Shapeev2::RB_Calc(double r)
 		prev_val = rb_vals[i];
 		prev_der = rb_ders[i];
 	}
+	for (int i = 0; i < size_; i++)
+		rb_ders[i] *= 2 * r / maxdist_sq;
 }
 
 
