@@ -116,7 +116,7 @@ TEST("ZBL CalcEFS check with finite differences") {
 	ifstream ifs(PATH+"Al_Ni4cdiffs.cfgs", ios::binary);
 
 	cfg.Load(ifs);
-	/*pot.CalcEFS(cfg);
+	pot.CalcEFS(cfg);
 	for (int i = 0; i < cfg.size(); i++) {
 	    for (int l = 0; l < 3; l++) {
 	        cfg1 = cfg;
@@ -126,9 +126,13 @@ TEST("ZBL CalcEFS check with finite differences") {
 	        cfg2.pos(i)[l] -= displacement;
 	        pot.CalcEFS(cfg2);
 	        double force_cdiff = (cfg2.energy - cfg1.energy) / (2 * displacement);
-	        cout << i << " " << l << " " << force_cdiff << " " << cfg.force(i)[l] << endl;
+	        //cout << i << " " << l << " " << force_cdiff << " " << cfg.force(i)[l] << endl;
+	        //if (l == 0) cout << i+1 << " " << cfg.type(i) << " " << cfg.pos(i)[0] << " " << cfg.pos(i)[1] << " " << cfg.pos(i)[2] << " " << cfg.force(i)[l] << " ";
+	        //else if (l == 1) cout << cfg.force(i)[l] << " ";
+	        //else if (l == 2) cout << cfg.force(i)[l] << " " << cfg.site_energy(i);
 	    }
-	}*/ 
+	    //cout << endl;
+	} 
 	if (!pot.CheckEFSConsistency_debug(cfg, displacement, control_delta))
 		FAIL()
 
