@@ -175,12 +175,14 @@ private:
 	std::map<std::string, int*>			connector_int;
 	std::map<std::string, double*>		connector_double;
 	std::map<std::string, std::string*> connector_string;
+	//std::map<std::string, std::vector<std::string>*> connector_vector_string;
 
 protected:
 	void MakeSetting(bool& parameter, const std::string& setting_name);
 	void MakeSetting(int& parameter, const std::string& setting_name);
 	void MakeSetting(double& parameter, const std::string& setting_name);
 	void MakeSetting(std::string& parameter, const std::string& setting_name);
+	//void MakeSetting(std::vector<std::string>& parameters, const std::string& setting_name);
 
 	void ApplySettings(const Settings& settings);
 

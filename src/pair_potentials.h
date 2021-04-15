@@ -137,7 +137,7 @@ public:
 class ZBL : public AnyPotential
 {
 
-private:
+public:
     const std::string filename;
     int species_count;
     double r_min, r_cut;

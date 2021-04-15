@@ -12,8 +12,8 @@ void MTPplusZBL::CalcE(Configuration& cfg)
     Configuration cfg_mtpr = cfg;
     Configuration cfg_zbl = cfg;
 
-    mtpr->CalcEFS(cfg_mtpr);
-    zbl->CalcEFS(cfg_zbl);
+    p_mtpr->CalcEFS(cfg_mtpr);
+    p_zbl->CalcEFS(cfg_zbl);
 
     cfg.energy = cfg_zbl.energy + cfg_mtpr.energy;
 }
@@ -25,8 +25,8 @@ void MTPplusZBL::CalcEFS(Configuration& cfg)
     Configuration cfg_mtpr = cfg;
     Configuration cfg_zbl = cfg;
 
-    mtpr->CalcEFS(cfg_mtpr);
-    zbl->CalcEFS(cfg_zbl);
+    p_mtpr->CalcEFS(cfg_mtpr);
+    p_zbl->CalcEFS(cfg_zbl);
     
     cfg.energy = cfg_mtpr.energy + cfg_zbl.energy;
 	

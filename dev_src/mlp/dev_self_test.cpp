@@ -34,7 +34,7 @@
 //#include "../mtpr_trainer2.h"
 #include "../../src/mlip_wrapper.h"
 #include "../../src/mlp/self_test.h"
-#include "../../src/pair_potentials.h"
+#include "../mtpr_plus_zbl.h"
 #include "../sw_basis.h"
 
 //#ifndef MLIP_NOEWALD
@@ -137,6 +137,65 @@ TEST("ZBL CalcEFS check with finite differences") {
 		FAIL()
 
 	ifs.close();
+} END_TEST;
+
+TEST("MTP+ZBL CalcEFS: mtpr_plus_zbl vs mlip_wrapper") {
+
+        string mtp_filename = PATH+"unlearned2.mtp";
+        string zbl_filename = PATH+"pot.zbl";
+        MLMTPR * p_mtpr = new MLMTPR(mtp_filename);
+        ZBL * p_zbl = new ZBL(zbl_filename);
+        vector<double> mtp_coeff(p_mtpr->CoeffCount());
+        
+        for (int i = 0; i < p_mtpr->CoeffCount(); i++) {
+	    p_mtpr->Coeff()[i] = 3e-2*rand() / RAND_MAX;
+	    mtp_coeff[i] = p_mtpr->Coeff()[i];
+	}
+        
+	ifstream ifs(PATH+"Al_Ni4cdiffs.cfgs", ios::binary);
+	Configuration cfg_init, cfg_mtpr_plus_zbl, cfg_mlip_wrapper;
+	cfg_init.Load(ifs);
+	cfg_mtpr_plus_zbl = cfg_init;
+	cfg_mlip_wrapper = cfg_init;
+	
+	MTPplusZBL mtp_plus_zbl(p_mtpr, p_zbl);
+	mtp_plus_zbl.CalcEFS(cfg_mtpr_plus_zbl);
+	
+	Settings settings;
+	settings.Load(PATH+"mtp_zbl.ini");
+	MLIP_Wrapper * wrp = new MLIP_Wrapper(settings);
+	
+	for (int i = 0; i < wrp->p_mlip->CoeffCount(); i++) 
+	    wrp->p_mlip->Coeff()[i] = mtp_coeff[i];
+	
+        wrp->CalcEFS(cfg_mlip_wrapper);
+        
+        /*cout << "forces" << endl;
+        for (int i = 0; i < cfg_init.size(); i++) {
+            for (int l = 0; l < 3; l++) {
+	        cout << cfg_mtpr_plus_zbl.force(i)[l] << " " << cfg_mlip_wrapper.force(i)[l] << endl;
+	    }
+	}*/
+	
+	if (fabs(cfg_mtpr_plus_zbl.energy - cfg_mlip_wrapper.energy) > 1e-5) 
+	    FAIL()
+	
+        for (int i = 0; i < cfg_init.size(); i++) {
+            for (int l = 0; l < 3; l++) {
+	        if (fabs(cfg_mtpr_plus_zbl.force(i)[l] - cfg_mlip_wrapper.force(i)[l]) > 1e-5)
+	            FAIL()
+	    }
+	}
+	
+        for (int a = 0; a < 3; a++) {
+            for (int b = 0; b < 3; b++) {
+	        if (fabs(cfg_mtpr_plus_zbl.stresses[a][b] - cfg_mlip_wrapper.stresses[a][b]) > 1e-5)
+	            FAIL()
+	    }
+	}
+        
+	ifs.close();
+
 } END_TEST;
 
 TEST("EAMSimple CalcEnergyGrad test by finite difference") {

@@ -12,7 +12,6 @@
 #include "lotf.h"
 #include "error_monitor.h"
 
-
 // Class that allows working with MLIP in multiple regimes (e.g. fitting, EFS calculating, active learning, fitting error calculation, etc.)
 class MLIP_Wrapper : public AnyPotential, protected InitBySettings //, public LogWriting
 {
@@ -20,8 +19,9 @@ class MLIP_Wrapper : public AnyPotential, protected InitBySettings //, public Lo
   static const char* tagname;                           // tag name of object
   private:
 	// settings	initialized by default values
-	std::string mlip_type = "mtpr";			// MLIP type
+	std::string mlip_type = "mtp";			// MLIP type
 	std::string mlip_fnm = "";				// file name, MLIP will be loaded from. MLIP is not required if empty
+	std::string zbl_fnm = "";
 	bool enable_EFScalc = true;			// if true MLIP will calculate EFS
 	bool enable_learn = false;				// if true MLIP fitting will be performed
 	std::string mlip_fitted_fnm = "";		// filename for writing MLIP after fitting. Saving mlip is not required if empty
@@ -65,7 +65,9 @@ class MLIP_Wrapper : public AnyPotential, protected InitBySettings //, public Lo
     {
 		// new settings:
 		// old settings:
-        MakeSetting(mlip_fnm,           "mtp-filename");       
+        MakeSetting(mlip_fnm,           "mtp-filename");
+        MakeSetting(mlip_type,          "mlip-type");
+        MakeSetting(zbl_fnm,            "zbl-filename");
         MakeSetting(enable_EFScalc,     "calculate-efs");        
         MakeSetting(enable_learn,       "fit");                  
         MakeSetting(mlip_fitted_fnm,    "fit:save");             
@@ -102,6 +104,7 @@ class MLIP_Wrapper : public AnyPotential, protected InitBySettings //, public Lo
   public:
     AnyPotential* p_abinitio = nullptr;        // pointer to abinitio potential
     AnyLocalMLIP* p_mlip = nullptr;            // pointer to MLIP
+    AnyPotential* p_mtpr_plus_zbl = nullptr;   //pointer to MTP+ZBL
     AnyTrainer* p_learner = nullptr;        // pointer to training object
     MaxvolSelection* p_selector = nullptr;    // pointer to selecting object
     LOTF* p_lotf = nullptr;                    // pointer to LOTF object

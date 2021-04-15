@@ -377,6 +377,11 @@ void InitBySettings::MakeSetting(std::string & parameter, const std::string & se
 	connector_string.emplace(setting_name, &parameter);
 }
 
+/*void InitBySettings::MakeSetting(std::vector<std::string>& parameters, const std::string& setting_name)
+{
+        connector_vector_string.emplace(setting_name, &parameters);
+}*/
+
 void InitBySettings::ApplySettings(const Settings& settings)
 {
 	for (auto setting : connector_bool) {
@@ -417,6 +422,8 @@ void InitBySettings::ApplySettings(const Settings& settings)
 	for (auto& setting : connector_string)
 		if (settings[setting.first] != "")
 			*setting.second = settings[setting.first];
+			
+	
 }
 
 void InitBySettings::PrintSettings()

@@ -14,13 +14,13 @@ public:
     void CalcE(Configuration&); 
     void CalcEFS(Configuration&); 														
 
-    MLMTPR* mtpr;// = nullptr;
-    ZBL* zbl;// = nullptr;
+    MLMTPR* p_mtpr;// = nullptr;
+    ZBL* p_zbl;// = nullptr;
 
-    MTPplusZBL(MLMTPR* _mtpr, ZBL* _zbl, std::ostream* _p_logstrm = nullptr)
+    MTPplusZBL(MLMTPR* _p_mtpr, ZBL* _p_zbl, std::ostream* _p_logstrm = nullptr)
     { 
-        mtpr = _mtpr;
-        zbl = _zbl;
+        p_mtpr = _p_mtpr;
+        p_zbl = _p_zbl;
         p_logstrm = _p_logstrm;
     };
 

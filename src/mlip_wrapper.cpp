@@ -13,6 +13,7 @@
 #include "vasp_potential.h"
 #include "lammps_potential.h"
 #include "../dev_src/mtpr_trainer.h"
+#include "../dev_src/mtpr_plus_zbl.h"
 
 #ifdef MLIP_DEV
 #   include "../dev_src/sw_basis.h"
@@ -36,13 +37,9 @@ void MLIP_Wrapper::SetUpMLIP()
 #endif
 
 MLMTPR* p_mtpr = nullptr;
+ZBL* p_zbl = nullptr;
 //
-//    if (mlip_type == "mtp")
-//    {
-//        p_mlip = new MTP(mlip_fnm);
-//        Message("Linearly parametrized MTP instantiated");
-//    }
-//    else if (mlip_type == "mtpr")
+//    else if (mlip_type == "mtp")
 //    {
         p_mlip = p_mtpr = new MLMTPR(mlip_fnm);
 //        Message("Multicomponent non-linearly parametrized MTP instantiated");
@@ -79,6 +76,18 @@ MLMTPR* p_mtpr = nullptr;
 //    }
 //    else
 //        ERROR("Improper MLIP type specified. (\"mtp\" or \"mtpr\" is required)");
+
+    if (mlip_type == "mtp-plus-zbl") {
+    
+        p_zbl = new ZBL(zbl_fnm);
+
+        p_mtpr_plus_zbl = new MTPplusZBL(p_mtpr, p_zbl);
+	
+        Message("MTP+ZBL instantiated");
+        if (enable_learn || enable_select)
+            ERROR("Incorrect settings. Learning and/or Selection is impossible for MTP+ZBL!");
+                
+    }
 
     if (!enable_EFScalc && !enable_learn && !enable_select) // direct ab initio calculation. No reading of MTP-file is required
     {
@@ -384,15 +393,27 @@ void MLIP_Wrapper::CalcEFS(Configuration & cfg)
         if (monitor_errs)
             cfg_valid = cfg;
     }
-    else if (enable_EFScalc && !enable_learn && !enable_select)        // just EFS calculation mode
-    {
-        p_mlip->CalcEFS(cfg);
-        MTP_count++;
-
-        if (monitor_errs)
+    else if (enable_EFScalc && !enable_learn && !enable_select) {        // just EFS calculation mode
+        if (mlip_type == "mtp")
         {
-            p_abinitio->CalcEFS(cfg_valid);
-            abinitio_count++;
+            p_mlip->CalcEFS(cfg);
+            MTP_count++;
+
+            if (monitor_errs)
+            {
+                p_abinitio->CalcEFS(cfg_valid);
+                abinitio_count++;
+            }
+        }
+        else if (mlip_type == "mtp-plus-zbl")
+        {
+            p_mtpr_plus_zbl->CalcEFS(cfg);
+
+            if (monitor_errs)
+            {
+                p_abinitio->CalcEFS(cfg_valid);
+                abinitio_count++;
+            }    
         }
     }
     //We have to remember about it)))
