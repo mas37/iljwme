@@ -104,7 +104,7 @@ class MLIP_Wrapper : public AnyPotential, protected InitBySettings //, public Lo
   public:
     AnyPotential* p_abinitio = nullptr;        // pointer to abinitio potential
     AnyLocalMLIP* p_mlip = nullptr;            // pointer to MLIP
-    AnyPotential* p_mtpr_plus_zbl = nullptr;   //pointer to MTP+ZBL
+    AnyLocalMLIP* p_mtpr_plus_zbl = nullptr;   //pointer to MTP+ZBL
     AnyTrainer* p_learner = nullptr;        // pointer to training object
     MaxvolSelection* p_selector = nullptr;    // pointer to selecting object
     LOTF* p_lotf = nullptr;                    // pointer to LOTF object

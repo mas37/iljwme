@@ -37,3 +37,13 @@ void MTPplusZBL::CalcEFS(Configuration& cfg)
 
     cfg.stresses = cfg_zbl.stresses + cfg_mtpr.stresses;
 }
+
+void MTPplusZBL::AccumulateCombinationGrad(const Neighborhood& nbh,
+				            std::vector<double>& out_grad_accumulator,
+				            const double se_weight,
+				            const Vector3* se_ders_weights)
+{
+    p_mtpr->AccumulateCombinationGrad(nbh, out_grad_accumulator, se_weight, se_ders_weights);
+    buff_site_energy_ders_.resize(nbh.count);
+    buff_site_energy_ders_ = p_mtpr->buff_site_energy_ders_;
+} 

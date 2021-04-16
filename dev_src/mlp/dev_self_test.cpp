@@ -170,12 +170,12 @@ TEST("MTP+ZBL CalcEFS: mtpr_plus_zbl vs mlip_wrapper") {
 	
         wrp->CalcEFS(cfg_mlip_wrapper);
         
-        /*cout << "forces" << endl;
-        for (int i = 0; i < cfg_init.size(); i++) {
-            for (int l = 0; l < 3; l++) {
-	        cout << cfg_mtpr_plus_zbl.force(i)[l] << " " << cfg_mlip_wrapper.force(i)[l] << endl;
-	    }
-	}*/
+        //cout << "forces" << endl;
+        //for (int i = 0; i < cfg_init.size(); i++) {
+        //    for (int l = 0; l < 3; l++) {
+	//        cout << cfg_mtpr_plus_zbl.force(i)[l] << " " << cfg_mlip_wrapper.force(i)[l] << endl;
+	//    }
+	//}
 	
 	if (fabs(cfg_mtpr_plus_zbl.energy - cfg_mlip_wrapper.energy) > 1e-5) 
 	    FAIL()
@@ -197,6 +197,150 @@ TEST("MTP+ZBL CalcEFS: mtpr_plus_zbl vs mlip_wrapper") {
 	ifs.close();
 
 } END_TEST;
+
+/*TEST("MTPR CalcEFSGrads check with central differences") {
+
+	ifstream ifs(PATH+"Al_Ni4cdiffs.cfgs", ios::binary);
+	
+	Configuration cfg;
+	cfg.Load(ifs);
+	Configuration cfg1 = cfg;
+	Configuration cfg2 = cfg;
+	
+        string mtp_filename = PATH+"unlearned2.mtp";
+        MLMTPR * p_mtpr = new MLMTPR(mtp_filename);
+        
+        for (int i = 0; i < p_mtpr->CoeffCount(); i++) {
+	    p_mtpr->Coeff()[i] = 3e-2*rand() / RAND_MAX;
+	}
+
+	vector<double> energy_grad;
+	Array3D forces_grad;
+	Array3D stress_grad;
+
+	vector<double> energy_grad_dummy;
+	Array3D forces_grad_dummy;
+	Array3D stress_grad_dummy;
+
+        p_mtpr->CalcEFS(cfg);
+	p_mtpr->CalcEFSGrads(cfg, energy_grad, forces_grad, stress_grad);
+	
+	cout << "vndsndsmsdmv" << endl;
+
+	double delta = 1e-3;
+	double control_delta = 1E-3;
+	int natom = cfg.size();
+	Array2D forces_p;
+	forces_p.resize(natom, 3);
+	Array2D forces_m;
+	forces_m.resize(natom, 3);
+	vector<double> stress_p(9);
+	vector<double> stress_m(9);
+
+	double relEnErr = 0;
+	double relForcesErr = 0; 
+	double relStressesErr = 0;
+
+	for (int i = 0; i < p_mtpr->CoeffCount(); i++) {
+		//cout << "coeff = " << i << endl;
+		p_mtpr->Coeff()[i] += delta;
+		p_mtpr->CalcEFS(cfg1);
+		p_mtpr->Coeff()[i] -= 2*delta;
+		p_mtpr->CalcEFS(cfg2);
+		p_mtpr->Coeff()[i] += delta;
+		//cout << "energy[" << i << "]:" << endl;
+		double cdiff = (cfg1.energy - cfg2.energy) / (2*delta);
+		double curr_err = fabs((cdiff - energy_grad[i])/cdiff);
+		if (curr_err > relEnErr) relEnErr = curr_err;	
+		//if (curr_err > 1e-5) 
+			//cout << cdiff << " " << energy_grad[i] << endl;
+
+		//cout << "forces:" << endl;
+		for (int j = 0; j < cfg.size(); j++) {
+			for (int l = 0; l < 3; l++) {
+				//cout << cfg1.force(j, l) << " " << cfg2.force(j, l) << " ";
+				double cdiff = (cfg1.force(j, l) - cfg2.force(j, l)) / (2*delta);
+				double curr_err = fabs((cdiff - forces_grad(j, i, l))/cdiff);
+				if (curr_err > relForcesErr) relForcesErr = curr_err;
+				//if (curr_err > 1e-5)
+					cout << cdiff << " " << forces_grad(j, i, l) << endl;
+				//cout << j << " " << l << endl;
+			}
+		}
+
+		//cout << "stresses:" << endl;
+		for (int a = 0; a < 3; a++) {
+			for (int b = 0; b < 3; b++) {
+				double cdiff = (cfg1.stresses[a][b] - cfg2.stresses[a][b]) / (2*delta);
+				double curr_err = fabs((cdiff - stress_grad(a, b, i))/cdiff);
+				if (curr_err > relStressesErr) relStressesErr = curr_err;
+				//if (curr_err > 1e-5)
+					//cout << cdiff << " " << stress_grad(a, b, i) << endl;
+			}
+		}
+
+	}
+
+	cout << relEnErr << endl;
+	cout << relForcesErr << endl;
+	cout << relStressesErr << endl;
+
+	if (relEnErr > control_delta) FAIL();
+	if (relForcesErr > control_delta) FAIL();
+	if (relStressesErr > control_delta) FAIL();
+	
+	exit(1);
+
+} END_TEST;
+
+TEST("MTP+ZBL CalcEFSGrads: mtpr_plus_zbl vs mtpr") {
+
+        string mtp_filename = PATH+"unlearned2.mtp";
+        string zbl_filename = PATH+"pot.zbl";
+        MLMTPR * p_mtpr = new MLMTPR(mtp_filename);
+        ZBL * p_zbl = new ZBL(zbl_filename);
+        vector<double> mtp_coeff(p_mtpr->CoeffCount());
+        
+        for (int i = 0; i < p_mtpr->CoeffCount(); i++) {
+	    p_mtpr->Coeff()[i] = 3e-2*rand() / RAND_MAX;
+	    mtp_coeff[i] = p_mtpr->Coeff()[i];
+	}
+	
+	MTPplusZBL mtp_plus_zbl(p_mtpr, p_zbl);
+	
+	ifstream ifs(PATH+"Al_Ni4cdiffs.cfgs", ios::binary);
+	Configuration cfg_init, cfg_mtpr_plus_zbl, cfg_mtpr;
+	cfg_init.Load(ifs);
+	cfg_mtpr_plus_zbl = cfg_init;
+	cfg_mtpr = cfg_init;
+	
+        Array1D out_ene_grad_mtpr, out_ene_grad_mtpr_plus_zbl;
+        Array3D out_frc_grad_mtpr, out_frc_grad_mtpr_plus_zbl;
+        Array3D out_str_grad_mtpr, out_str_grad_mtpr_plus_zbl;
+        
+        
+        mtp_plus_zbl.CalcEFSGrads(cfg_mtpr_plus_zbl, out_ene_grad_mtpr_plus_zbl, 
+                                  out_frc_grad_mtpr_plus_zbl, out_str_grad_mtpr_plus_zbl);
+        p_mtpr->CalcEFSGrads(cfg_mtpr, out_ene_grad_mtpr, out_frc_grad_mtpr, out_str_grad_mtpr);
+                
+        cout << "energy grad" << endl;
+        for (int i = 0; i < p_mtpr->CoeffCount(); i++) 
+            cout << out_ene_grad_mtpr[i] << " " << out_ene_grad_mtpr_plus_zbl[i] << endl;
+        
+        //cout << "force grad" << endl;
+        //for (int i = 0; i < cfg_init.size(); i++)
+        //    for (int a = 0; a < 3; a++)
+        //        for (int k = 0; k < p_mtpr->CoeffCount(); k++)
+        //            cout << out_frc_grad_mtpr(i, a, k) << " " << out_frc_grad_mtpr_plus_zbl(i, a, k) << endl;
+                    
+        cout << "stress grad" << endl;
+        for (int a = 0; a < 3; a++)
+            for (int b = 0; b < 3; b++)
+                for (int k = 0; k < p_mtpr->CoeffCount(); k++)
+                    cout << out_str_grad_mtpr(a, b, k) << " " << out_str_grad_mtpr_plus_zbl(a, b, k) << endl;
+
+
+} END_TEST;*/
 
 TEST("EAMSimple CalcEnergyGrad test by finite difference") {
 	Configuration cfg, cfg1, cfg2;

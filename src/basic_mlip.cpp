@@ -8,6 +8,7 @@
 
 
 #include "basic_mlip.h"
+#include <iostream>
 
 
 void AnyLocalMLIP::Save(const std::string& filename)		//!< Saves MLIP's data to file
@@ -121,7 +122,7 @@ void AnyLocalMLIP::CalcStressesGrads(const Configuration & cfg, Array3D & out_st
 					FillWithZero(tmp_grad_accumulator_);
 					AccumulateCombinationGrad(nbh, tmp_grad_accumulator_, 0, &dir[0]);
 					for (int k=0; k<CoeffCount(); k++)
-						out_str_grad(a, b, k) -= buff_site_energy_ders_[j][a] * nbh.vecs[j][b];
+						out_str_grad(a, b, k) -= tmp_grad_accumulator_[k] * nbh.vecs[j][b];
 				}
 	}
 }
@@ -141,18 +142,21 @@ void AnyLocalMLIP::CalcEFSGrads(const Configuration & cfg,
 	// calculating EFS components
 	Neighborhoods nbhs(cfg, CutOff());
 
-	int dir_size = 0;
+	/*int dir_size = 0;
 	for (int i = 0; i < cfg.size(); i++)
 		dir_size = std::max(dir_size, nbhs[i].count);
-	std::vector<Vector3> dir(dir_size);
+	std::vector<Vector3> dir(dir_size);*/
+	
+	std::vector<Vector3> dir;
 
 	for (int i = 0; i < cfg.size(); i++)
 	{
 		const Neighborhood& nbh = nbhs[i];
+		dir.resize(nbh.count);
+		AccumulateCombinationGrad(nbh, out_ene_grad, 1, nullptr);
 
 		for (int j=0; j<nbh.count; j++)
 		{
-			AccumulateCombinationGrad(nbh, out_ene_grad, 1, nullptr);
 
 			for (int a=0; a<3; a++)
 			{
@@ -164,8 +168,9 @@ void AnyLocalMLIP::CalcEFSGrads(const Configuration & cfg,
 				{
 					out_frc_grad(i, a, k) += tmp_grad_accumulator_[k];
 					out_frc_grad(nbh.inds[j], a, k) -= tmp_grad_accumulator_[k];
-					for (int b = 0; b < 3; b++)
-						out_str_grad(a, b, k) -= buff_site_energy_ders_[j][a] * nbh.vecs[j][b];
+					for (int b = 0; b < 3; b++) {
+						out_str_grad(a, b, k) -= tmp_grad_accumulator_[k] * nbh.vecs[j][b];
+					}
 				}
 			}
 		}
