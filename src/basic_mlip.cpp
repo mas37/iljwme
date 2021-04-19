@@ -175,6 +175,7 @@ void AnyLocalMLIP::CalcEFSGrads(const Configuration & cfg,
 			}
 		}
 	}
+	
 }
 
 //! Function implementing soft constraints on coefficients (e.g., so that the norm of the radial function is 1) or regularization implementing as penalty to training procedure
