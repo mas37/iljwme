@@ -69,6 +69,19 @@ bool RunAllTests(bool is_parallel)
 {} // this tricks MSVS not to create an extra tab
 //
 
+TEST("MOLPRO reading test") {
+    Configuration cfg;
+    
+    cfg.LoadFromOutputMOLPRO("configurations/molpro.out");
+    
+    cfg.FromAtomicUnits();
+    
+    ofstream ofs("configurations/molpro.cfg");
+    
+    cfg.Save(ofs);
+
+} END_TEST;
+
 TEST("configurations reading") {
 	int count = 0;
 	int status = 0;

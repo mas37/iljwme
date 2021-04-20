@@ -1579,6 +1579,65 @@ bool Configuration::LoadNextFromOUTCAR(std::ifstream& ifs, int maxiter, int ISME
 	return true;
 }
 
+void Configuration::LoadFromOutputMOLPRO(const std::string & filename) {
+    	
+        has_energy(false);
+        has_forces(false);
+        has_stresses(false);
+        has_site_energies(false);
+        pos_.clear();
+        forces_.clear();
+        site_energies_.clear();
+        lattice = Matrix3(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0);
+        
+        std::string line;
+        ifstream ifs(filename);
+        
+        // configuration size reading block
+        {
+	    while (line.substr(0, 11) != " geometry={") {
+	        std::getline(ifs, line);
+	    
+	        if (ifs.eof())
+                    ERROR((string)"MOLPRO-file parsing error: Can't find size of configuration");
+            }
+            
+            int size;
+            ifs >> size;
+            
+            resize(size);
+        }
+        // positions and atomic types reading block
+        {
+             while (line.substr(0, 21) != " ATOMIC COORDINATES") {
+                 std::getline(ifs, line);
+                 
+	         if (ifs.eof())
+                     ERROR((string)"MOLPRO-file parsing error: Can't find atomic types and coordinates");
+             }
+             
+             for (int i = 0; i < 3; i++) 
+                 std::getline(ifs, line);
+             
+             std::vector<std::string> name(size()); 
+             std::vector<std::string> type;
+             int number;
+             double foo; 
+             
+             for (int i = 0; i < size(); i++) {
+                 ifs >> number >> name[i] >> foo >> pos_[i][0] >> pos_[i][1] >> pos_[i][2];
+                 
+                 std::string curr_type;
+                 for (unsigned j=0; j<name[i].length(); ++j)
+                 {
+                     if (isalpha(name[i].at(j)))
+                         curr_type += name[i].at(j);
+                 }
+                 type.push_back(curr_type);
+             }
+             
+        }
+}
 
 bool Configuration::LoadNextFromOUTCARold(std::ifstream& ifs, int maxiter, int ISMEAR)
 {

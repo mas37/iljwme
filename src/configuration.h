@@ -145,6 +145,7 @@ public:
 	void WriteProfessIon(const std::string& filename, std::string*) const;	//!<	writing input for PROFESS
 	void LoadFromOUTCAR(const std::string& filename);						//!<	reading VASP output
 	bool LoadLastFromOUTCAR(const std::string& filename);					//!<	reading VASP output
+	void LoadFromOutputMOLPRO(const std::string& filename);                                      //!<   reading MOLPRO output
 	void WriteVaspPOSCAR(const std::string& filename) const;				//!<	writing POSCAR for VASP
 	void WriteLammpsDatafile(const std::string& filename) const;			//!<	writing cfg for LAMMPS
 	//! Load all configurations in OUTCAR while relaxation or dynamics, saves into db
