@@ -371,12 +371,16 @@ bool Commands(const string& command, vector<string>& args, map<string, string>& 
 		"                 POSCAR0, POSCAR1, etc. are created\n"
 		"  lammps-datafile: only as output. Can be read by read_data from lammps.\n"
 		"                 Multiple configurations are saved to several files.\n"
+		"  molpro-out:    only as input; MOLPRO version 2015.1.136 was tested\n"
+		"                 Isotopes in MOLPRO input/output files should contain\n" 
+		"                 a letter of element and a number, e.g. for hydrogen:\n"
+		"                 H = H, D = H2, T = H3.\n" 
 		) {
 
 		if (opts["input-format"] == "") opts["input-format"] = "txt";
 		if (opts["output-format"] == "") opts["output-format"] = "txt";
 
-		if (opts["output-format"] == "vasp-outcar")
+		if (opts["output-format"] == "vasp-outcar" || opts["output-format"] == "molpro-out")
 			ERROR("Format " + opts["output-format"] + " is not allowed for output");
 		if (opts["input-format"] == "vasp-poscar" || opts["input-format"] == "lammps-datafile")
 			ERROR("Format " + opts["input-format"] + " is not allowed for input");
@@ -406,6 +410,12 @@ bool Commands(const string& command, vector<string>& args, map<string, string>& 
 		if (opts["input-format"] == "vasp-outcar") {
 			ifs.close();
 			LoadDynamicsFromOUTCAR(db, args[0]);
+		}
+		
+		if (opts["input-format"] == "molpro-out") {
+			Configuration cfg;
+			cfg.LoadFromOutputMOLPRO(args[0]);
+			db.push_back(cfg);
 		}
 
 		Configuration cfg_last; // used to differentiate between single-configuration and multiple-configuration inputs

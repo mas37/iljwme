@@ -1621,6 +1621,7 @@ void Configuration::LoadFromOutputMOLPRO(const std::string & filename) {
              
              std::vector<std::string> name(size()); 
              std::vector<std::string> type;
+             std::vector<std::string> types_in_configuration;
              int number;
              double foo; 
              
@@ -1634,9 +1635,56 @@ void Configuration::LoadFromOutputMOLPRO(const std::string & filename) {
                          curr_type += name[i].at(j);
                  }
                  type.push_back(curr_type);
+                 if (i == 0) types_in_configuration.push_back(curr_type);
+                 else {
+                     bool is_type_found = false;
+                     for (int j = 0; j < types_in_configuration.size(); j++) {
+                         if (curr_type == types_in_configuration[j]) {
+                             is_type_found = true;
+                             break;
+                         }
+                     }
+                     
+                     if (!is_type_found) 
+                         types_in_configuration.push_back(curr_type);
+                 }
              }
              
+             std::map<std::string, int> element_to_relative_type;
+             
+             for (int i = 0; i < types_in_configuration.size(); i++) 
+                 element_to_relative_type[types_in_configuration[i]] = i;
+                 
+             for (int i = 0; i < size(); i++) 
+                 types_[i] = element_to_relative_type[type[i]];
+
         }
+        
+        //energy reading block
+        {        
+            while (!ifs.eof()) {
+                std::getline(ifs, line);
+                auto found = line.find("energy=");
+                if (found!=std::string::npos) {
+                    has_energy(true);
+                    break;
+                }
+            }
+            
+            if (ifs.eof())
+                ERROR((string)"MOLPRO-file parsing error: Can't find energy of configuration");
+            
+            auto pos = line.find_last_of(" ");
+            
+            std::string str_energy;
+            
+            for (int i = pos+1; i < line.length(); i++)
+                str_energy += line[i];
+            
+            energy = stod(str_energy);
+        }
+        
+        FromAtomicUnits();
 }
 
 bool Configuration::LoadNextFromOUTCARold(std::ifstream& ifs, int maxiter, int ISMEAR)
