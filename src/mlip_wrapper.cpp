@@ -211,7 +211,7 @@ MLIP_Wrapper::MLIP_Wrapper(const Settings& settings)
 
     //Message("MLIP initialization");
     
-    //PrintSettings();
+    PrintSettings();
 
 #ifdef MLIP_MPI    // multiprocessor logging preparing
     int mpi_rank;

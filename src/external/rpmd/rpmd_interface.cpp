@@ -25,6 +25,7 @@ void mlip_rpmd_init_()
         std::string fnm = "mlip.ini";
         MLIP_wrp = new MLIP_Wrapper(LoadSettings(fnm));
         std::cout << "MLIP potential initialized successfully!" << std::endl;
+        //MLIP_wrp->PrintSettings();
     }
     catch (MlipException& exception) {
         Message(exception.What());
