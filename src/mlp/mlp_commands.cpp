@@ -22,6 +22,7 @@
 #include "../../src/mlp/self_test.h"
 #include "../../src/mlp/train.h"
 #include "../../src/mlp/calc_errors.h"
+#include "../pair_potentials.h"
 
 
 using namespace std;
@@ -506,6 +507,8 @@ bool Commands(const string& command, vector<string>& args, map<string, string>& 
 		"    --skip-preinit: skip the 75 iterations done when parameters are not given\n"
 		"    --update-mindist: updating the mindist parameter with actual \n"
 		"                      minimal interatomic distance in the training set\n"
+		"    --zbl-pot-name=<string>: load ZBL potential from the file if <string> is not empty\n"
+		"                             subtract ZBL EFS from train_set.cfg, rewrite the file\n"
 	) {
 
 		if (args.size() < 2) {
@@ -528,6 +531,42 @@ bool Commands(const string& command, vector<string>& args, map<string, string>& 
 		double scale_by_force = 0.0;
 		if(opts["scale-by-force"] != "") 
 			scale_by_force = stod(opts["scale-by-force"]);
+		
+                if (mpi_rank == 0) {	
+	            string zbl_pot_name = "";
+	            if(opts["zbl-pot-name"] != "") {
+	               zbl_pot_name = opts["zbl-pot-name"];
+	               ZBL pot(zbl_pot_name);
+	               ifstream ifs(args[1]);
+	               //ofstream ofs_zbl("zbl.cfg");
+	               vector<Configuration> train_set;
+	               Configuration cfg;
+	               int curr = 0;
+	               while (cfg.Load(ifs)) {
+	                   train_set.push_back(cfg);
+	                   pot.CalcEFS(cfg);
+	                   //cfg.Save(ofs_zbl);
+	                   train_set[curr].energy -= cfg.energy;
+	                   if (train_set[curr].has_forces()) {
+	                       for (int i = 0; i < cfg.size(); i++)
+	                           train_set[curr].force(i) -= cfg.force(i);
+	                   }
+	                   if (train_set[curr].has_stresses())
+	                       train_set[curr].stresses -= cfg.stresses;
+	                   curr++;
+	               }
+	               //ofs_zbl.close();
+	               ifs.close();
+	               ofstream ofs(args[1]);
+	               for (int curr = 0; curr < train_set.size(); curr++)
+	                   train_set[curr].Save(ofs);
+	               ofs.close();
+	            }
+	        }
+	        
+#ifdef MLIP_MPI
+	MPI_Barrier(MPI_COMM_WORLD);
+#endif
 
 #ifdef MLIP_DEV
 		Train_MTPR(args,opts);
