@@ -91,3 +91,6 @@ make test
 This launches a number of tests, including test of LAMMPS if it is present in `bin/`
 (i.e., if `bin/lmp_serial` and `bin/lmp_mpi` exist).
 
+## Additional patch for usage of the hybridization of moment tensor potentials
+
+Please copy the source files in the folder "USER-MLIP" and replace them with the default files one obtained from the "interface-lammps-mlip-2" repository.
