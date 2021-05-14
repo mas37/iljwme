@@ -9,7 +9,7 @@
 
 #include "../mlip_wrapper.h"
 #include "../mlip.h"
-
+#include <cmath>
 
 using namespace std;
 
@@ -17,13 +17,23 @@ using namespace std;
 #define NEIGHMASK 0x3FFFFFFF
 #define DEFAULTCUTOFF 5.0
 
+namespace mtpsmear
+{
+double smearing(double position)
+{
+    double frac=pow(position,5.L)*(70.L*pow(position,4.L)-315.L*pow(position,3.L)+540.L*pow(position,2.L)-420.L*position+126.L);
+    return frac;
+}
+}
 
-MLIP_Wrapper *MLIP_wrp = nullptr;
 Configuration comm_conf;
-AnyLocalMLIP* p_mlip; // AnyLocalMLIP is needed for the neighborhood mode
-double cutoff;
-std::ofstream logfilestream;
-bool reorder_atoms = true;
+
+
+//MLIP_Wrapper *MLIP_wrp = nullptr;
+//AnyLocalMLIP* p_mlip; // AnyLocalMLIP is needed for the neighborhood mode
+//double cutoff;
+//std::ofstream logfilestream;
+//bool reorder_atoms = true;
 
 
 // Initilizes MLIP
@@ -31,7 +41,12 @@ void MLIP_init(const char * settings_filename,	// settings filename
 			   const char * log_filename,	// filename for logging communication 
 			   int ntypes,					// Number of atom types 
 			   double& rcut,				// MLIP's cutoff radius returned to driver
-			   int& mode)					// If 0 call of MLIP_calc_nbh() from driver is allowed. 
+			   int& mode, //)					// If 0 call of MLIP_calc_nbh() from driver is allowed. 
+               void* & MLIP_wrp, //MLIP_Wrapper *
+               void* & p_mlip, //AnyLocalMLIP*
+               double& cutoff,
+               std::ofstream& logfilestream,
+               bool& reorder_atoms)
 {
 	if (log_filename != nullptr)	// log to file
 	{
@@ -44,8 +59,13 @@ void MLIP_init(const char * settings_filename,	// settings filename
 	else							// log to stdout
 		SetStreamForOutput(&std::cout);
 
-	if (MLIP_wrp != nullptr)
-		delete MLIP_wrp;
+	MLIP_Wrapper *tmpMLIP_wrp;
+    if (MLIP_wrp != nullptr)
+    {
+		tmpMLIP_wrp=(MLIP_Wrapper*)MLIP_wrp;
+        delete tmpMLIP_wrp;
+        //delete MLIP_wrp;
+    }
 
 	Settings settings;
 	settings.Load(settings_filename);
@@ -53,6 +73,7 @@ void MLIP_init(const char * settings_filename,	// settings filename
 	try
 	{
 		MLIP_wrp = new MLIP_Wrapper(settings);
+        tmpMLIP_wrp=(MLIP_Wrapper*)MLIP_wrp;
 	}
 	catch (MlipException& exception)
 	{
@@ -60,9 +81,10 @@ void MLIP_init(const char * settings_filename,	// settings filename
 		exit(9991);
 	}
 
-	p_mlip = (AnyLocalMLIP*)MLIP_wrp->p_mlip;
-	if (p_mlip != nullptr)
-		rcut = p_mlip->CutOff();
+	p_mlip = (AnyLocalMLIP*)tmpMLIP_wrp->p_mlip;
+	AnyLocalMLIP* tmpp_mlip=(AnyLocalMLIP*) p_mlip;
+    if (tmpp_mlip != nullptr)
+		rcut = tmpp_mlip->CutOff();
 	else
 		rcut = DEFAULTCUTOFF;
 
@@ -89,7 +111,7 @@ void MLIP_init(const char * settings_filename,	// settings filename
 	else 
 			reorder_atoms = false;
 
-	if ((AnyLocalMLIP*)MLIP_wrp->p_mlip == nullptr)
+	if ((AnyLocalMLIP*)tmpMLIP_wrp->p_mlip == nullptr)
 		rcut = DEFAULTCUTOFF;
 	cutoff = rcut;
 }
@@ -102,7 +124,12 @@ void MLIP_calc_cfg(	int n,			// input parameter: number of atoms
 					int* ids,		// input parameter: array of atom indices (n of integer numbers). Required to reorder numbers when their order in the other arrays is wrong
 					double& en,		// output parameter: energy of configuration 
 					double** f,		// output parameter: forces on atoms (cartesian, n x 3 double numbers)
-					double* stresses)	// output parameter: stresses in eV (9 double numbers)
+					double* stresses, //)	// output parameter: stresses in eV (9 double numbers)
+                    void* & MLIP_wrp, //MLIP_Wrapper *
+                    void* & p_mlip, //AnyLocalMLIP*
+                    double& cutoff,
+                    std::ofstream& logfilestream,
+                    bool& reorder_atoms)
 {
 	// set size, new id
 	if (n != comm_conf.size()) {
@@ -144,9 +171,10 @@ void MLIP_calc_cfg(	int n,			// input parameter: number of atoms
 			comm_conf.type(i) = types[i]-1;
 	}
 
-	try
+	MLIP_Wrapper * tmpMLIP_wrp=(MLIP_Wrapper *)MLIP_wrp;
+    try
 	{
-		MLIP_wrp->CalcEFS(comm_conf);
+		tmpMLIP_wrp->CalcEFS(comm_conf);
 	}
 	catch (MlipException& exception)
 	{
@@ -173,8 +201,15 @@ void MLIP_calc_nbh(int inum,           // input parameter: number of neighborhoo
                    int* types,         // input parameter: array of atom types (inum of integer numbers)
                    double** f,                    // output parameter: forces on atoms (cartesian, n x 3 double numbers)
                    double& en,                    // output parameter: summ of site energies 
+                   double* bd_l,
+                   double* bd_r,
+                   void* & MLIP_wrp, //MLIP_Wrapper *
+                   void* & p_mlip, //AnyLocalMLIP*
+                   double& cutoff,
+                   std::ofstream& logfilestream,
+                   bool& reorder_atoms,
                    double* site_en=nullptr,       // output parameter: array of site energies (inum double numbers). if =nullptr while call no site energy calculation is done
-                   double** site_virial=nullptr)  // output parameter: array of site energies (inum double numbers). if =nullptr while call no virial-stress-per-atom calculation is done
+                   double** site_virial=nullptr  )  // output parameter: array of site energies (inum double numbers). if =nullptr while call no virial-stress-per-atom calculation is done
 {
 	Neighborhood nbh;
 
@@ -194,6 +229,8 @@ void MLIP_calc_nbh(int inum,           // input parameter: number of neighborhoo
 		nbh.inds.clear();
 		nbh.vecs.clear();
 		nbh.dists.clear();
+        
+        double rmin=50;
 
 		for (int jj=0; jj<jnum; jj++) 
 		{
@@ -204,7 +241,8 @@ void MLIP_calc_nbh(int inum,           // input parameter: number of neighborhoo
 			double dely = x[j][1] - ytmp;
 			double delz = x[j][2] - ztmp;
 			double r = sqrt(delx*delx + dely*dely + delz*delz);
-
+            
+            
 			if (r < cutoff) 
 			{
 				nbh.count++;
@@ -212,61 +250,89 @@ void MLIP_calc_nbh(int inum,           // input parameter: number of neighborhoo
 				nbh.vecs.emplace_back(delx,dely,delz);
 				nbh.dists.emplace_back(r);
 				nbh.types.emplace_back(types[j]-1);
+                if (r<rmin) rmin=r;
 			}
 		}
+        
+        double scsc=1.L;
+        double position=0;
+        if (rmin<bd_l[1] && rmin>bd_l[0])
+        {
+            position=(rmin-bd_l[0])/(bd_l[1]-bd_l[0]);
+            scsc=mtpsmear::smearing(position);
+        }
+        if (rmin<=bd_l[0]) scsc=0.L;
+        
+        if (rmin<bd_r[1] && rmin>bd_r[0])
+        {
+            position=(rmin-bd_r[0])/(bd_r[1]-bd_r[0]);
+            scsc=1-mtpsmear::smearing(position);
+        }
+        if (rmin>=bd_r[1]) scsc=0.L;
 
 		// 2. Calculate site energy and their derivatives
-		try
+		AnyLocalMLIP* tmpp_mlip=(AnyLocalMLIP*)p_mlip;
+        try
 		{
-			p_mlip->CalcSiteEnergyDers(nbh);
+			tmpp_mlip->CalcSiteEnergyDers(nbh);
 		}
 		catch (MlipException& excp)
 		{
 			Message(excp.What());
 			exit(9993);
 		}
-		double* p_site_energy_ders = &p_mlip->buff_site_energy_ders_[0][0];
-		en += p_mlip->buff_site_energy_;
+		double* p_site_energy_ders = &tmpp_mlip->buff_site_energy_ders_[0][0];
+		en += scsc*tmpp_mlip->buff_site_energy_;
 		if (site_en != nullptr)
-			site_en[i] = p_mlip->buff_site_energy_;
+			site_en[i] = scsc*tmpp_mlip->buff_site_energy_;
 
 		// 3. Add site energy derivatives to force array
 		for (int jj=0; jj<nbh.count; jj++)
 		{
 			int j = nbh.inds[jj];
 
-			f[i][0] += p_site_energy_ders[3*jj+0];
-			f[i][1] += p_site_energy_ders[3*jj+1];
-			f[i][2] += p_site_energy_ders[3*jj+2];
+			f[i][0] += scsc*p_site_energy_ders[3*jj+0];
+			f[i][1] += scsc*p_site_energy_ders[3*jj+1];
+			f[i][2] += scsc*p_site_energy_ders[3*jj+2];
 			
-			f[j][0] -= p_site_energy_ders[3*jj+0];
-			f[j][1] -= p_site_energy_ders[3*jj+1];
-			f[j][2] -= p_site_energy_ders[3*jj+2];
+			f[j][0] -= scsc*p_site_energy_ders[3*jj+0];
+			f[j][1] -= scsc*p_site_energy_ders[3*jj+1];
+			f[j][2] -= scsc*p_site_energy_ders[3*jj+2];
 		}
 
 		// 4. Calculate virial stresses per atom (if required)
 		if (site_virial != nullptr) 
 			for (int jj = 0; jj < nbh.count; jj++)
 			{
-				site_virial[i][0] -= p_site_energy_ders[3*jj+0] * nbh.vecs[jj][0];
-				site_virial[i][1] -= p_site_energy_ders[3*jj+1] * nbh.vecs[jj][1];
-				site_virial[i][2] -= p_site_energy_ders[3*jj+2] * nbh.vecs[jj][2];
-				site_virial[i][3] -= 0.5 * (p_site_energy_ders[3*jj+1] * nbh.vecs[jj][0] +
+				site_virial[i][0] -= scsc*p_site_energy_ders[3*jj+0] * nbh.vecs[jj][0];
+				site_virial[i][1] -= scsc*p_site_energy_ders[3*jj+1] * nbh.vecs[jj][1];
+				site_virial[i][2] -= scsc*p_site_energy_ders[3*jj+2] * nbh.vecs[jj][2];
+				site_virial[i][3] -= 0.5 * scsc*(p_site_energy_ders[3*jj+1] * nbh.vecs[jj][0] +
 											p_site_energy_ders[3*jj+0] * nbh.vecs[jj][1]);
-				site_virial[i][4] -= 0.5 * (p_site_energy_ders[3*jj+2] * nbh.vecs[jj][0] +
+				site_virial[i][4] -= 0.5 * scsc*(p_site_energy_ders[3*jj+2] * nbh.vecs[jj][0] +
 											p_site_energy_ders[3*jj+0] * nbh.vecs[jj][2]);
-				site_virial[i][5] -= 0.5 * (p_site_energy_ders[3*jj+2] * nbh.vecs[jj][1] +
+				site_virial[i][5] -= 0.5 * scsc*(p_site_energy_ders[3*jj+2] * nbh.vecs[jj][1] +
 											p_site_energy_ders[3*jj+1] * nbh.vecs[jj][2]);
 			}
 	}
 }
 
 // destroys MLIP object
-void MLIP_finalize()
+void MLIP_finalize( void* & MLIP_wrp, //MLIP_Wrapper *
+                    void* & p_mlip, //AnyLocalMLIP*
+                    double& cutoff,
+                    std::ofstream& logfilestream,
+                    bool& reorder_atoms)
 {
-	try
+	MLIP_Wrapper *  tmpMLIP_wrp;
+    try
 	{
-		delete MLIP_wrp;
+		if (MLIP_wrp != nullptr)
+        {
+        tmpMLIP_wrp=(MLIP_Wrapper*)MLIP_wrp;
+        delete tmpMLIP_wrp;
+        }
+        //delete MLIP_wrp;
 	}
 	catch (MlipException& excp)
 	{
@@ -281,4 +347,5 @@ void MLIP_finalize()
 	if (logfilestream.is_open())
 		logfilestream.close();
 }
+
 
