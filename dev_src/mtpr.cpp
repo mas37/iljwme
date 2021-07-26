@@ -105,6 +105,7 @@ void MLMTPR::Load(const string& filename)
 	int pairs_count = species_count*species_count;           //number of species pairs
 
 	char foo = ' ';
+	int foo_int = 0;
 
 	regression_coeffs.resize(pairs_count*radial_func_count*(p_RadialBasis->rb_size));
 
@@ -117,7 +118,7 @@ void MLMTPR::Load(const string& filename)
 		for (int s1 = 0; s1 < species_count; s1++)
 			for (int s2 = 0; s2 < species_count; s2++)
 			{
-				ifs >> foo >> foo >> foo;
+				ifs >> foo_int >> foo >> foo_int;
 
 				double t;
 
