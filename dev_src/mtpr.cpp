@@ -487,14 +487,14 @@ void MLMTPR::CalcDescriptors(Configuration& cfg, ofstream& ofs)
 		    << '\t' << cfg.pos(ind, 1)
 		    << '\t' << cfg.pos(ind, 2);
 		for (int i = 0; i < alpha_scalar_moments; i++) {
-			ofs << '\t' << basis_vals[1 + i];
+			ofs << '\t' << basis_vals[1 + i] / linear_coeffs[1 + i];
 		}
 		ofs << '\t' << nbh.count;
 		for (int i = 0; i < alpha_scalar_moments; i++) {
 			for (int j = 0; j < nbh.count; j++) {
-				ofs << '\t' << basis_ders(1 + i, j, 0)
-				    << '\t' << basis_ders(1 + i, j, 1)
-				    << '\t' << basis_ders(1 + i, j, 2);
+				ofs << '\t' << basis_ders(1 + i, j, 0) / linear_coeffs[1 + i]
+				    << '\t' << basis_ders(1 + i, j, 1) / linear_coeffs[1 + i]
+				    << '\t' << basis_ders(1 + i, j, 2) / linear_coeffs[1 + i];
 			}
 		}
 		ofs << endl;
