@@ -722,6 +722,37 @@ bool Commands(const string& command, vector<string>& args, map<string, string>& 
 		ofs.close();
 		cout << count << " configurations processed.\n";
 	} END_COMMAND;
+	
+	BEGIN_UNDOCUMENTED_COMMAND("compress-extend",
+		"compresses/extends input configuration",
+		"mlp compress-extend input.cfg deformed.cfg:\n"
+		) {	
+		
+		if (args.size() != 2) {
+			cout << "mlp calc-errors: 2 arguments required\n";
+			return 1;
+		}
+		
+                Configuration cfg_init, cfg;
+                ifstream ifs(args[0]);
+                cfg_init.Load(ifs);
+                Matrix3 mapping_init(1,0,0,0,1,0,0,0,1);
+                Matrix3 mapping;
+                ofstream ofs(args[1]);
+        
+                for (int i = -10; i <= 10; i++) {
+                    mapping = mapping_init;
+                    cfg = cfg_init;
+                    for (int a = 0; a < 3; a++) 
+                        mapping[a][a] += i*0.01;
+                    cfg.Deform(mapping);
+                    cfg.has_energy(false);
+                    cfg.has_stresses(false);
+                    cfg.has_forces(false);
+                    cfg.Save(ofs);
+                }
+		
+	} END_COMMAND;
 
 	BEGIN_COMMAND("mindist",
 		"reads a cfg file and saves it with added mindist feature",
